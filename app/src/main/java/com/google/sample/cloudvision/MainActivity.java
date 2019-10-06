@@ -89,9 +89,9 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(view -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             builder
-                    .setMessage(R.string.dialog_select_prompt)
-                    .setPositiveButton(R.string.dialog_select_gallery, (dialog, which) -> startGalleryChooser())
-                    .setNegativeButton(R.string.dialog_select_camera, (dialog, which) -> startCamera());
+                    .setMessage("사진을 선택해주세요")
+                    .setPositiveButton("갤러리", (dialog, which) -> startGalleryChooser())
+                    .setNegativeButton("카메라", (dialog, which) -> startCamera());
             builder.create().show();
         });
 
@@ -285,7 +285,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void callCloudVision(final Bitmap bitmap) {
         // Switch text to loading
-        mImageDetails.setText(R.string.loading_message);
+        mImageDetails.setText("사진 업로드 중입니다. 잠시만 기다려주세요.");
 
         // Do the real work in an async task, because we need to use the network anyway
         try {
@@ -318,7 +318,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private static String convertResponseToString(BatchAnnotateImagesResponse response) {
-        StringBuilder message = new StringBuilder("I found these things:\n\n");
+        StringBuilder message = new StringBuilder("Object Detection:\n\n");
 
         List<EntityAnnotation> labels = response.getResponses().get(0).getLabelAnnotations();
         if (labels != null) {
