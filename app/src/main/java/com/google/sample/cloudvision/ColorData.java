@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,11 +39,6 @@ public class ColorData {
         String col3 = "142,22,61,86,48,144,57,97,97,36,73,72,46,60,46,46,48,58,46,24,46,130,70,46,46,142,94,142,142,142,46,142,35,35,46,44,106,142,106,70,22,94,70,127,96,106,46,115,44,43,40,42,44,47,31,128,47,138,67,44,142,47,143,32,105,66,47,68,98,98,26,74,26,40,51,147,65,125,137,41,59,123,100,119,109,111,145,101,145,57,140,138,142,116,117,142,142,116,108,96,96,108,108,96,144,126,144,114,142,143,142,145,145,142,106,49,108,84,24,120,118,132,25,49,22,127,119,126,126,124,126,98,110,98,73,85,61,50,42,72,52,59,62,61,134,27,53,53,149,149,138,111,138,103,78,32,143,68,143,44,144,143,144,145,102,111,119,94,130,130,120,118,119,47,30,54,138,54,126,66,44,33,56,45,135,74,74,86,96,84,66,64,63,113,109,112,135,135,113,111,144,68,53,125,66,54,149,66,146,113,89,87,100,148,142,143,81,145,145,41,66,55,141,65,68,45,143,142,116,92,57,80,45,57,81,117,44,116,115,117,113,97,84,60,37,37,37,37,30,34,107,84,48,96,87,48,72,58,36,46,83,78,23,131,127,118,31,131,128,127,127,35,32,142,141,98,111,122,96,58,147,75,97,87,76,134,40,136,125,137,137,147,77,101,121,124,113,89,89,143,126,142,92,114,112,107,100,75,63,63,39,148,111,63,44,68,142,144,109,95,107,120,118,127,126,31,129,138,128,127,128,27,25,134,50,51,51,110,122,63,63,86,121,122,121,74,125,123,28,42,137,59,75,51,54,54,63,52,40,26,28,59,63,63,123,123,123,63,149,150,126,137,110,112,109,137,98,121,137,33,105,128,90,141,142,142,93,68,116,142,104,142,126,97,106,97,97,108,151,84,110,72,85,86,108,108,109,38,85,114,71,108,106,114,116,148,141,142,108,98,96,51,123,98,50,148,75,75,53,54,65,53,81,57,147,112,97,143,103";
         color3 = col3.split(",");
     }
-    private String basicColors[];
-    {
-        String bas = "22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,70,71,72,73,74,75,76,77,78,80,81,82,83,84,85,86,87,88,89,90,92,93,94,95,96,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,142,143,144,145,146,146,147,148,149,150,151";
-        basicColors = bas.split(",");
-    }
     private String basicColorsR[];
     {
         String basR = "231,207,231,233,236,213,211,171,162,172,116,79,238,226,241,242,245,218,218,215,158,167,169,115,85,225,227,225,225,249,233,255,148,139,156,103,75,170,162,169,219,228,209,195,144,109,91,54,19,18,88,155,221,179,141,143,88,30,34,4,6,43,146,209,166,140,122,39,27,31,1,3,0,59,126,194,127,117,130,24,20,18,29,3,6,59,147,203,165,138,133,53,8,16,25,46,92,178,197,224,184,170,151,44,58,40,34,204,175,209,218,235,206,205,160,115,111,88,53,244,175,236,206,180,152,158,126,86,60,38,10";
@@ -59,20 +55,20 @@ public class ColorData {
         basicColorsB = basB.split(",");
     }
 
-    public Color getBasicColor(int n) {
+    public Color getBasicColor(int n) { // 지정번호를 입력시 Basic Color를 Color 객체로 반환
         Color basic = new Color();
         basic.rgb(Integer.parseInt(basicColorsR[n]), Integer.parseInt(basicColorsG[n]), Integer.parseInt(basicColorsB[n]));
         return basic;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public double getDistance(Color basic, Color c) {
+    public double getDistance(Color basic, Color c) { // 두 색 사이 거리 구하기
         double dist = (basic.red() - c.red()) * (basic.red() - c.red()) + (basic.green() - c.green()) * (basic.green() - c.green()) + (basic.blue() - c.blue()) * (basic.blue() - c.blue());
         return dist;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public int[] getSimilarScale(Color c1, Color c2, Color c3) {
+    public double[] getScaleDistance(Color c1, Color c2, Color c3) { // 두 스케일 사이 거리 구하기
         double c1Dist = 10000;
         int basicN = 0;
 
@@ -114,7 +110,44 @@ public class ColorData {
             }
         }
 
-        int[] valAro = new int[] {Integer.parseInt(valence[finalN]), Integer.parseInt(arousal[finalN])};
+        double finalDist = c1Dist + c2Dist + c3Dist;
+        double similarCandidate[] = new double[] {finalDist, finalN};
+
+        return similarCandidate;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public double[] getSimilarScale(Color c1, Color c2, Color c3) { // 대표색 3개를 입력시 [Valence, Arousal] 값을 반환
+        double[] candidate1 = getScaleDistance(c1, c2, c3);
+        double[] candidate2 = getScaleDistance(c1, c3, c2);
+        double[] candidate3 = getScaleDistance(c2, c1, c3);
+        double[] candidate4 = getScaleDistance(c2, c3, c1);
+        double[] candidate5 = getScaleDistance(c3, c1, c2);
+        double[] candidate6 = getScaleDistance(c3, c2, c1);
+
+        int finalN = (int)candidate1[1];
+        double candidateDist = candidate1[0];
+        if (candidate2[0] < candidateDist) {
+            candidateDist = candidate2[0];
+            finalN = (int)candidate2[1];
+        }
+        if (candidate3[0] < candidateDist) {
+            candidateDist = candidate3[0];
+            finalN = (int)candidate3[1];
+        }
+        if (candidate4[0] < candidateDist) {
+            candidateDist = candidate4[0];
+            finalN = (int)candidate4[1];
+        }
+        if (candidate5[0] < candidateDist) {
+            candidateDist = candidate5[0];
+            finalN = (int)candidate5[1];
+        }
+        if (candidate6[0] < candidateDist) {
+            finalN = (int)candidate6[1];
+        }
+
+        double[] valAro = new double[] {Double.parseDouble(valence[finalN]), Double.parseDouble(arousal[finalN])};
 
         return valAro;
     }
