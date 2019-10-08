@@ -4,7 +4,6 @@ import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,7 +88,7 @@ public class ColorData {
         double c2Dist = 10000;
 
         for (int i = 0; i < possibleScales.size(); i++) {
-            Color scale2 = getBasicColor(possibleScales.get(i));
+            Color scale2 = getBasicColor(Integer.parseInt(color2[possibleScales.get(i)]));
             double dist = getDistance(scale2, c2);
             if (dist < c2Dist) {
                 c2Dist = dist;
@@ -102,7 +101,7 @@ public class ColorData {
         int finalN = 0;
 
         for (int i = 0; i < possibleScales.size(); i++) {
-            Color scale3 = getBasicColor(possibleScales.get(i));
+            Color scale3 = getBasicColor(Integer.parseInt(color3[possibleScales.get(i)]));
             double dist = getDistance(scale3, c3);
             if (dist < c3Dist) {
                 c3Dist = dist;
