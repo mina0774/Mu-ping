@@ -81,7 +81,7 @@ public class ColorData {
         }
 
         List<Integer> possibleScales = new ArrayList<Integer>();
-        for (int i = 0; i < 440; i++) {
+        for (int i = 0; i < 439; i++) {
             if (Integer.parseInt(color1[i]) == basicN) possibleScales.add(i);
         }
 
@@ -146,7 +146,7 @@ public class ColorData {
             finalN = (int)candidate6[1];
         }
 
-        double[] valAro = new double[] {Double.parseDouble(valence[finalN]), Double.parseDouble(arousal[finalN])};
+        double[] valAro = new double[] {Double.parseDouble(valence[finalN]), Double.parseDouble(arousal[finalN]), finalN};
 
         return valAro;
     }
