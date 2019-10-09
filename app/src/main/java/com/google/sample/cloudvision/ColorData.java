@@ -67,52 +67,46 @@ public class ColorData {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public double[] getScaleDistance(Color c1, Color c2, Color c3) { // 두 스케일 사이 거리 구하기
-        double c1Dist = 10000;
-        int basicN = 0;
-
-        for (int i = 0; i < 131; i++) {
-            Color scale1 = getBasicColor(i);
-            double dist = getDistance(scale1, c1);
-            if (dist < c1Dist) {
-                c1Dist = dist;
-                basicN = i;
-            }
-        }
-
-        List<Integer> possibleScales = new ArrayList<Integer>();
+    public double[] getScaleDistance(Color c1, Color c2, Color c3) { // 두 스케일 사이 거리
+        double finalDist = 10000;
+        double finalN = 0;
         for (int i = 0; i < 439; i++) {
-            if (Integer.parseInt(color1[i]) == basicN) possibleScales.add(i);
-        }
+            ArrayList<Integer> scaleColorNumbers = new ArrayList<>();
+            scaleColorNumbers.add(Integer.parseInt(color1[i]));
+            scaleColorNumbers.add(Integer.parseInt(color2[i]));
+            scaleColorNumbers.add(Integer.parseInt(color3[i]));
+            Color[] scaleColors = new Color[] {getBasicColor(scaleColorNumbers.get(0)), getBasicColor(scaleColorNumbers.get(1)), getBasicColor(scaleColorNumbers.get(2))};
 
-        double c2Dist = 10000;
-
-        for (int i = 0; i < possibleScales.size(); i++) {
-            Color scale2 = getBasicColor(Integer.parseInt(color2[possibleScales.get(i)]));
-            double dist = getDistance(scale2, c2);
-            if (dist < c2Dist) {
-                c2Dist = dist;
-            } else {
-                possibleScales.remove(i);
+            double c1Dist = 10000;
+            int toRemove = 0;
+            for (int j = 0; j < 3; j++) {
+                double dist = getDistance(scaleColors[i], c1);
+                if (dist < c1Dist) {
+                    c1Dist = dist;
+                    toRemove = j;
+                }
             }
-        }
-
-        double c3Dist = 10000;
-        int finalN = 0;
-
-        for (int i = 0; i < possibleScales.size(); i++) {
-            Color scale3 = getBasicColor(Integer.parseInt(color3[possibleScales.get(i)]));
-            double dist = getDistance(scale3, c3);
-            if (dist < c3Dist) {
-                c3Dist = dist;
+            scaleColorNumbers.remove(toRemove);
+            scaleColors = new Color[] {getBasicColor(scaleColorNumbers.get(0)), getBasicColor(scaleColorNumbers.get(1))};
+            double c2Dist = 10000;
+            toRemove = 0;
+            for (int j = 0; j < 2; j++) {
+                double dist = getDistance(scaleColors[i], c2);
+                if (dist < c2Dist) {
+                    c2Dist = dist;
+                    toRemove = j;
+                }
+            }
+            scaleColorNumbers.remove(toRemove);
+            scaleColors = new Color[] {getBasicColor(scaleColorNumbers.get(0))};
+            double c3Dist = getDistance(scaleColors[0], c3);
+            if (c1Dist + c2Dist + c3Dist < finalDist) {
+                finalDist = c1Dist + c2Dist + c3Dist;
                 finalN = i;
             }
         }
-
-        double finalDist = c1Dist + c2Dist + c3Dist;
-        double similarCandidate[] = new double[] {finalDist, finalN};
-
-        return similarCandidate;
+        double[] candidate = new double[] {finalDist, finalN};
+        return candidate;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
