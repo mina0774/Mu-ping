@@ -67,8 +67,23 @@ public class ColorData {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
+    public Color normalizeColor(Color c) {
+        int basicNumber = 0;
+        double minDist = 1000000;
+        for (int i = 0; i < 131; i++) {
+            Color basic = getBasicColor(i);
+            double dist = getDistance(basic, c);
+            if (dist < minDist) {
+                minDist = dist;
+                basicNumber = i;
+            }
+        }
+        return getBasicColor(basicNumber);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public double[] getScaleDistance(Color c1, Color c2, Color c3) { // 두 스케일 사이 거리
-        double finalDist = 10000;
+        double finalDist = 1000000;
         double finalN = 0;
         for (int i = 0; i < 439; i++) {
             ArrayList<Integer> scaleColorNumbers = new ArrayList<>();
@@ -77,7 +92,7 @@ public class ColorData {
             scaleColorNumbers.add(Integer.parseInt(color3[i]));
             Color[] scaleColors = new Color[] {getBasicColor(scaleColorNumbers.get(0)), getBasicColor(scaleColorNumbers.get(1)), getBasicColor(scaleColorNumbers.get(2))};
 
-            double c1Dist = 10000;
+            double c1Dist = 1000000;
             int toRemove = 0;
             for (int j = 0; j < 3; j++) {
                 double dist = getDistance(scaleColors[i], c1);
@@ -88,7 +103,7 @@ public class ColorData {
             }
             scaleColorNumbers.remove(toRemove);
             scaleColors = new Color[] {getBasicColor(scaleColorNumbers.get(0)), getBasicColor(scaleColorNumbers.get(1))};
-            double c2Dist = 10000;
+            double c2Dist = 1000000;
             toRemove = 0;
             for (int j = 0; j < 2; j++) {
                 double dist = getDistance(scaleColors[i], c2);
