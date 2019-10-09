@@ -1,99 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".RegisterActivity">
 
-    <TextView
-        android:id="@+id/register_text"
+
+    <ImageView
+        android:id="@+id/header_logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="REGISTER"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:textSize="30dp"
-        app:layout_constraintVertical_bias="0.179" />
+        app:srcCompat="@drawable/regist_text"
+        android:layout_marginTop="100dp"
+        android:layout_centerHorizontal="true" />
+
+
+    <ImageView
+        android:id="@+id/p_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/user"
+        android:layout_below="@+id/header_logo"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="40dp" />
 
     <EditText
-        android:id="@+id/et_id"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Email ID"
+        android:id="@+id/et_eamil"
+        android:ems="15"
+        android:hint="user@email.com"
         android:textColorHint="#525252"
         android:textColor="#363636"
         android:inputType="textEmailAddress"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.345" />
-
-    <EditText
-        android:id="@+id/et_pw"
-        android:layout_width="300dp"
+        android:layout_toEndOf="@id/p_id"
+        android:layout_below="@id/header_logo"
+        android:layout_width="match_parent"
+        android:layout_marginTop="90dp"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Password"
-        android:textColorHint="#525252"
-        android:textColor="#363636"
-        android:inputType="textPassword"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.457" />
-
-    <EditText
-        android:id="@+id/et_passwordConfirm"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:textColorHint="#525252"
-        android:textColor="#363636"
-        android:hint="Password confirm"
-        android:inputType="textPassword"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.523" />
+        android:layout_marginEnd="40dp"/>
 
 
-    <Button
-        android:id="@+id/btn_done"
-        android:layout_width="330dp"
-        android:layout_height="37dp"
-        android:layout_weight="1"
-        android:background="@drawable/register_btn2"
-        android:gravity="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.492"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.702"    />
-
-    <Button
-        android:id="@+id/btn_cancel"
-        style="@style/Widget.AppCompat.Button.Borderless"
+    <ImageView
+        android:id="@+id/p_pw"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="BACK"
-        android:textColor="#525252"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.837" />
+        android:background="@drawable/lock"
+        android:layout_below="@+id/p_id"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginStart="40dp" />
 
-</android.support.constraint.ConstraintLayout>
+
+    <EditText
+        android:id="@+id/et_password"
+        android:ems="15"
+        android:hint="password"
+        android:textColorHint="#525252"
+        android:textColor="#363636"
+        android:inputType="textPassword"
+        android:layout_toEndOf="@+id/p_pw"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/et_eamil"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="40dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/et_password"
+        android:layout_marginTop="60dp" >
+
+        <Button
+            android:id="@+id/btn_signUp"
+            android:text="@string/signup"
+            android:onClick="singUp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="45dp"
+            android:layout_marginRight="5dp"/>
+
+        <Button
+            android:id="@+id/btn_back"
+            android:text="BACK"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="45dp"
+            android:onClick="back" />
+
+
+    </LinearLayout>
+
+</RelativeLayout>
