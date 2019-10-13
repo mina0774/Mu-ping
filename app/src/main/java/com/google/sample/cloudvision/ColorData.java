@@ -127,15 +127,15 @@ public class ColorData {
         double finalN = 0;
         for (int i = 0; i < 439; i++) {
             ArrayList<Integer> scaleColorNumbers = new ArrayList<>();
-            scaleColorNumbers.add(Integer.parseInt(color1[i]));
-            scaleColorNumbers.add(Integer.parseInt(color2[i]));
-            scaleColorNumbers.add(Integer.parseInt(color3[i]));
+            scaleColorNumbers.add(Integer.parseInt(color1[i])-22);
+            scaleColorNumbers.add(Integer.parseInt(color2[i])-22);
+            scaleColorNumbers.add(Integer.parseInt(color3[i])-22);
             Color[] scaleColors = new Color[] {getBasicColor(scaleColorNumbers.get(0)), getBasicColor(scaleColorNumbers.get(1)), getBasicColor(scaleColorNumbers.get(2))};
 
             double c1Dist = 1000000;
             int toRemove = 0;
             for (int j = 0; j < 3; j++) {
-                double dist = getDistance(scaleColors[i], c1);
+                double dist = getDistance(scaleColors[j], c1);
                 if (dist < c1Dist) {
                     c1Dist = dist;
                     toRemove = j;
@@ -146,7 +146,7 @@ public class ColorData {
             double c2Dist = 1000000;
             toRemove = 0;
             for (int j = 0; j < 2; j++) {
-                double dist = getDistance(scaleColors[i], c2);
+                double dist = getDistance(scaleColors[j], c2);
                 if (dist < c2Dist) {
                     c2Dist = dist;
                     toRemove = j;

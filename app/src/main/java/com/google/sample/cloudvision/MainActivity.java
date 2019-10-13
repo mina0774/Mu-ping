@@ -19,13 +19,16 @@ package com.google.sample.cloudvision;
 import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
@@ -159,6 +162,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void getScale(Bitmap bitmap) {
+        ColorData a = new ColorData();
+        Color[] imgColors = a.getColorScale(bitmap);
+        Color[] normalizedColors = new Color[] {a.normalizeColor(imgColors[0]), a.normalizeColor(imgColors[1]), a.normalizeColor(imgColors[2])};
+        double [] values = a.getSimilarScale(normalizedColors[0], normalizedColors[1], normalizedColors[2]);
+        System.out.println("BH" + values[0] + values[1]);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void uploadImage(Uri uri) {
         if (uri != null) {
             try {
@@ -167,6 +180,7 @@ public class MainActivity extends AppCompatActivity {
                         scaleBitmapDown(
                                 MediaStore.Images.Media.getBitmap(getContentResolver(), uri),
                                 MAX_DIMENSION);
+                getScale(bitmap);
                 Matrix matrix = new Matrix();
                 matrix.postRotate(90);
                 Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
