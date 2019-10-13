@@ -16,7 +16,7 @@
 
     <include
         layout="@layout/content_main"
-        android:layout_height="659dp" />
+         />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -24,7 +24,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_menu_gallery" />
+        android:backgroundTint="#03A9F4"
+        android:src="@drawable/camera"
+        app:backgroundTint="#03A9F4" />
 
 
     <android.support.v7.widget.Toolbar

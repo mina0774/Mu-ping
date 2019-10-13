@@ -19,6 +19,7 @@ package com.google.sample.cloudvision;
 import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -31,8 +32,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -168,9 +167,11 @@ public class MainActivity extends AppCompatActivity {
                         scaleBitmapDown(
                                 MediaStore.Images.Media.getBitmap(getContentResolver(), uri),
                                 MAX_DIMENSION);
-
-                callCloudVision(bitmap);
-                mMainImage.setImageBitmap(bitmap);
+                Matrix matrix = new Matrix();
+                matrix.postRotate(90);
+                Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+                callCloudVision(rotatedBitmap);
+                mMainImage.setImageBitmap(rotatedBitmap);
 
             } catch (IOException e) {
                 Log.d(TAG, "Image picking failed because " + e.getMessage());
@@ -332,4 +333,6 @@ public class MainActivity extends AppCompatActivity {
 
         return message.toString();
     }
+
+
 }

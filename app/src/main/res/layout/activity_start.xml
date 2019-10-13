@@ -7,29 +7,30 @@
     android:orientation="vertical"
     tools:context=".StartActivity">
 
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="150dp"
+        app:srcCompat="@drawable/logo" />
+
     <Button
         android:id="@+id/gotoLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/round_rectangle"
         android:text="로그인"
-        android:textSize="18sp" />
+        android:textSize="14sp" />
 
     <Button
         android:id="@+id/gotoMain"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-
-
+        android:background="@drawable/round_rectangle"
         android:text="바로 사용하기"
-        android:textSize="18sp" />
+        android:textSize="14sp" />
 
-    <Button
-        android:id="@+id/db"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="디비 확인용"
-        android:textSize="18sp" />
 </LinearLayout>
