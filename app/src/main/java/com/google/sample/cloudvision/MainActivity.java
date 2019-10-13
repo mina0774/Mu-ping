@@ -180,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
                         scaleBitmapDown(
                                 MediaStore.Images.Media.getBitmap(getContentResolver(), uri),
                                 MAX_DIMENSION);
-                getScale(bitmap);
+                //getScale(bitmap);
                 Matrix matrix = new Matrix();
                 matrix.postRotate(90);
                 Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
