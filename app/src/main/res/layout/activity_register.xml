@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ffffff"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".RegisterActivity">
 
@@ -54,17 +55,17 @@
 
     <EditText
         android:id="@+id/et_password"
-        android:ems="15"
-        android:hint="password"
-        android:textColorHint="#525252"
-        android:textColor="#363636"
-        android:inputType="textPassword"
-        android:layout_toEndOf="@+id/p_pw"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/et_eamil"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="40dp" />
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="40dp"
+        android:layout_toEndOf="@+id/p_pw"
+        android:ems="15"
+        android:hint="password"
+        android:inputType="textPassword"
+        android:textColor="#363636"
+        android:textColorHint="#525252" />
 
     <LinearLayout
         android:layout_width="match_parent"

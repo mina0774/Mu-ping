@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#ffffff"
     tools:context=".LoginActivity">
 
 
@@ -11,9 +12,9 @@
         android:id="@+id/header_logo2"
         android:layout_width="403dp"
         android:layout_height="207dp"
-        app:srcCompat="@drawable/logo"
-        android:layout_marginTop="60dp"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="55dp"
+        app:srcCompat="@drawable/logo" />
 
 
     <ImageView
@@ -52,17 +53,17 @@
 
     <EditText
         android:id="@+id/et_password2"
-        android:ems="15"
-        android:hint="password"
-        android:textColorHint="#525252"
-        android:textColor="#363636"
-        android:inputType="textPassword"
-        android:layout_toEndOf="@+id/p_pw2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/et_eamil2"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="40dp" />
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="40dp"
+        android:layout_toEndOf="@+id/p_pw2"
+        android:ems="15"
+        android:hint="password"
+        android:inputType="textPassword"
+        android:textColor="#363636"
+        android:textColorHint="#525252" />
 
 
         <Button

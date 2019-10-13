@@ -5,20 +5,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#ffffff"
     tools:context=".StartActivity">
 
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="150dp"
+        android:layout_height="300dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="80dp"
         app:srcCompat="@drawable/logo" />
 
     <Button
         android:id="@+id/gotoLogin"
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
         android:background="@drawable/round_rectangle"
         android:text="로그인"
@@ -26,9 +29,10 @@
 
     <Button
         android:id="@+id/gotoMain"
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:layout_gravity="center_horizontal"
         android:background="@drawable/round_rectangle"
         android:text="바로 사용하기"
         android:textSize="14sp" />

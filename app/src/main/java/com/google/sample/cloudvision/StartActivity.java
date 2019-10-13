@@ -4,17 +4,11 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 
 //시작 화면 선택
 public class StartActivity extends AppCompatActivity {
@@ -32,8 +26,9 @@ public class StartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_start);
         gotoLogin = (Button) findViewById(R.id.gotoLogin);
         gotoMain = (Button) findViewById(R.id.gotoMain);
+        Log.d("start","startactivity");
 
-        SQLite mSQLiteHelper = new SQLite(this);
+  /*      SQLite mSQLiteHelper = new SQLite(this);
         SampleDB = mSQLiteHelper.getWritableDatabase();
         String fileName = "valence_arousal.csv";
         FileReader file;
@@ -70,7 +65,7 @@ public class StartActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+    }*/
         gotoLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
