@@ -1,11 +1,15 @@
 package com.google.sample.cloudvision;
 
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
+import static java.util.Collections.max;
 
 public class ColorData {
     private String adjectives[];
@@ -52,6 +56,42 @@ public class ColorData {
     {
         String basB = "39,49,86,144,202,166,110,115,61,48,50,43,25,45,102,103,181,148,148,96,110,67,49,44,43,8,28,15,79,189,143,88,105,65,37,44,45,27,36,35,93,191,165,101,96,73,47,48,50,47,45,113,207,157,90,121,61,50,51,87,84,89,131,211,163,110,123,62,49,45,141,122,159,157,209,242,166,169,145,63,60,65,47,155,148,157,213,232,199,187,153,98,107,84,63,141,163,166,213,230,189,199,139,143,119,103,68,92,87,109,176,224,197,149,131,79,56,50,48,244,87,236,206,180,152,110,126,86,60,38,10";
         basicColorsB = basB.split(",");
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public Color[] getColorScale(Bitmap img) { // 이미지의 픽셀 색을 분석해 대표색을 뽑아냄
+        ArrayList<String> imgColors = new ArrayList<>();
+        ArrayList<Integer> imgColorCount = new ArrayList<>();
+        for (int x = 0; x < img.getWidth(); x = x + 2) {
+            for (int y = 0; y < img.getHeight(); y = y + 2) {
+                int color = img.getPixel(x, y);
+                int red = Color.red(color);
+                int green = Color.green(color);
+                int blue = Color.blue(color);
+                String hex = String.format("#%02x%02x%02x", red, green, blue);
+                if (imgColors.contains(hex)) {
+                    int id = imgColors.indexOf(hex);
+                    imgColorCount.set(id, imgColorCount.get(id) + 1);
+                } else {
+                    imgColors.add(hex);
+                    imgColorCount.add(1);
+                }
+            }
+        }
+
+        int firstColorID = imgColorCount.indexOf(Collections.max(imgColorCount));
+        int firstColor = Color.parseColor(imgColors.get(firstColorID));
+        imgColorCount.remove(firstColorID);
+        imgColors.remove(firstColorID);
+        int secondColorID = imgColorCount.indexOf(Collections.max(imgColorCount));
+        int secondColor = Color.parseColor(imgColors.get(secondColorID));
+        imgColorCount.remove(secondColorID);
+        imgColors.remove(secondColorID);
+        int thirdColorID = imgColorCount.indexOf(Collections.max(imgColorCount));
+        int thirdColor = Color.parseColor(imgColors.get(thirdColorID));
+
+        Color[] colorScale = new Color[] {Color.valueOf(firstColor), Color.valueOf((secondColor)), Color.valueOf(thirdColor)};
+        return colorScale;
     }
 
     public Color getBasicColor(int n) { // 지정번호를 입력시 Basic Color를 Color 객체로 반환
