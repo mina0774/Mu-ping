@@ -1,11 +1,12 @@
 package com.google.sample.cloudvision;
 
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
 
 public class ColorData {
     private String adjectives[];
@@ -54,6 +55,42 @@ public class ColorData {
         basicColorsB = basB.split(",");
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public Color[] getColorScale(Bitmap img) { // 이미지의 픽셀 색을 분석해 대표색을 뽑아냄
+        ArrayList<String> imgColors = new ArrayList<>();
+        ArrayList<Integer> imgColorCount = new ArrayList<>();
+        for (int x = 0; x < img.getWidth(); x = x + 2) {
+            for (int y = 0; y < img.getHeight(); y = y + 2) {
+                int color = img.getPixel(x, y);
+                int red = Color.red(color);
+                int green = Color.green(color);
+                int blue = Color.blue(color);
+                String hex = String.format("#%02x%02x%02x", red, green, blue);
+                if (imgColors.contains(hex)) {
+                    int id = imgColors.indexOf(hex);
+                    imgColorCount.set(id, imgColorCount.get(id) + 1);
+                } else {
+                    imgColors.add(hex);
+                    imgColorCount.add(1);
+                }
+            }
+        }
+
+        int firstColorID = imgColorCount.indexOf(Collections.max(imgColorCount));
+        int firstColor = Color.parseColor(imgColors.get(firstColorID));
+        imgColorCount.remove(firstColorID);
+        imgColors.remove(firstColorID);
+        int secondColorID = imgColorCount.indexOf(Collections.max(imgColorCount));
+        int secondColor = Color.parseColor(imgColors.get(secondColorID));
+        imgColorCount.remove(secondColorID);
+        imgColors.remove(secondColorID);
+        int thirdColorID = imgColorCount.indexOf(Collections.max(imgColorCount));
+        int thirdColor = Color.parseColor(imgColors.get(thirdColorID));
+
+        Color[] colorScale = new Color[] {Color.valueOf(firstColor), Color.valueOf((secondColor)), Color.valueOf(thirdColor)};
+        return colorScale;
+    }
+
     public Color getBasicColor(int n) { // 지정번호를 입력시 Basic Color를 Color 객체로 반환
         Color basic = new Color();
         basic.rgb(Integer.parseInt(basicColorsR[n]), Integer.parseInt(basicColorsG[n]), Integer.parseInt(basicColorsB[n]));
@@ -87,15 +124,15 @@ public class ColorData {
         double finalN = 0;
         for (int i = 0; i < 439; i++) {
             ArrayList<Integer> scaleColorNumbers = new ArrayList<>();
-            scaleColorNumbers.add(Integer.parseInt(color1[i]));
-            scaleColorNumbers.add(Integer.parseInt(color2[i]));
-            scaleColorNumbers.add(Integer.parseInt(color3[i]));
+            scaleColorNumbers.add(Integer.parseInt(color1[i])-22);
+            scaleColorNumbers.add(Integer.parseInt(color2[i])-22);
+            scaleColorNumbers.add(Integer.parseInt(color3[i])-22);
             Color[] scaleColors = new Color[] {getBasicColor(scaleColorNumbers.get(0)), getBasicColor(scaleColorNumbers.get(1)), getBasicColor(scaleColorNumbers.get(2))};
 
             double c1Dist = 1000000;
             int toRemove = 0;
             for (int j = 0; j < 3; j++) {
-                double dist = getDistance(scaleColors[i], c1);
+                double dist = getDistance(scaleColors[j], c1);
                 if (dist < c1Dist) {
                     c1Dist = dist;
                     toRemove = j;
@@ -106,7 +143,7 @@ public class ColorData {
             double c2Dist = 1000000;
             toRemove = 0;
             for (int j = 0; j < 2; j++) {
-                double dist = getDistance(scaleColors[i], c2);
+                double dist = getDistance(scaleColors[j], c2);
                 if (dist < c2Dist) {
                     c2Dist = dist;
                     toRemove = j;
