@@ -56,7 +56,7 @@ public class ColorData {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public Color[] getColorScale(Bitmap img) { // 이미지의 픽셀 색을 분석해 대표색을 뽑아냄
+    public String[] getColorScale(Bitmap img) { // 이미지의 픽셀 색을 분석해 대표색을 뽑아냄
         ArrayList<String> imgColors = new ArrayList<>();
         ArrayList<Integer> imgColorCount = new ArrayList<>();
         for (int x = 0; x < img.getWidth(); x = x + 2) {
@@ -65,7 +65,7 @@ public class ColorData {
                 int red = Color.red(color);
                 int green = Color.green(color);
                 int blue = Color.blue(color);
-                String hex = String.format("#%02x%02x%02x", red, green, blue);
+                String hex = "#" + Integer.toHexString(red).toUpperCase() + Integer.toHexString(green).toUpperCase() + Integer.toHexString(blue).toUpperCase();
                 if (imgColors.contains(hex)) {
                     int id = imgColors.indexOf(hex);
                     imgColorCount.set(id, imgColorCount.get(id) + 1);
@@ -75,19 +75,18 @@ public class ColorData {
                 }
             }
         }
-
         int firstColorID = imgColorCount.indexOf(Collections.max(imgColorCount));
-        int firstColor = Color.parseColor(imgColors.get(firstColorID));
+        String firstColor = imgColors.get(firstColorID);
         imgColorCount.remove(firstColorID);
         imgColors.remove(firstColorID);
         int secondColorID = imgColorCount.indexOf(Collections.max(imgColorCount));
-        int secondColor = Color.parseColor(imgColors.get(secondColorID));
+        String secondColor = imgColors.get(secondColorID);
         imgColorCount.remove(secondColorID);
         imgColors.remove(secondColorID);
         int thirdColorID = imgColorCount.indexOf(Collections.max(imgColorCount));
-        int thirdColor = Color.parseColor(imgColors.get(thirdColorID));
+        String thirdColor = imgColors.get(thirdColorID);
 
-        Color[] colorScale = new Color[] {Color.valueOf(firstColor), Color.valueOf((secondColor)), Color.valueOf(thirdColor)};
+        String[] colorScale = new String[] {firstColor, secondColor, thirdColor};
         return colorScale;
     }
 

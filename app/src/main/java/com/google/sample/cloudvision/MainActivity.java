@@ -19,12 +19,15 @@ package com.google.sample.cloudvision;
 import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
@@ -128,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
         return new File(dir, FILE_NAME);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -158,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void uploadImage(Uri uri) {
         if (uri != null) {
             try {
@@ -172,6 +177,28 @@ public class MainActivity extends AppCompatActivity {
                 callCloudVision(bitmap);
                 mMainImage.setImageBitmap(bitmap);
 
+                ColorData a = new ColorData();
+                String[] strings = a.getColorScale(bitmap);
+
+                int  r1 =  Integer.valueOf( strings[0].substring( 1, 3 ), 16 );
+                int  g1 =  Integer.valueOf( strings[0].substring( 3, 5 ), 16 );
+                int  b1 =  Integer.valueOf( strings[0].substring( 5, 7 ), 16 );
+                Color color1 = new Color();
+                color1.rgb(r1,g1,b1);
+
+                int  r2 =  Integer.valueOf( strings[1].substring( 1, 3 ), 16 );
+                int  g2 =  Integer.valueOf( strings[1].substring( 3, 5 ), 16 );
+                int  b2 =  Integer.valueOf( strings[1].substring( 5, 7 ), 16 );
+                Color color2 = new Color();
+                color2.rgb(r2,g2,b2);
+
+                int  r3 =  Integer.valueOf( strings[1].substring( 1, 3 ), 16 );
+                int  g3 =  Integer.valueOf( strings[1].substring( 3, 5 ), 16 );
+                int  b3 =  Integer.valueOf( strings[1].substring( 5, 7 ), 16 );
+                Color color3 = new Color();
+                color3.rgb(r3,g3,b3);
+                System.out.println("BHBH" + strings[0] + strings[1] + strings[2]);
+                //System.out.println("BH" + a.getSimilarScale(color1, color2, color3)[0] + " " + a.getSimilarScale(color1, color2, color3)[1]);
             } catch (IOException e) {
                 Log.d(TAG, "Image picking failed because " + e.getMessage());
                 Toast.makeText(this, R.string.image_picker_error, Toast.LENGTH_LONG).show();
