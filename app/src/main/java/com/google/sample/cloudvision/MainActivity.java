@@ -318,17 +318,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private static String convertResponseToString(BatchAnnotateImagesResponse response) {
-        StringBuilder message = new StringBuilder("Object Detection:\n\n");
+        StringBuilder message = new StringBuilder("Keyword: \n");
 
         List<EntityAnnotation> labels = response.getResponses().get(0).getLabelAnnotations();
         if (labels != null) {
             for (EntityAnnotation label : labels) {
-                message.append(String.format(Locale.US, "%.3f: %s", label.getScore(), label.getDescription()));
-                message.append("\n");
+              //  message.append(String.format(Locale.US, "%.3f: %s", label.getScore(), label.getDescription()));
+                message.append(String.format(Locale.US, "%s", label.getDescription()));
+                message.append("    ");
             }
         } else {
             message.append("nothing");
         }
+
+        message.append("\n\nColor: \n");
 
         return message.toString();
     }

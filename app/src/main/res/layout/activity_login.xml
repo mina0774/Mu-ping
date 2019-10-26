@@ -12,10 +12,8 @@
         android:id="@+id/header_logo2"
         android:layout_width="403dp"
         android:layout_height="207dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="55dp"
+        android:layout_marginTop="50dp"
         app:srcCompat="@drawable/logo" />
-
 
     <ImageView
         android:id="@+id/p_id2"
@@ -23,32 +21,34 @@
         android:layout_height="wrap_content"
         android:background="@drawable/user"
         android:layout_below="@+id/header_logo2"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginStart="40dp" />
 
     <EditText
         android:id="@+id/et_eamil2"
-        android:ems="15"
-        android:hint="user@email.com"
-        android:textColorHint="#525252"
-        android:textColor="#363636"
-        android:inputType="textEmailAddress"
-        android:layout_toEndOf="@id/p_id2"
-        android:layout_below="@id/header_logo2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="40dp"/>
+        android:layout_below="@id/header_logo2"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="40dp"
+        android:layout_toEndOf="@id/p_id2"
+        android:ems="15"
+        android:hint="user@email.com"
+        android:inputType="textEmailAddress"
+        android:textColor="#363636"
+        android:textColorHint="#525252" />
 
 
     <ImageView
         android:id="@+id/p_pw2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/lock"
         android:layout_below="@+id/p_id2"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginStart="40dp" />
+        android:background="@drawable/lock" />
 
 
     <EditText
@@ -66,24 +66,26 @@
         android:textColorHint="#525252" />
 
 
-        <Button
-            android:id="@+id/signIn"
-            android:background="@drawable/login_btn"
-            android:layout_below="@+id/et_password2"
-            android:layout_marginTop="30dp"
-            android:onClick="signIn"
-            android:layout_width="wrap_content"
-            android:layout_height="37dp"
-            android:layout_centerHorizontal="true" />
+    <Button
+        android:id="@+id/signIn"
+        android:layout_width="300dp"
+        android:layout_height="37dp"
+        android:layout_below="@+id/et_password2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:onClick="signIn"
+        android:background="@drawable/round_rectangle"
+        android:text="로그인" />
 
     <Button
         android:id="@+id/btn_regis"
-        android:background="@drawable/register_btn"
-        android:onClick="register"
+        android:layout_width="300dp"
+        android:layout_height="37dp"
         android:layout_below="@id/signIn"
-        android:layout_marginTop="20dp"
-        android:layout_width="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_height="37dp" />
+        android:layout_marginTop="20dp"
+        android:onClick="register"
+        android:background="@drawable/round_rectangle"
+        android:text="회원가입" />
 
 </RelativeLayout>

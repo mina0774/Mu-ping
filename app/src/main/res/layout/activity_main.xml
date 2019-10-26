@@ -15,9 +15,8 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include
-        layout="@layout/content_main"
-         />
+
+    <include layout="@layout/content_main" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -25,16 +24,18 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:backgroundTint="#A9B4B9"
+        android:backgroundTint="#2D504C4C"
         android:src="@drawable/camera"
-        app:backgroundTint="#EE161616" />
 
+        app:backgroundTint="#2D504C4C" />
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="#b4b4b4"
+        android:background="#ffffff"
         app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+
 
 </android.support.design.widget.CoordinatorLayout>
