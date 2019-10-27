@@ -198,7 +198,6 @@ public class MainActivity extends AppCompatActivity {
                 int color3 = Color.rgb(r3,g3,b3);
 
                 int[] normalizedColors = new int[] {a.normalizeColor(color1), a.normalizeColor(color2), a.normalizeColor(color3)};
-                mImageDetails.setTextColor(normalizedColors[0]);
                 colorResults = a.getSimilarScale(normalizedColors[0], normalizedColors[1], normalizedColors[2]);
             } catch (IOException e) {
                 Log.d(TAG, "Image picking failed because " + e.getMessage());
