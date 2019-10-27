@@ -2,6 +2,7 @@ package com.google.sample.cloudvision;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
@@ -55,17 +56,35 @@ public class ColorData {
         basicColorsB = basB.split(",");
     }
 
+    public Bitmap resizeBitmap(Bitmap bitmap) {
+        float width = bitmap.getWidth();
+        float height = bitmap.getHeight();
+
+        Matrix matrix = new Matrix();
+        matrix.postScale((float)0.1, (float)0.1);
+        Bitmap resizedBitmap = Bitmap.createBitmap(bitmap,0,0,(int)width,(int)height,matrix,false);
+        //bitmap.recycle();
+        return resizedBitmap;
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     public String[] getColorScale(Bitmap img) { // 이미지의 픽셀 색을 분석해 대표색을 뽑아냄
+        img = resizeBitmap(img);
         ArrayList<String> imgColors = new ArrayList<>();
         ArrayList<Integer> imgColorCount = new ArrayList<>();
-        for (int x = 0; x < img.getWidth(); x = x + 2) {
-            for (int y = 0; y < img.getHeight(); y = y + 2) {
+        for (int x = 0; x < img.getWidth(); x++) {
+            for (int y = 0; y < img.getHeight(); y++) {
                 int color = img.getPixel(x, y);
                 int red = Color.red(color);
                 int green = Color.green(color);
                 int blue = Color.blue(color);
-                String hex = "#" + Integer.toHexString(red).toUpperCase() + Integer.toHexString(green).toUpperCase() + Integer.toHexString(blue).toUpperCase();
+                String redString = Integer.toHexString(red).toUpperCase();
+                if (redString.length() == 1) redString = "0" + redString;
+                String greenString = Integer.toHexString(green).toUpperCase();
+                if (greenString.length() == 1) greenString = "0" + greenString;
+                String blueString = Integer.toHexString(blue).toUpperCase();
+                if (blueString.length() == 1) blueString = "0" + blueString;
+                String hex = "#" + redString + greenString + blueString;
                 if (imgColors.contains(hex)) {
                     int id = imgColors.indexOf(hex);
                     imgColorCount.set(id, imgColorCount.get(id) + 1);
