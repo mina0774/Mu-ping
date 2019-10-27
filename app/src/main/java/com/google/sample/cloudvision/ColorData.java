@@ -90,24 +90,23 @@ public class ColorData {
         return colorScale;
     }
 
-    public Color getBasicColor(int n) { // 지정번호를 입력시 Basic Color를 Color 객체로 반환
-        Color basic = new Color();
-        basic.rgb(Integer.parseInt(basicColorsR[n]), Integer.parseInt(basicColorsG[n]), Integer.parseInt(basicColorsB[n]));
+    public int getBasicColor(int n) { // 지정번호를 입력시 Basic Color를 Color 객체로 반환
+        int basic = Color.rgb(Integer.parseInt(basicColorsR[n]), Integer.parseInt(basicColorsG[n]), Integer.parseInt(basicColorsB[n]));
         return basic;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public double getDistance(Color basic, Color c) { // 두 색 사이 거리 구하기
-        double dist = (basic.red() - c.red()) * (basic.red() - c.red()) + (basic.green() - c.green()) * (basic.green() - c.green()) + (basic.blue() - c.blue()) * (basic.blue() - c.blue());
+    public double getDistance(int basic, int c) { // 두 색 사이 거리 구하기
+        double dist = (Color.valueOf(basic).red() - Color.valueOf(c).red()) * (Color.valueOf(basic).red() - Color.valueOf(c).red()) + (Color.valueOf(basic).green() - Color.valueOf(c).green()) * (Color.valueOf(basic).green() - Color.valueOf(c).green()) + (Color.valueOf(basic).blue() - Color.valueOf(c).blue()) * (Color.valueOf(basic).blue() - Color.valueOf(c).blue());
         return dist;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public Color normalizeColor(Color c) {
+    public int normalizeColor(int c) {
         int basicNumber = 0;
         double minDist = 1000000;
         for (int i = 0; i < 131; i++) {
-            Color basic = getBasicColor(i);
+            int basic = getBasicColor(i);
             double dist = getDistance(basic, c);
             if (dist < minDist) {
                 minDist = dist;
@@ -118,7 +117,7 @@ public class ColorData {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public double[] getScaleDistance(Color c1, Color c2, Color c3) { // 두 스케일 사이 거리
+    public double[] getScaleDistance(int c1, int c2, int c3) { // 두 스케일 사이 거리
         double finalDist = 1000000;
         double finalN = 0;
         for (int i = 0; i < 439; i++) {
@@ -126,7 +125,7 @@ public class ColorData {
             scaleColorNumbers.add(Integer.parseInt(color1[i])-22);
             scaleColorNumbers.add(Integer.parseInt(color2[i])-22);
             scaleColorNumbers.add(Integer.parseInt(color3[i])-22);
-            Color[] scaleColors = new Color[] {getBasicColor(scaleColorNumbers.get(0)), getBasicColor(scaleColorNumbers.get(1)), getBasicColor(scaleColorNumbers.get(2))};
+            int[] scaleColors = new int[] {getBasicColor(scaleColorNumbers.get(0)), getBasicColor(scaleColorNumbers.get(1)), getBasicColor(scaleColorNumbers.get(2))};
 
             double c1Dist = 1000000;
             int toRemove = 0;
@@ -138,7 +137,7 @@ public class ColorData {
                 }
             }
             scaleColorNumbers.remove(toRemove);
-            scaleColors = new Color[] {getBasicColor(scaleColorNumbers.get(0)), getBasicColor(scaleColorNumbers.get(1))};
+            scaleColors = new int[] {getBasicColor(scaleColorNumbers.get(0)), getBasicColor(scaleColorNumbers.get(1))};
             double c2Dist = 1000000;
             toRemove = 0;
             for (int j = 0; j < 2; j++) {
@@ -149,7 +148,7 @@ public class ColorData {
                 }
             }
             scaleColorNumbers.remove(toRemove);
-            scaleColors = new Color[] {getBasicColor(scaleColorNumbers.get(0))};
+            scaleColors = new int[] {getBasicColor(scaleColorNumbers.get(0))};
             double c3Dist = getDistance(scaleColors[0], c3);
             if (c1Dist + c2Dist + c3Dist < finalDist) {
                 finalDist = c1Dist + c2Dist + c3Dist;
@@ -161,7 +160,7 @@ public class ColorData {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public double[] getSimilarScale(Color c1, Color c2, Color c3) { // 대표색 3개를 입력시 [Valence, Arousal] 값을 반환
+    public String[] getSimilarScale(int c1, int c2, int c3) { // 대표색 3개를 입력시 [Valence, Arousal] 값을 반환
         double[] candidate1 = getScaleDistance(c1, c2, c3);
         double[] candidate2 = getScaleDistance(c1, c3, c2);
         double[] candidate3 = getScaleDistance(c2, c1, c3);
@@ -191,7 +190,7 @@ public class ColorData {
             finalN = (int)candidate6[1];
         }
 
-        double[] valAro = new double[] {Double.parseDouble(valence[finalN]), Double.parseDouble(arousal[finalN]), finalN};
+        String[] valAro = new String[] {adjectives[finalN], String.valueOf(Double.parseDouble(valence[finalN])), String.valueOf(Double.parseDouble(arousal[finalN]))};
 
         return valAro;
     }
