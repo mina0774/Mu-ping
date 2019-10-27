@@ -1,6 +1,7 @@
 package com.google.sample.cloudvision;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -32,6 +34,8 @@ public class LoginActivity extends AppCompatActivity {
     private String email2 = "";
     private String password2 = "";
 
+    TextView textViewFindPw;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +46,9 @@ public class LoginActivity extends AppCompatActivity {
 
         editTextEmail2 = findViewById(R.id.et_eamil2);
         editTextPassword2 = findViewById(R.id.et_password2);
+
+        textViewFindPw = findViewById(R.id.textViewFindPw);
+        textViewFindPw.setPaintFlags(textViewFindPw.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
     }
 
@@ -93,7 +100,7 @@ public class LoginActivity extends AppCompatActivity {
 
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(intent);
-                            
+
                         } else {
                             // 로그인 실패
                             Toast.makeText(LoginActivity.this, R.string.failed_login, Toast.LENGTH_SHORT).show();
@@ -101,11 +108,18 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
     }
+
+    // 회원가입 버튼
     public void register(View view) {
         Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
         startActivity(intent);
     }
 
+    //비밀번호 찾기 버튼
+    public void findPw(View view) {
+        Intent intent = new Intent(LoginActivity.this, FindPwActivity.class);
+        startActivity(intent);
+    }
 
 
 }

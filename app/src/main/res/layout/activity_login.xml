@@ -88,4 +88,18 @@
         android:onClick="register"
         android:text="회원가입" />
 
+    <TextView
+        android:id="@+id/textViewFindPw"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="비밀번호가 기억나지 않습니까?"
+        android:layout_below="@id/btn_regis"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:textColor="#707070"
+        android:onClick="findPw"
+        />
+
+
+
 </RelativeLayout>

@@ -1,9 +1,12 @@
 package com.google.sample.cloudvision;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
@@ -27,9 +30,11 @@ public class RegisterActivity extends AppCompatActivity {
     // 이메일과 비밀번호
     private EditText editTextEmail;
     private EditText editTextPassword;
+    private EditText editTextPwcheck;
 
     private String email = "";
     private String password = "";
+    private String pwcheck = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,11 +46,14 @@ public class RegisterActivity extends AppCompatActivity {
 
         editTextEmail = findViewById(R.id.et_eamil);
         editTextPassword = findViewById(R.id.et_password);
+        editTextPwcheck = findViewById(R.id.et_password_check);
+
     }
 
     public void singUp(View view) {
         email = editTextEmail.getText().toString();
         password = editTextPassword.getText().toString();
+        pwcheck = editTextPwcheck.getText().toString();
 
         if(isValidEmail() && isValidPasswd()) {
             createUser(email, password);
@@ -74,6 +82,10 @@ public class RegisterActivity extends AppCompatActivity {
         } else if (!PASSWORD_PATTERN.matcher(password).matches()) {
             // 비밀번호 형식 불일치
             return false;
+        } else if (!password.equals(pwcheck)) {
+            // 비밀번호 더블체크
+            Toast.makeText(RegisterActivity.this, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
+            return false;
         } else {
             return true;
         }
@@ -100,5 +112,7 @@ public class RegisterActivity extends AppCompatActivity {
         Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
         startActivity(intent);
     }
+
+
 
 }
