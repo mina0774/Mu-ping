@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -27,12 +26,14 @@ public class SQLiteActivity extends Activity {
         SampleDB = mSQLiteHelper.getWritableDatabase();
         String tableName1 = "valence_arousal";
         String tableName2 = "music_to_value_final";
+        String tableName3 = "criteria_adj";
         String str2 = ");";
         String line = "";
         String columns1 = "word, valence, arousal";
         String columns2= "title, performer, word, valence, arousal";
         String stra = "INSERT INTO " + tableName1 + " (" + columns1 + ") values(";
         String strb = "INSERT INTO " + tableName2 + " (" + columns2 + ") values(";
+        String strc = "INSERT INTO " + tableName3 + " (" + columns1 + ") values(";
 
         {
             super.onCreate(savedInstanceState);
@@ -40,7 +41,6 @@ public class SQLiteActivity extends Activity {
             if (TextUtils.isEmpty(PreferenceUtil.getInstance(getApplicationContext()).getStringExtra("create"))) {
                 PreferenceUtil.getInstance(getApplicationContext()).putStringExtra("create", "wooram");
                 try {
-                    Log.d("ddd", "한번");
                     InputStreamReader in = new InputStreamReader(getResources().openRawResource(R.raw.valence_arousal));
                     BufferedReader br = new BufferedReader(in);
 
@@ -57,10 +57,8 @@ public class SQLiteActivity extends Activity {
                         line = br.readLine();
                     }
 
-                    Log.d("ddd", "두번");
                     InputStreamReader in1 = new InputStreamReader(getResources().openRawResource(R.raw.music_to_value_final));
                     BufferedReader br2 = new BufferedReader(in1);
-                    Log.d("ddd", "두번1");
 
                     line = br2.readLine();
 
@@ -75,7 +73,23 @@ public class SQLiteActivity extends Activity {
                         sb.append(str2);
                         SampleDB.execSQL(sb.toString());
                         line = br2.readLine();
-                        Log.d("ddd", "들어갓");
+
+                    }
+
+                    InputStreamReader in2 = new InputStreamReader(getResources().openRawResource(R.raw.criteria_adj));
+                    BufferedReader br3 = new BufferedReader(in2);
+
+                    line = br3.readLine();
+
+                    while (line != null) {
+                        StringBuilder sb = new StringBuilder(strc);
+                        String[] str = line.split(",");
+                        sb.append("'" + str[0] + "'" + ",");
+                        sb.append(Double.parseDouble(str[1]) + ",");
+                        sb.append(Double.parseDouble(str[2]));
+                        sb.append(str2);
+                        SampleDB.execSQL(sb.toString());
+                        line = br3.readLine();
                     }
 
                 } catch (FileNotFoundException e) {
