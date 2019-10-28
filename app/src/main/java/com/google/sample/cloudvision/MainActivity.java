@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView mImageDetails;
     private ImageView mMainImage;
 
-    static List<Object> ObjectArray=new ArrayList<Object>();
+    List<Object> ObjectArray=new ArrayList<Object>();
     static String[] colorResults = {};
 
     @Override
@@ -99,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
                     .setMessage("사진을 선택해주세요")
                     .setPositiveButton("갤러리", (dialog, which) -> startGalleryChooser())
                     .setNegativeButton("카메라", (dialog, which) -> startCamera());
+            ObjectArray.clear();
             builder.create().show();
         });
 
@@ -362,13 +363,11 @@ public class MainActivity extends AppCompatActivity {
         while(iterator.hasNext()) {
            // Log.d("디비딥",((String)iterator.next()).toLowerCase());
             cursor = db.rawQuery("SELECT * FROM valence_arousal where word='" + (String)((String) iterator.next()).toLowerCase() + "';", null);
-           // Log.d("디비딥","디비디비딥");
+            while(cursor.moveToNext()) {
                 word.add(cursor.getString(0));
-                //Log.d("쿼리",cursor.getString(0));
                 word.add(cursor.getString(1));
-                //Log.d("쿼리",cursor.getString(1));
                 word.add(cursor.getString(2));
-                //Log.d("쿼리",cursor.getString(2));
+            }
         }
         return word;
     }
@@ -394,6 +393,7 @@ public class MainActivity extends AppCompatActivity {
             message.append((String)(iterator.next()));
             message.append(" ");
         }
+
 
         message.append("\n\nColor: \n");
 
