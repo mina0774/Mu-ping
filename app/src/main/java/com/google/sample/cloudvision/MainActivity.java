@@ -18,6 +18,8 @@ package com.google.sample.cloudvision;
 
 import android.Manifest;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
@@ -58,6 +60,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -79,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView mImageDetails;
     private ImageView mMainImage;
 
+    static List<Object> ObjectArray=new ArrayList<Object>();
     static String[] colorResults = {};
 
     @Override
@@ -276,7 +280,7 @@ public class MainActivity extends AppCompatActivity {
         return annotateRequest;
     }
 
-    private static class LableDetectionTask extends AsyncTask<Object, Void, String> {
+    private class LableDetectionTask extends AsyncTask<Object, Void, String> {
         private final WeakReference<MainActivity> mActivityWeakReference;
         private Vision.Images.Annotate mRequest;
 
@@ -306,8 +310,8 @@ public class MainActivity extends AppCompatActivity {
             if (activity != null && !activity.isFinishing()) {
                 TextView imageDetail = activity.findViewById(R.id.image_details);
                 result = result + colorResults[0] + " " + colorResults[1] + " " + colorResults[2];
-                imageDetail.setText(result);
-            }
+            imageDetail.setText(result);
+        }
         }
     }
 
@@ -344,19 +348,51 @@ public class MainActivity extends AppCompatActivity {
         }
         return Bitmap.createScaledBitmap(bitmap, resizedWidth, resizedHeight, false);
     }
+    //DB에서 AV값 꺼내기
+    public List<Object> objectToAV(){
+        SQLite helper;
+        SQLiteDatabase db;
+        Cursor cursor;
+        Iterator iterator=ObjectArray.iterator();
+        List<Object> word=new ArrayList<Object>();
 
-    private static String convertResponseToString(BatchAnnotateImagesResponse response) {
+        helper=new SQLite(this);
+        db=helper.getReadableDatabase();
+        Log.d("디비딥","디비디비딥");
+        while(iterator.hasNext()) {
+           // Log.d("디비딥",((String)iterator.next()).toLowerCase());
+            cursor = db.rawQuery("SELECT * FROM valence_arousal where word='" + (String)((String) iterator.next()).toLowerCase() + "';", null);
+           // Log.d("디비딥","디비디비딥");
+                word.add(cursor.getString(0));
+                //Log.d("쿼리",cursor.getString(0));
+                word.add(cursor.getString(1));
+                //Log.d("쿼리",cursor.getString(1));
+                word.add(cursor.getString(2));
+                //Log.d("쿼리",cursor.getString(2));
+        }
+        return word;
+    }
+
+    //Object Detection 결과값 받아오기
+    private String convertResponseToString(BatchAnnotateImagesResponse response) {
         StringBuilder message = new StringBuilder("Keyword: \n");
 
         List<EntityAnnotation> labels = response.getResponses().get(0).getLabelAnnotations();
         if (labels != null) {
             for (EntityAnnotation label : labels) {
               //  message.append(String.format(Locale.US, "%.3f: %s", label.getScore(), label.getDescription()));
-                message.append(String.format(Locale.US, "%s", label.getDescription()));
-                message.append("    ");
+               // message.append(String.format(Locale.US, "%s", label.getDescription()));
+                ObjectArray.add(String.format(Locale.US, "%s", label.getDescription()));
+               // message.append("    ");
             }
         } else {
             message.append("nothing");
+        }
+        List<Object> result_word=objectToAV();
+        Iterator iterator=result_word.iterator();
+        while(iterator.hasNext()) {
+            message.append((String)(iterator.next()));
+            message.append(" ");
         }
 
         message.append("\n\nColor: \n");
