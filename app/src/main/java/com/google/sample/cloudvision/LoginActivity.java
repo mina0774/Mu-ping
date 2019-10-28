@@ -2,12 +2,11 @@ package com.google.sample.cloudvision;
 
 import android.content.Intent;
 import android.graphics.Paint;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
         editTextEmail2 = findViewById(R.id.et_eamil2);
         editTextPassword2 = findViewById(R.id.et_password2);
 
-        textViewFindPw = findViewById(R.id.textViewFindPw);
+        textViewFindPw = findViewById(R.id.textviewfindpw);
         textViewFindPw.setPaintFlags(textViewFindPw.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
     }
