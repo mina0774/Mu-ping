@@ -83,6 +83,8 @@ public class MainActivity extends AppCompatActivity {
     private ImageView mMainImage;
 
     List<Object> ObjectArray=new ArrayList<Object>();
+    List<Double> valence=new ArrayList<Double>();
+    List<Double> arousal=new ArrayList<Double>();
     static String[] colorResults = {};
 
     @Override
@@ -100,6 +102,8 @@ public class MainActivity extends AppCompatActivity {
                     .setPositiveButton("갤러리", (dialog, which) -> startGalleryChooser())
                     .setNegativeButton("카메라", (dialog, which) -> startCamera());
             ObjectArray.clear();
+            valence.clear();
+            arousal.clear();
             builder.create().show();
         });
 
@@ -364,9 +368,9 @@ public class MainActivity extends AppCompatActivity {
            // Log.d("디비딥",((String)iterator.next()).toLowerCase());
             cursor = db.rawQuery("SELECT * FROM valence_arousal where word='" + (String)((String) iterator.next()).toLowerCase() + "';", null);
             while(cursor.moveToNext()) {
-                word.add(cursor.getString(0));
-                word.add(cursor.getString(1));
-                word.add(cursor.getString(2));
+                word.add(cursor.getString(0)); //word
+                word.add(cursor.getString(1)); //valence
+                word.add(cursor.getString(2)); //arousal
             }
         }
         return word;
@@ -389,10 +393,22 @@ public class MainActivity extends AppCompatActivity {
         }
         List<Object> result_word=objectToAV();
         Iterator iterator=result_word.iterator();
+        int count=0;
+        int i=0;
         while(iterator.hasNext()) {
-            message.append((String)(iterator.next()));
+            String word=(String)(iterator.next());
+            message.append(word);
             message.append(" ");
+            if((count%3)==1){
+                valence.add(Double.parseDouble(word));
+            }
+            if((count%3)==2){
+                arousal.add(Double.parseDouble(word));
+            }
+            count+=1;
         }
+        Log.d("valence",valence.toString());
+        Log.d("arousal",arousal.toString());
 
 
         message.append("\n\nColor: \n");
