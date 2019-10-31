@@ -7,50 +7,41 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".RegisterActivity">
 
-    <ImageView
+        <TextView
         android:id="@+id/header_logo2"
-        android:layout_width="300dp"
-        android:layout_height="80dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="60dp"
-        app:srcCompat="@drawable/regist_text" />
-
-
-    <ImageView
-        android:id="@+id/header_logo"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="150dp"
-        app:srcCompat="@drawable/user" />
-
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="REGISTER"
+        android:textSize="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        android:layout_centerHorizontal="true"/>
 
     <TextView
         android:id="@+id/p_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/header_logo"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="40dp"
+        android:layout_below="@+id/header_logo2"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:text=" ID  :"
         android:textSize="22dp"
-        android:layout_marginBottom="20dp"/>
+        android:layout_marginBottom="10dp"/>
 
     <EditText
         android:id="@+id/et_eamil"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/header_logo"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="40dp"
+        android:layout_below="@id/header_logo2"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="30dp"
         android:layout_toEndOf="@id/p_id"
         android:ems="15"
         android:hint="user@email.com"
         android:inputType="textEmailAddress"
         android:textColor="#363636"
-        android:textColorHint="#525252"
-        android:layout_marginBottom="20dp"/>
+        android:textColorHint="#525252"/>
 
 
     <TextView
@@ -61,8 +52,8 @@
         android:textSize="22dp"
         android:layout_below="@+id/p_id"
         android:layout_marginEnd="10dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="40dp" />
+        android:layout_marginTop="0dp"
+        android:layout_marginStart="30dp" />
 
 
     <EditText
@@ -70,8 +61,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/et_eamil"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="40dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="30dp"
         android:layout_toEndOf="@+id/p_pw"
         android:ems="15"
         android:hint="password"
@@ -85,8 +76,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/et_password"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="40dp"
+        android:layout_marginEnd="30dp"
         android:layout_toEndOf="@+id/p_pw"
         android:ems="15"
         android:hint="password check"
@@ -94,37 +84,171 @@
         android:textColor="#363636"
         android:textColorHint="#525252" />
 
+
+    <TextView
+        android:id="@+id/text_genre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/et_password_check"
+        android:layout_marginTop="25dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginBottom="5dp"
+        android:text="선호하는 장르를 선택해주세요"
+        android:textColor="#B23F51B5"
+        android:textSize="15dp"/>
+
+    <TableLayout
+        android:id="@+id/table"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/text_genre"
+        android:layout_marginTop="10dp" >
+
+        <TableRow>
+            <CheckBox
+                android:id="@+id/s_1"
+                android:text="Avant-Garde"
+                android:layout_marginEnd="10dp"
+                />
+            <CheckBox
+                android:id="@+id/s_2"
+                android:text="Blues"
+                android:layout_marginEnd="10dp"/>
+            <CheckBox
+                android:id="@+id/s_3"
+                android:text="Children's"
+                android:layout_marginBottom="5dp"
+                />
+        </TableRow>
+
+        <TableRow>
+            <CheckBox
+                android:id="@+id/s_4"
+                android:text="Classical"
+                android:layout_marginEnd="10dp"/>
+            <CheckBox
+                android:text="Comedy/Spoken"
+                android:id="@+id/s_5"
+                android:layout_marginEnd="10dp"/>
+            <CheckBox
+                android:id="@+id/s_6"
+                android:text="Country"
+                android:layout_marginBottom="5dp"
+                />
+        </TableRow>
+
+        <TableRow>
+            <CheckBox
+                android:id="@+id/s_7"
+                android:text="Easy Listening"
+                android:layout_marginEnd="10dp"/>
+            <CheckBox
+                android:id="@+id/s_8"
+                android:text="Electronic"
+                android:layout_marginEnd="10dp"/>
+            <CheckBox
+                android:id="@+id/s_9"
+                android:text="Folk"
+                android:layout_marginBottom="5dp"
+                />
+        </TableRow>
+
+        <TableRow>
+            <CheckBox
+                android:id="@+id/s_10"
+                android:text="Holiday"
+                android:layout_marginEnd="10dp"/>
+            <CheckBox
+                android:id="@+id/s_11"
+                android:text="International"
+                android:layout_marginEnd="10dp"/>
+            <CheckBox
+                android:id="@+id/s_12"
+                android:text="Jazz"
+                android:layout_marginBottom="5dp"
+                />
+        </TableRow>
+
+        <TableRow>
+            <CheckBox
+                android:id="@+id/s_13"
+                android:text="Latin"
+                android:layout_marginEnd="10dp"/>
+            <CheckBox
+                android:id="@+id/s_14"
+                android:text="New Age"
+                android:layout_marginEnd="10dp"/>
+            <CheckBox
+                android:id="@+id/s_15"
+                android:text="Pop/Rock"
+                android:layout_marginBottom="5dp"
+                />
+        </TableRow>
+
+        <TableRow>
+            <CheckBox
+                android:id="@+id/s_16"
+                android:text="R&amp;B"
+                android:layout_marginEnd="10dp"/>
+            <CheckBox
+                android:id="@+id/s_17"
+                android:text="Rap"
+                android:layout_marginEnd="10dp"/>
+            <CheckBox
+                android:id="@+id/s_18"
+                android:text="Reggae"
+                android:layout_marginBottom="5dp"
+                />
+        </TableRow>
+
+        <TableRow>
+            <CheckBox
+                android:id="@+id/s_19"
+                android:text="Religious"
+                android:layout_marginEnd="10dp"/>
+            <CheckBox
+                android:id="@+id/s_20"
+                android:text="Stage&amp;Screen"
+                android:layout_marginEnd="10dp"/>
+            <CheckBox
+                android:id="@+id/s_21"
+                android:text="Vocal"
+                android:layout_marginBottom="5dp"
+                />
+        </TableRow>
+    </TableLayout>
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/et_password_check"
-        android:layout_marginTop="60dp" >
+        android:layout_below="@+id/table"
+        android:layout_marginTop="15dp">
 
         <Button
             android:id="@+id/btn_signUp"
-            android:text="@string/signup"
-            android:onClick="singUp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/round_rectangle"
-            android:layout_weight="1"
             android:layout_marginStart="45dp"
-            android:layout_marginRight="5dp"/>
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/round_rectangle"
+            android:onClick="singUp"
+            android:text="@string/signup" />
 
         <Button
             android:id="@+id/btn_back"
-            android:text="back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginEnd="45dp"
+            android:layout_weight="1"
             android:background="@drawable/round_rectangle"
-            android:onClick="back" />
+            android:onClick="back"
+            android:text="back" />
 
 
     </LinearLayout>
-
-
 
 
 </RelativeLayout>
