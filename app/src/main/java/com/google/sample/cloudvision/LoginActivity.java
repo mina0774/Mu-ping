@@ -86,6 +86,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+
     // 로그인
     private void loginUser(String email2, String password2)
     {
@@ -99,6 +100,7 @@ public class LoginActivity extends AppCompatActivity {
 
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(intent);
+                            finish();
 
                         } else {
                             // 로그인 실패
