@@ -35,10 +35,12 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText editTextEmail;
     private EditText editTextPassword;
     private EditText editTextPwcheck;
+    private EditText editName;
 
     private String email = "";
     private String password = "";
     private String pwcheck = "";
+    private String uname = "";
 
     // 장르 체크박스
     private CheckBox s1;    private CheckBox s2;    private CheckBox s3;    private CheckBox s4;
@@ -63,6 +65,7 @@ public class RegisterActivity extends AppCompatActivity {
         editTextEmail = findViewById(R.id.et_eamil);
         editTextPassword = findViewById(R.id.et_password);
         editTextPwcheck = findViewById(R.id.et_password_check);
+        editName = findViewById(R.id.et_name);
 
         s1 = findViewById(R.id.s_1);        s2 = findViewById(R.id.s_2);        s3 = findViewById(R.id.s_3);
         s4 = findViewById(R.id.s_4);        s5 = findViewById(R.id.s_5);        s6 = findViewById(R.id.s_6);
@@ -78,6 +81,7 @@ public class RegisterActivity extends AppCompatActivity {
         email = editTextEmail.getText().toString();
         password = editTextPassword.getText().toString();
         pwcheck = editTextPwcheck.getText().toString();
+        uname = editName.getText().toString();
 
         if(isValidEmail() && isValidPasswd()) {
             createUser(email, password);
@@ -156,7 +160,7 @@ public class RegisterActivity extends AppCompatActivity {
                             myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    User user = new User(email, result);
+                                    User user = new User(email, uname, result);
                                     StringTokenizer st = new StringTokenizer(email, "@");
                                     myRef.child(st.nextToken()).setValue(user);
                                 }
@@ -167,7 +171,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 }
                             });
 
-                            Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                             startActivity(intent);
                             finish();
 

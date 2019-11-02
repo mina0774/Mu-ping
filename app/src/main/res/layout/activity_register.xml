@@ -84,13 +84,39 @@
         android:textColor="#363636"
         android:textColorHint="#525252" />
 
+    <TextView
+        android:id="@+id/p_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/et_password_check"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:text="name  :"
+        android:textSize="20dp"
+        android:layout_marginBottom="5dp"/>
+
+    <EditText
+        android:id="@+id/et_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/et_password_check"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="150dp"
+        android:layout_marginStart="20dp"
+        android:layout_toEndOf="@id/p_id"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:textColor="#363636"
+        android:textColorHint="#525252"/>
+
 
     <TextView
         android:id="@+id/text_genre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/et_password_check"
-        android:layout_marginTop="25dp"
+        android:layout_below="@+id/et_name"
+        android:layout_marginTop="20dp"
         android:layout_marginStart="25dp"
         android:layout_marginBottom="5dp"
         android:text="선호하는 장르를 선택해주세요"

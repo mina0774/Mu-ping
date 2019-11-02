@@ -99,6 +99,9 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = findViewById(R.id.fab);
+        FloatingActionButton fab2 = findViewById(R.id.fab2);
+        FloatingActionButton fab3 = findViewById(R.id.fab3);
+
         fab.setOnClickListener(view -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             builder
@@ -114,6 +117,17 @@ public class MainActivity extends AppCompatActivity {
             arousal_L.clear();
             builder.create().show();
         });
+
+        fab2.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+            startActivity(intent);
+        });
+
+        fab3.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, LikeListActivity.class);
+            startActivity(intent);
+        });
+
 
         mImageDetails = findViewById(R.id.image_details);
         mMainImage = findViewById(R.id.main_image);

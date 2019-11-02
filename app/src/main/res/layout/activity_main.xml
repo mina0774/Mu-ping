@@ -26,7 +26,6 @@
         android:layout_margin="@dimen/fab_margin"
         android:backgroundTint="#2D504C4C"
         android:src="@drawable/camera"
-
         app:backgroundTint="#2D504C4C" />
 
     <android.support.v7.widget.Toolbar
@@ -36,6 +35,25 @@
         android:background="#ffffff"
         app:popupTheme="@style/AppTheme.PopupOverlay" />
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|start"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/user"
+        android:backgroundTint="#2D504C4C"
+        app:backgroundTint="#2D504C4C" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/like"
+        android:backgroundTint="#2D504C4C"
+        app:backgroundTint="#2D504C4C" />
 
 
 </android.support.design.widget.CoordinatorLayout>
