@@ -82,9 +82,13 @@ public class MainActivity extends AppCompatActivity {
     private TextView mImageDetails;
     private ImageView mMainImage;
 
-    List<Object> ObjectArray=new ArrayList<Object>();
-    List<Double> valence=new ArrayList<Double>();
-    List<Double> arousal=new ArrayList<Double>();
+    List<Object> ObjectArray = new ArrayList<Object>();
+    List<Double> valence = new ArrayList<Double>();
+    List<Double> arousal = new ArrayList<Double>();
+    List<Double> valence_H=new ArrayList<Double>();
+    List<Double> valence_L=new ArrayList<Double>();
+    List<Double> arousal_H=new ArrayList<Double>();
+    List<Double> arousal_L=new ArrayList<Double>();
     static String[] colorResults = {};
 
     @Override
@@ -104,6 +108,10 @@ public class MainActivity extends AppCompatActivity {
             ObjectArray.clear();
             valence.clear();
             arousal.clear();
+            valence_H.clear();
+            valence_L.clear();
+            arousal_H.clear();
+            arousal_L.clear();
             builder.create().show();
         });
 
@@ -182,31 +190,31 @@ public class MainActivity extends AppCompatActivity {
                         scaleBitmapDown(
                                 MediaStore.Images.Media.getBitmap(getContentResolver(), uri),
                                 MAX_DIMENSION);
-              //  Matrix matrix = new Matrix();
-               // matrix.postRotate(90);
-               // Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+                //  Matrix matrix = new Matrix();
+                // matrix.postRotate(90);
+                // Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
                 callCloudVision(bitmap);
                 mMainImage.setImageBitmap(bitmap);
 
                 ColorData a = new ColorData();
                 String[] strings = a.getColorScale(bitmap);
 
-                int  r1 =  Integer.valueOf( strings[0].substring( 1, 3 ), 16 );
-                int  g1 =  Integer.valueOf( strings[0].substring( 3, 5 ), 16 );
-                int  b1 =  Integer.valueOf( strings[0].substring( 5, 7 ), 16 );
-                int color1 = Color.rgb(r1,g1,b1);
+                int r1 = Integer.valueOf(strings[0].substring(1, 3), 16);
+                int g1 = Integer.valueOf(strings[0].substring(3, 5), 16);
+                int b1 = Integer.valueOf(strings[0].substring(5, 7), 16);
+                int color1 = Color.rgb(r1, g1, b1);
 
-                int  r2 =  Integer.valueOf( strings[1].substring( 1, 3 ), 16 );
-                int  g2 =  Integer.valueOf( strings[1].substring( 3, 5 ), 16 );
-                int  b2 =  Integer.valueOf( strings[1].substring( 5, 7 ), 16 );
-                int color2 = Color.rgb(r2,g2,b2);
+                int r2 = Integer.valueOf(strings[1].substring(1, 3), 16);
+                int g2 = Integer.valueOf(strings[1].substring(3, 5), 16);
+                int b2 = Integer.valueOf(strings[1].substring(5, 7), 16);
+                int color2 = Color.rgb(r2, g2, b2);
 
-                int  r3 =  Integer.valueOf( strings[2].substring( 1, 3 ), 16 );
-                int  g3 =  Integer.valueOf( strings[2].substring( 3, 5 ), 16 );
-                int  b3 =  Integer.valueOf( strings[2].substring( 5, 7 ), 16 );
-                int color3 = Color.rgb(r3,g3,b3);
+                int r3 = Integer.valueOf(strings[2].substring(1, 3), 16);
+                int g3 = Integer.valueOf(strings[2].substring(3, 5), 16);
+                int b3 = Integer.valueOf(strings[2].substring(5, 7), 16);
+                int color3 = Color.rgb(r3, g3, b3);
 
-                int[] normalizedColors = new int[] {a.normalizeColor(color1), a.normalizeColor(color2), a.normalizeColor(color3)};
+                int[] normalizedColors = new int[]{a.normalizeColor(color1), a.normalizeColor(color2), a.normalizeColor(color3)};
                 colorResults = a.getSimilarScale(normalizedColors[0], normalizedColors[1], normalizedColors[2]);
             } catch (IOException e) {
                 Log.d(TAG, "Image picking failed because " + e.getMessage());
@@ -315,8 +323,8 @@ public class MainActivity extends AppCompatActivity {
             if (activity != null && !activity.isFinishing()) {
                 TextView imageDetail = activity.findViewById(R.id.image_details);
                 result = result + colorResults[0] + " " + colorResults[1] + " " + colorResults[2];
-            imageDetail.setText(result);
-        }
+                imageDetail.setText(result);
+            }
         }
     }
 
@@ -353,21 +361,22 @@ public class MainActivity extends AppCompatActivity {
         }
         return Bitmap.createScaledBitmap(bitmap, resizedWidth, resizedHeight, false);
     }
+
     //DB에서 AV값 꺼내기
-    public List<Object> objectToAV(){
+    public List<Object> objectToAV() {
         SQLite helper;
         SQLiteDatabase db;
         Cursor cursor;
-        Iterator iterator=ObjectArray.iterator();
-        List<Object> word=new ArrayList<Object>();
+        Iterator iterator = ObjectArray.iterator();
+        List<Object> word = new ArrayList<Object>();
 
-        helper=new SQLite(this);
-        db=helper.getReadableDatabase();
-        Log.d("디비딥","디비디비딥");
-        while(iterator.hasNext()) {
-           // Log.d("디비딥",((String)iterator.next()).toLowerCase());
-            cursor = db.rawQuery("SELECT * FROM valence_arousal where word='" + (String)((String) iterator.next()).toLowerCase() + "';", null);
-            while(cursor.moveToNext()) {
+        helper = new SQLite(this);
+        db = helper.getReadableDatabase();
+        Log.d("디비딥", "디비디비딥");
+        while (iterator.hasNext()) {
+            // Log.d("디비딥",((String)iterator.next()).toLowerCase());
+            cursor = db.rawQuery("SELECT * FROM valence_arousal where word='" + (String) ((String) iterator.next()).toLowerCase() + "';", null);
+            while (cursor.moveToNext()) {
                 word.add(cursor.getString(0)); //word
                 word.add(cursor.getString(1)); //valence
                 word.add(cursor.getString(2)); //arousal
@@ -376,6 +385,8 @@ public class MainActivity extends AppCompatActivity {
         return word;
     }
 
+    //가까운 노래 형용사 찾기
+
     //Object Detection 결과값 받아오기
     private String convertResponseToString(BatchAnnotateImagesResponse response) {
         StringBuilder message = new StringBuilder("Keyword: \n");
@@ -383,37 +394,116 @@ public class MainActivity extends AppCompatActivity {
         List<EntityAnnotation> labels = response.getResponses().get(0).getLabelAnnotations();
         if (labels != null) {
             for (EntityAnnotation label : labels) {
-              //  message.append(String.format(Locale.US, "%.3f: %s", label.getScore(), label.getDescription()));
-               // message.append(String.format(Locale.US, "%s", label.getDescription()));
                 ObjectArray.add(String.format(Locale.US, "%s", label.getDescription()));
-               // message.append("    ");
             }
         } else {
             message.append("nothing");
         }
-        List<Object> result_word=objectToAV();
-        Iterator iterator=result_word.iterator();
-        int count=0;
-        int i=0;
-        while(iterator.hasNext()) {
-            String word=(String)(iterator.next());
+        List<Object> result_word = objectToAV();
+        Iterator iterator = result_word.iterator();
+        int count = 0;
+        int i = 0;
+        while (iterator.hasNext()) {
+            String word = (String) (iterator.next());
             message.append(word);
             message.append(" ");
-            if((count%3)==1){
+            // valence,arousal 배열에 값 넣기
+            if ((count % 3) == 1) {
                 valence.add(Double.parseDouble(word));
             }
-            if((count%3)==2){
+            if ((count % 3) == 2) {
                 arousal.add(Double.parseDouble(word));
             }
-            count+=1;
+            count += 1;
         }
-        Log.d("valence",valence.toString());
-        Log.d("arousal",arousal.toString());
-
-
+        Log.d("aa","aaaaconfirm");
+        Double valence_final=range_V();
+        Double arousal_final=range_A();
+        message.append("/"+valence_final+ ","+arousal_final+"/");
+        Log.d("valence", valence.toString());
+        Log.d("arousal", arousal.toString());
         message.append("\n\nColor: \n");
-
         return message.toString();
+    }
+
+    //valence arousal 값 범위 안에 속하는지 확인하기
+    public Double range_V() {
+        int valence_count_H=0; //큰 값
+        int valence_count_L=0; //작은 값
+        Double sum=0.0;
+        Double avg=0.0;
+        Double temp;
+        Iterator iterator = valence.iterator();
+        Log.d("aa","vvvvconfirmkk");
+        while (iterator.hasNext()) {
+            temp=(Double)iterator.next();
+            if (temp <= 5) {
+                valence_count_L += 1;
+                valence_L.add(temp);
+            } else if (temp > 5) {
+                valence_count_H += 1;
+                valence_H.add(temp);
+            }
+        }
+        Log.d("aa","vvvvconfirm "+valence_H);
+        Log.d("aa","vvvvconfirm "+valence_L);
+        int max_v = valence_count_H >= valence_count_L ? valence_count_H : valence_count_L;
+        if(max_v==valence_count_H){
+            Iterator iterator_v = valence_H.iterator();
+            while(iterator_v.hasNext()){
+                sum+=(Double)iterator_v.next();
+            }
+            valence_H.size();
+            avg=sum/valence_H.size();
+        }
+        else if(max_v==valence_count_L){
+            Iterator iterator_v = valence_L.iterator();
+            while(iterator_v.hasNext()){
+                sum+=(Double)iterator_v.next();
+            }
+            valence_L.size();
+            avg=sum/valence_L.size();
+        }
+        return avg;
+    }
+    public Double range_A() {
+        int arousal_count_H=0; //큰 값
+        int arousal_count_L=0; //작은 값
+        Double sum=0.0;
+        Double avg=0.0;
+        Double temp;
+        Iterator iterator = arousal.iterator();
+        while (iterator.hasNext()) {
+            temp=(Double)iterator.next();
+            if (temp <= 5) {
+                arousal_count_L += 1;
+                arousal_L.add(temp);
+            } else if (temp>= 5) {
+                arousal_count_H += 1;
+                arousal_H.add(temp);
+            }
+        }
+        Log.d("aa","aaaaconfirm "+arousal_H);
+        Log.d("aa","aaaaconfirm "+arousal_L);
+        int max_a= arousal_count_H>=arousal_count_L?arousal_count_H:arousal_count_L;
+        if(max_a==arousal_count_H){
+            Iterator iterator_a = arousal_H.iterator();
+            while(iterator_a.hasNext()){
+                sum+=(Double)iterator_a.next();
+            }
+            arousal_H.size();
+            avg=sum/arousal_H.size();
+        }
+        else if(max_a==arousal_count_L){
+            int b=0;
+            Iterator iterator_a = arousal_L.iterator();
+            while(iterator_a.hasNext()){
+                sum+=(Double)iterator_a.next();
+            }
+            arousal_L.size();
+            avg=sum/arousal_L.size();
+        }
+        return avg;
     }
 
 
