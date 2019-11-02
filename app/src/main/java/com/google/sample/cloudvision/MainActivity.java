@@ -396,6 +396,7 @@ public class MainActivity extends AppCompatActivity {
         Double temp=100.0;
         Double valence_real=0.0;
         Double arousal_real=0.0;
+        String word="a";
         helper = new SQLite(this);
         db = helper.getReadableDatabase();
         Log.d("디비","읽기");
@@ -411,23 +412,11 @@ public class MainActivity extends AppCompatActivity {
                 arousal_real = cursor.getDouble(2);
                 Log.d("값", "나와랑" + valence_real + " , " + arousal_real);
                 temp=sum_pow;
+                word=cursor.getString(0);
             }
         }
         cursor.close();
-        return word(valence_real,arousal_real); //오류 고치기
-    }
-
-    //단어 뽑기 - 오류 고치기
-    private String word(Double valence,Double arousal){
-        SQLite helper;
-        SQLiteDatabase db;
-        Cursor cursor;
-        helper = new SQLite(this);
-        db = helper.getReadableDatabase();
-        Log.d("디비","열렸나?");
-        cursor=db.rawQuery("SELECT * FROM criteria_adj WHERE valence='"+valence.toString()+"' and arousal='"+arousal.toString()+"';",null);
-        Log.d("값","나와랑"+cursor.getString(0));
-        return cursor.getString(0);
+        return word; //오류 고치기
     }
 
     //Object Detection 결과값 받아오기
