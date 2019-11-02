@@ -386,6 +386,49 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //가까운 노래 형용사 찾기
+    public String find_adj(double valence_obj,double arousal_obj){
+        SQLite helper;
+        SQLiteDatabase db;
+        Cursor cursor;
+        Double arousal_pow;
+        Double valence_pow;
+        Double sum_pow;
+        Double temp=100.0;
+        Double valence_real=0.0;
+        Double arousal_real=0.0;
+        helper = new SQLite(this);
+        db = helper.getReadableDatabase();
+        Log.d("디비","읽기");
+        cursor = db.rawQuery("SELECT * FROM criteria_adj;", null);
+        Log.d("디비","커서");
+        while (cursor.moveToNext()) {
+            valence_pow = Math.pow((cursor.getDouble(1) - valence_obj), 2);
+            arousal_pow = Math.pow((cursor.getDouble(2) - arousal_obj), 2);;
+            sum_pow = valence_pow + arousal_pow;
+            Log.d("ㅠㅠ",temp+" / "+sum_pow);
+            if (sum_pow < temp) {
+                valence_real = cursor.getDouble(1);
+                arousal_real = cursor.getDouble(2);
+                Log.d("값", "나와랑" + valence_real + " , " + arousal_real);
+                temp=sum_pow;
+            }
+        }
+        cursor.close();
+        return word(valence_real,arousal_real); //오류 고치기
+    }
+
+    //단어 뽑기 - 오류 고치기
+    private String word(Double valence,Double arousal){
+        SQLite helper;
+        SQLiteDatabase db;
+        Cursor cursor;
+        helper = new SQLite(this);
+        db = helper.getReadableDatabase();
+        Log.d("디비","열렸나?");
+        cursor=db.rawQuery("SELECT * FROM criteria_adj WHERE valence='"+valence.toString()+"' and arousal='"+arousal.toString()+"';",null);
+        Log.d("값","나와랑"+cursor.getString(0));
+        return cursor.getString(0);
+    }
 
     //Object Detection 결과값 받아오기
     private String convertResponseToString(BatchAnnotateImagesResponse response) {
@@ -420,6 +463,8 @@ public class MainActivity extends AppCompatActivity {
         Double valence_final=range_V();
         Double arousal_final=range_A();
         message.append("/"+valence_final+ ","+arousal_final+"/");
+        String word=find_adj(valence_final,arousal_final);
+        message.append(word);
         Log.d("valence", valence.toString());
         Log.d("arousal", arousal.toString());
         message.append("\n\nColor: \n");
@@ -464,7 +509,9 @@ public class MainActivity extends AppCompatActivity {
             valence_L.size();
             avg=sum/valence_L.size();
         }
+        Log.d("avg"," "+avg);
         return avg;
+
     }
     public Double range_A() {
         int arousal_count_H=0; //큰 값
@@ -503,6 +550,7 @@ public class MainActivity extends AppCompatActivity {
             arousal_L.size();
             avg=sum/arousal_L.size();
         }
+        Log.d("avg"," "+avg);
         return avg;
     }
 
