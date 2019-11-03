@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,10 +22,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.StringTokenizer;
+
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener{
-    private static final String TAG = "ProfileActivity";
 
     private FirebaseAuth firebaseAuth;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference myRef;
 
     private TextView textViewUserEmail;
     private Button buttonLogout;
@@ -45,48 +49,14 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-
-
-        //유저가 로그인 하지 않은 상태라면 null 상태이고 이 액티비티를 종료하고 로그인 액티비티를 연다.
+        //로그인 하지 않은 상태라면 액티비티를 종료하고 로그인 액티비티
         if(firebaseAuth.getCurrentUser() == null) {
-            finish();
             startActivity(new Intent(this, LoginActivity.class));
+            finish();
         }
 
         //null이 아니면 계속 진행
         FirebaseUser user = firebaseAuth.getCurrentUser();
-
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("name");
-
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String value = dataSnapshot.getValue(String.class);
-                textViewUserName.setText(value);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-        DatabaseReference myRef2 = database.getReference("genre");
-
-        myRef2.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String value2 = dataSnapshot.getValue(String.class);
-                textViewUserGenre.setText(value2);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
 
         textViewUserEmail.setText("\n"+ user.getEmail());
 
@@ -94,6 +64,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         buttonLogout.setOnClickListener(this);
         textivewDelete.setOnClickListener(this);
     }
+
+
 
     @Override
     public void onClick(View view) {

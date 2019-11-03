@@ -1,60 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ProfileActivity">
 
     <LinearLayout
-        android:orientation="vertical"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_margin="16dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
 
 
-        <LinearLayout
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:src="@mipmap/ic_launcher" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="8dp"
-                android:layout_weight="1"
-                android:text="Mu:Ping"
-                android:textColor="#1F1F1F"
-                android:textSize="40dp" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/textviewUserEmail"
-            android:text=""
             android:layout_gravity="center_horizontal"
-            android:layout_margin="16dp"
-            android:textSize="30dp"
-            android:textColor="@color/colorPrimary"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_marginTop="30dp"
+            android:src="@mipmap/ic_launcher" />
 
         <TextView
             android:id="@+id/textviewUserName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"
+            android:textColor="#363636"
+            android:textSize="30dp" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="8"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textviewUserEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_margin="16dp"
-            android:textSize="20dp"
-            android:textColor="#363636" />
+            android:text=""
+            android:textColor="@color/colorPrimary"
+            android:textSize="20dp" />
+
 
         <TextView
             android:id="@+id/textviewUserGenre"
@@ -62,26 +56,25 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_margin="16dp"
-            android:textSize="20dp"
-            android:textColor="#363636" />
+            android:textColor="#363636"
+            android:textSize="20dp" />
 
         <Button
-            android:layout_marginTop="130dp"
             android:id="@+id/buttonLogout"
-            android:text="로그아웃"
-            android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="50dp"
+            android:text="로그아웃" />
 
         <TextView
-            android:text="회원탈퇴"
             android:id="@+id/textviewDelete"
-            android:layout_gravity="center_horizontal"
-            android:textColor="@color/colorAccent"
-            android:layout_margin="16dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="16dp"
+            android:text="회원탈퇴"
+            android:textColor="@color/colorAccent" />
     </LinearLayout>
 
-
-</RelativeLayout>
+</LinearLayout>
