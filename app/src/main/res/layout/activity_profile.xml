@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:background="#929292"
         android:orientation="vertical">
 
 
@@ -21,14 +22,18 @@
             android:layout_marginTop="30dp"
             android:src="@mipmap/ic_launcher" />
 
+
         <TextView
-            android:id="@+id/textviewUserName"
+            android:id="@+id/textviewUserEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="30dp"
-            android:textColor="#363636"
-            android:textSize="30dp" />
+            android:layout_margin="16dp"
+            android:text=""
+            android:textColor="@color/colorPrimary"
+            android:textSize="20dp"
+            android:textStyle="bold"/>
+
 
     </LinearLayout>
 
@@ -39,14 +44,15 @@
         android:layout_weight="8"
         android:orientation="vertical">
 
+
+
         <TextView
-            android:id="@+id/textviewUserEmail"
+            android:id="@+id/textviewUserName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_margin="16dp"
-            android:text=""
-            android:textColor="@color/colorPrimary"
+            android:layout_marginTop="30dp"
+            android:textColor="#363636"
             android:textSize="20dp" />
 
 
@@ -57,7 +63,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_margin="16dp"
             android:textColor="#363636"
-            android:textSize="20dp" />
+            android:textSize="15dp" />
 
         <Button
             android:id="@+id/buttonLogout"

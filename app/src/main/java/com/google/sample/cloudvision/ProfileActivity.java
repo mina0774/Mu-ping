@@ -20,21 +20,20 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.StringTokenizer;
 
-public class ProfileActivity extends AppCompatActivity implements View.OnClickListener{
+public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
     private FirebaseAuth firebaseAuth;
-    private FirebaseDatabase firebaseDatabase;
-    private DatabaseReference myRef;
 
     private TextView textViewUserEmail;
-    private Button buttonLogout;
-    private TextView textivewDelete;
     private TextView textViewUserName;
     private TextView textViewUserGenre;
+    private Button buttonLogout;
+    private TextView textivewDelete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,17 +47,40 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         textViewUserGenre = (TextView) findViewById(R.id.textviewUserGenre);
 
         firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = firebaseDatabase.getReference("User");
 
-        //로그인 하지 않은 상태라면 액티비티를 종료하고 로그인 액티비티
-        if(firebaseAuth.getCurrentUser() == null) {
-            startActivity(new Intent(this, LoginActivity.class));
+        if (user == null) {
+            startActivity(new Intent(ProfileActivity.this, LoginActivity.class));
             finish();
+        } else {
+            Query query = databaseReference.orderByChild("email").equalTo(user.getEmail());
+            query.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        String name = "" + ds.child("name").getValue();
+                        String genre = "" + ds.child("genre").getValue();
+
+                        textViewUserName.setText(name);
+                        textViewUserGenre.setText("선호 장르 : "+genre);
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
         }
 
-        //null이 아니면 계속 진행
-        FirebaseUser user = firebaseAuth.getCurrentUser();
 
-        textViewUserEmail.setText("\n"+ user.getEmail());
+
+
+        textViewUserEmail.setText("\n" + user.getEmail());
 
         //logout button event
         buttonLogout.setOnClickListener(this);
@@ -76,9 +98,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         }
 
         //회원탈퇴, 회원정보를 삭제
-        if(view == textivewDelete) {
+        if (view == textivewDelete) {
             AlertDialog.Builder alert_confirm = new AlertDialog.Builder(ProfileActivity.this);
-            alert_confirm.setMessage("정말 계정을 삭제하시겠습니까?").setCancelable(false).setPositiveButton("확인", new DialogInterface.OnClickListener() {
+            alert_confirm.setMessage("계정을 삭제하시겠습니까?").setCancelable(false).setPositiveButton("확인", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
