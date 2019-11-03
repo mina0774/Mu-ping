@@ -336,7 +336,8 @@ public class MainActivity extends AppCompatActivity {
             MainActivity activity = mActivityWeakReference.get();
             if (activity != null && !activity.isFinishing()) {
                 TextView imageDetail = activity.findViewById(R.id.image_details);
-                result = result + colorResults[0] + " " + colorResults[1] + " " + colorResults[2];
+                String word=find_adj(Double.parseDouble(colorResults[1]),Double.parseDouble(colorResults[2]));
+                result = result + word + " " + colorResults[1] + " " + colorResults[2];
                 imageDetail.setText(result);
             }
         }

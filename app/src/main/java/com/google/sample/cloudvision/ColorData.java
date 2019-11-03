@@ -61,7 +61,7 @@ public class ColorData {
         float height = bitmap.getHeight();
 
         Matrix matrix = new Matrix();
-        matrix.postScale((float)0.1, (float)0.1);
+        matrix.postScale((float)0.15, (float)0.15);
         Bitmap resizedBitmap = Bitmap.createBitmap(bitmap,0,0,(int)width,(int)height,matrix,false);
         //bitmap.recycle();
         return resizedBitmap;
