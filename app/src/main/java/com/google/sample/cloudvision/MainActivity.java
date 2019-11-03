@@ -22,6 +22,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -79,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
     public static final int CAMERA_PERMISSIONS_REQUEST = 2;
     public static final int CAMERA_IMAGE_REQUEST = 3;
 
+    private String imagepath;
     private TextView mImageDetails;
     private ImageView mMainImage;
 
@@ -161,6 +164,7 @@ public class MainActivity extends AppCompatActivity {
 
     public File getCameraFile() {
         File dir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        imagepath=dir.getAbsolutePath()+"/"+FILE_NAME;
         return new File(dir, FILE_NAME);
     }
 
@@ -168,8 +172,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == GALLERY_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
+            imagepath =getRealPathFromURI(data.getData());
             uploadImage(data.getData());
         } else if (requestCode == CAMERA_IMAGE_REQUEST && resultCode == RESULT_OK) {
             Uri photoUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", getCameraFile());
@@ -200,15 +204,14 @@ public class MainActivity extends AppCompatActivity {
         if (uri != null) {
             try {
                 // scale the image to save on bandwidth
-                Bitmap bitmap =
-                        scaleBitmapDown(
-                                MediaStore.Images.Media.getBitmap(getContentResolver(), uri),
-                                MAX_DIMENSION);
-                //  Matrix matrix = new Matrix();
-                // matrix.postRotate(90);
-                // Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+                Bitmap bitmap = scaleBitmapDown(MediaStore.Images.Media.getBitmap(getContentResolver(), uri), MAX_DIMENSION);
+                int degree = getExifOrientation(imagepath);
+                Log.d("degree","디그리: "+degree);
+                bitmap = getRotatedBitmap(bitmap, degree);
                 callCloudVision(bitmap);
                 mMainImage.setImageBitmap(bitmap);
+                mMainImage.setDrawingCacheEnabled(true);
+                mMainImage.buildDrawingCache();
 
                 ColorData a = new ColorData();
                 String[] strings = a.getColorScale(bitmap);
@@ -238,6 +241,72 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG, "Image picker gave us a null image.");
             Toast.makeText(this, R.string.image_picker_error, Toast.LENGTH_LONG).show();
         }
+    }
+
+    //사진 회전 문제 - uri로부터 realpath 받아오기
+    private String getRealPathFromURI(Uri contentURI){
+        String result;
+        String[] filePathColumn={MediaStore.Images.Media.DISPLAY_NAME};
+        Cursor cursor = getContentResolver().query(contentURI, filePathColumn, null, null, null);
+        if (cursor == null) { // Source is Dropbox or other similar local file path
+            result = contentURI.getPath();
+        }
+        else{
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(filePathColumn[0]);
+            result = cursor.getString(idx);
+            cursor.close();
+        }
+        return result;
+    }
+    //회전 각도 구하기
+    private int getExifOrientation(String filePath) {
+        ExifInterface exif = null;
+        try {
+            exif = new ExifInterface(filePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (exif != null) {
+            int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION,
+                    ExifInterface.ORIENTATION_NORMAL);
+
+            if (orientation != -1) {
+                switch (orientation) {
+                    case ExifInterface.ORIENTATION_ROTATE_90:
+                        return 90;
+
+                    case ExifInterface.ORIENTATION_ROTATE_180:
+                        return 180;
+
+                    case ExifInterface.ORIENTATION_ROTATE_270:
+                        return 270;
+                }
+            }
+        }
+
+        return 0;
+    }
+    //이미지 회전하기
+    private Bitmap getRotatedBitmap(Bitmap bitmap, int degree) {
+        if (degree != 0 && bitmap != null) {
+            Matrix matrix = new Matrix();
+            matrix.setRotate(degree, (float) bitmap.getWidth() / 2, (float) bitmap.getHeight() / 2);
+
+            try {
+                Bitmap tmpBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+
+                if (bitmap != tmpBitmap) {
+                    bitmap.recycle();
+                    bitmap = tmpBitmap;
+                }
+            } catch (OutOfMemoryError e) {
+                e.printStackTrace();
+            }
+        }
+
+        return bitmap;
     }
 
     private Vision.Images.Annotate prepareAnnotationRequest(Bitmap bitmap) throws IOException {
