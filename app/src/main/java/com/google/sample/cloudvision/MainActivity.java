@@ -243,7 +243,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //사진 회전 문제 - uri로부터 realpath 받아오기
+    //사진 회전 문제 - uri로부터 realpath 받아오기 - 오류 있음 고쳐야함
     private String getRealPathFromURI(Uri contentURI){
         String result;
         String[] filePathColumn={MediaStore.Images.Media.DISPLAY_NAME};
@@ -488,7 +488,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d("디비","커서");
         while (cursor.moveToNext()) {
             valence_pow = Math.pow((cursor.getDouble(1) - valence_obj), 2);
-            arousal_pow = Math.pow((cursor.getDouble(2) - arousal_obj), 2);;
+            arousal_pow = Math.pow((cursor.getDouble(2) - arousal_obj), 2);
             sum_pow = valence_pow + arousal_pow;
             Log.d("ㅠㅠ",temp+" / "+sum_pow);
             if (sum_pow < temp) {
@@ -533,8 +533,8 @@ public class MainActivity extends AppCompatActivity {
             count += 1;
         }
         Log.d("aa","aaaaconfirm");
-        Double valence_final=range_V();
-        Double arousal_final=range_A();
+        Double valence_final=range()[0];
+        Double arousal_final=range()[1];
         message.append("/"+valence_final+ ","+arousal_final+"/");
         String word=find_adj(valence_final,arousal_final);
         message.append(word);
@@ -544,88 +544,125 @@ public class MainActivity extends AppCompatActivity {
         return message.toString();
     }
 
-    //valence arousal 값 범위 안에 속하는지 확인하기
-    public Double range_V() {
-        int valence_count_H=0; //큰 값
-        int valence_count_L=0; //작은 값
-        Double sum=0.0;
-        Double avg=0.0;
-        Double temp;
-        Iterator iterator = valence.iterator();
-        Log.d("aa","vvvvconfirmkk");
-        while (iterator.hasNext()) {
-            temp=(Double)iterator.next();
-            if (temp <= 5) {
-                valence_count_L += 1;
-                valence_L.add(temp);
-            } else if (temp > 5) {
-                valence_count_H += 1;
-                valence_H.add(temp);
-            }
-        }
-        Log.d("aa","vvvvconfirm "+valence_H);
-        Log.d("aa","vvvvconfirm "+valence_L);
-        int max_v = valence_count_H >= valence_count_L ? valence_count_H : valence_count_L;
-        if(max_v==valence_count_H){
-            Iterator iterator_v = valence_H.iterator();
-            while(iterator_v.hasNext()){
-                sum+=(Double)iterator_v.next();
-            }
-            valence_H.size();
-            avg=sum/valence_H.size();
-        }
-        else if(max_v==valence_count_L){
-            Iterator iterator_v = valence_L.iterator();
-            while(iterator_v.hasNext()){
-                sum+=(Double)iterator_v.next();
-            }
-            valence_L.size();
-            avg=sum/valence_L.size();
-        }
-        Log.d("avg"," "+avg);
-        return avg;
-
-    }
-    public Double range_A() {
-        int arousal_count_H=0; //큰 값
-        int arousal_count_L=0; //작은 값
-        Double sum=0.0;
-        Double avg=0.0;
+    //valence arousal 값 범위 안에 속하는지 확인하기 + 동점처리 필요
+    public Double[] range() {
+        List<Integer> arousal_int=new ArrayList<Integer>();
+        List<Integer> valence_int=new ArrayList<Integer>();
         Double temp;
         Iterator iterator = arousal.iterator();
+        int arousal_count=0;
         while (iterator.hasNext()) {
-            temp=(Double)iterator.next();
+            temp = (Double) iterator.next();
             if (temp <= 5) {
-                arousal_count_L += 1;
-                arousal_L.add(temp);
-            } else if (temp>= 5) {
-                arousal_count_H += 1;
-                arousal_H.add(temp);
+                arousal_int.add(arousal_count,0);
+            } else if (temp > 5) {
+                arousal_int.add(arousal_count,1);
+            }
+            arousal_count++;
+        }
+        Log.d("arousal"," "+arousal_int);
+
+        Double temp1;
+        Iterator iterator1 = valence.iterator();
+        int valence_count=0;
+        while (iterator1.hasNext()) {
+            temp1 = (Double) iterator1.next();
+            if (temp1 <= 5) {
+               valence_int.add(valence_count,0);
+            } else if (temp1 > 5) {
+                valence_int.add(valence_count,1);
+            }
+            valence_count++;
+        }
+        Log.d("valence"," "+valence_int);
+
+        Iterator arousal_iterator=arousal_int.iterator();
+        int count=0;
+        int num1=0,num2=0,num3=0,num4=0;
+        int temp_int;
+        while(arousal_iterator.hasNext()){
+            temp_int = (int)arousal_iterator.next();
+            if(valence_int.get(count)==1&&temp_int==1){
+                num1++;
+            }else if(valence_int.get(count)==1&&temp_int==0){
+                num2++;
+            }else if(valence_int.get(count)==0&&temp_int==0){
+                num3++;
+            }else if(valence_int.get(count)==0&&temp_int==1){
+                num4++;
+            }
+            count++;
+        }
+        Log.d("num1"," "+num1);
+        Log.d("num2"," "+num2);
+        Log.d("num3"," "+num3);
+        Log.d("num4"," "+num4);
+        int[] num={num1,num2,num3,num4};
+        int max=num[0];
+        Log.d("num"," "+num);
+        for(int i=0;i<num.length;i++) {
+            if (max < num[i]) {
+                max = num[i];
             }
         }
-        Log.d("aa","aaaaconfirm "+arousal_H);
-        Log.d("aa","aaaaconfirm "+arousal_L);
-        int max_a= arousal_count_H>=arousal_count_L?arousal_count_H:arousal_count_L;
-        if(max_a==arousal_count_H){
-            Iterator iterator_a = arousal_H.iterator();
-            while(iterator_a.hasNext()){
-                sum+=(Double)iterator_a.next();
+
+        count=0;
+        Double sum1_a=0.0;Double sum2_a=0.0;Double sum3_a=0.0;Double sum4_a=0.0;
+        Double sum1_v=0.0;Double sum2_v=0.0;Double sum3_v=0.0;Double sum4_v=0.0;
+        Double avg_v=0.0; Double avg_a=0.0;
+        arousal_iterator=arousal_int.iterator();
+        if (max==num1) {
+            while (arousal_iterator.hasNext()) {
+                temp_int = (int)arousal_iterator.next();
+                if (valence_int.get(count) == 1 && temp_int == 1) {
+                    sum1_v += valence.get(count);
+                    sum1_a+=arousal.get(count);
+                }
+                count++;
             }
-            arousal_H.size();
-            avg=sum/arousal_H.size();
+            avg_v=sum1_v/num1;
+            avg_a=sum1_a/num1;
         }
-        else if(max_a==arousal_count_L){
-            int b=0;
-            Iterator iterator_a = arousal_L.iterator();
-            while(iterator_a.hasNext()){
-                sum+=(Double)iterator_a.next();
+        else if(max==num2){
+            while (arousal_iterator.hasNext()) {
+                temp_int = (int)arousal_iterator.next();
+                if (valence_int.get(count) == 1 && temp_int  == 0) {
+                    sum2_v += valence.get(count);
+                    sum2_a+=arousal.get(count);
+                }
+                count++;
             }
-            arousal_L.size();
-            avg=sum/arousal_L.size();
+            Log.d("sum_v",""+sum2_v);
+            Log.d("sum_a",""+sum2_a);
+            avg_v=sum2_v/num2;
+            avg_a=sum2_a/num2;
         }
-        Log.d("avg"," "+avg);
+        else if (max==num3){
+            while (arousal_iterator.hasNext()) {
+                temp_int = (int)arousal_iterator.next();
+                if (valence_int.get(count) == 0 && temp_int == 0) {
+                    sum3_v += valence.get(count);
+                    sum3_a+=arousal.get(count);
+                }
+                count++;
+            }
+            avg_v=sum3_v/num3;
+            avg_a=sum3_a/num3;
+        }
+        else if (max==num4){
+            while (arousal_iterator.hasNext()) {
+                temp_int = (int)arousal_iterator.next();
+                if (valence_int.get(count) == 0 && temp_int == 1) {
+                    sum4_v += valence.get(count);
+                    sum4_a+=arousal.get(count);
+                }
+                count++;
+            }
+            avg_v=sum4_v/num4;
+            avg_a=sum4_a/num4;
+        }
+        Log.d("avg"," "+avg_v+","+avg_a);
+        Double[] avg={avg_v,avg_a};
         return avg;
     }
-
-
 }
