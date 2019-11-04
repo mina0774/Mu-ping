@@ -214,25 +214,9 @@ public class MainActivity extends AppCompatActivity {
                 mMainImage.buildDrawingCache();
 
                 ColorData a = new ColorData();
-                String[] strings = a.getColorScale(bitmap);
 
-                int r1 = Integer.valueOf(strings[0].substring(1, 3), 16);
-                int g1 = Integer.valueOf(strings[0].substring(3, 5), 16);
-                int b1 = Integer.valueOf(strings[0].substring(5, 7), 16);
-                int color1 = Color.rgb(r1, g1, b1);
-
-                int r2 = Integer.valueOf(strings[1].substring(1, 3), 16);
-                int g2 = Integer.valueOf(strings[1].substring(3, 5), 16);
-                int b2 = Integer.valueOf(strings[1].substring(5, 7), 16);
-                int color2 = Color.rgb(r2, g2, b2);
-
-                int r3 = Integer.valueOf(strings[2].substring(1, 3), 16);
-                int g3 = Integer.valueOf(strings[2].substring(3, 5), 16);
-                int b3 = Integer.valueOf(strings[2].substring(5, 7), 16);
-                int color3 = Color.rgb(r3, g3, b3);
-
-                int[] normalizedColors = new int[]{a.normalizeColor(color1), a.normalizeColor(color2), a.normalizeColor(color3)};
-                colorResults = a.getSimilarScale(normalizedColors[0], normalizedColors[1], normalizedColors[2]);
+                int[] colorInts = a.getColorScale(bitmap);
+                colorResults = a.getSimilarScale(colorInts[0], colorInts[1], colorInts[2]);
             } catch (IOException e) {
                 Log.d(TAG, "Image picking failed because " + e.getMessage());
                 Toast.makeText(this, R.string.image_picker_error, Toast.LENGTH_LONG).show();

@@ -68,44 +68,43 @@ public class ColorData {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public String[] getColorScale(Bitmap img) { // 이미지의 픽셀 색을 분석해 대표색을 뽑아냄
+    public int[] getColorScale(Bitmap img) { // 이미지의 픽셀 색을 분석해 대표색을 뽑아냄
         img = resizeBitmap(img);
-        ArrayList<String> imgColors = new ArrayList<>();
+
+        ArrayList<Integer> imgColors = new ArrayList<>();
         ArrayList<Integer> imgColorCount = new ArrayList<>();
+
         for (int x = 0; x < img.getWidth(); x++) {
             for (int y = 0; y < img.getHeight(); y++) {
                 int color = img.getPixel(x, y);
                 int red = Color.red(color);
                 int green = Color.green(color);
                 int blue = Color.blue(color);
-                String redString = Integer.toHexString(red).toUpperCase();
-                if (redString.length() == 1) redString = "0" + redString;
-                String greenString = Integer.toHexString(green).toUpperCase();
-                if (greenString.length() == 1) greenString = "0" + greenString;
-                String blueString = Integer.toHexString(blue).toUpperCase();
-                if (blueString.length() == 1) blueString = "0" + blueString;
-                String hex = "#" + redString + greenString + blueString;
-                if (imgColors.contains(hex)) {
-                    int id = imgColors.indexOf(hex);
+
+                int colorInt = Color.rgb(red, green, blue);
+                int normalizedColor = normalizeColor(colorInt);
+
+                if (imgColors.contains(normalizedColor)) {
+                    int id = imgColors.indexOf(normalizedColor);
                     imgColorCount.set(id, imgColorCount.get(id) + 1);
                 } else {
-                    imgColors.add(hex);
+                    imgColors.add(normalizedColor);
                     imgColorCount.add(1);
                 }
             }
         }
         int firstColorID = imgColorCount.indexOf(Collections.max(imgColorCount));
-        String firstColor = imgColors.get(firstColorID);
+        int firstColor = imgColors.get(firstColorID);
         imgColorCount.remove(firstColorID);
         imgColors.remove(firstColorID);
         int secondColorID = imgColorCount.indexOf(Collections.max(imgColorCount));
-        String secondColor = imgColors.get(secondColorID);
+        int secondColor = imgColors.get(secondColorID);
         imgColorCount.remove(secondColorID);
         imgColors.remove(secondColorID);
         int thirdColorID = imgColorCount.indexOf(Collections.max(imgColorCount));
-        String thirdColor = imgColors.get(thirdColorID);
+        int thirdColor = imgColors.get(thirdColorID);
 
-        String[] colorScale = new String[] {firstColor, secondColor, thirdColor};
+        int[] colorScale = new int[] {firstColor, secondColor, thirdColor};
         return colorScale;
     }
 
@@ -206,9 +205,10 @@ public class ColorData {
             finalN = (int)candidate5[1];
         }
         if (candidate6[0] < candidateDist) {
+            candidateDist = candidate6[0];
             finalN = (int)candidate6[1];
         }
-
+        System.out.println("FinalDistance: " + candidateDist*10000);
         String[] valAro = new String[] {adjectives[finalN], String.valueOf(Double.parseDouble(valence[finalN])), String.valueOf(Double.parseDouble(arousal[finalN]))};
 
         return valAro;
