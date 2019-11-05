@@ -17,11 +17,11 @@
 package com.google.sample.cloudvision;
 
 import android.Manifest;
+import android.content.CursorLoader;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
@@ -142,8 +142,8 @@ public class MainActivity extends AppCompatActivity {
         if (PermissionUtils.requestPermission(this, GALLERY_PERMISSIONS_REQUEST, Manifest.permission.READ_EXTERNAL_STORAGE)) {
             Intent intent = new Intent();
             intent.setType("image/*");
-            intent.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(Intent.createChooser(intent, "Select a photo"),
+            intent.setAction(Intent.ACTION_PICK);
+            startActivityForResult(Intent.createChooser(intent, "사진을 선택해주세요."),
                     GALLERY_IMAGE_REQUEST);
         }
     }
@@ -229,19 +229,14 @@ public class MainActivity extends AppCompatActivity {
 
     //사진 회전 문제 - uri로부터 realpath 받아오기 - 오류 있음 고쳐야함
     private String getRealPathFromURI(Uri contentURI){
-        String result;
-        String[] filePathColumn={MediaStore.Images.Media.DISPLAY_NAME};
-        Cursor cursor = getContentResolver().query(contentURI, filePathColumn, null, null, null);
-        if (cursor == null) { // Source is Dropbox or other similar local file path
-            result = contentURI.getPath();
-        }
-        else{
-            cursor.moveToFirst();
-            int idx = cursor.getColumnIndex(filePathColumn[0]);
-            result = cursor.getString(idx);
-            cursor.close();
-        }
-        return result;
+        String[] proj = { MediaStore.Images.Media.DATA };
+
+        CursorLoader cursorLoader = new CursorLoader(this, contentURI, proj, null, null, null);
+        Cursor cursor = cursorLoader.loadInBackground();
+
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
     }
     //회전 각도 구하기
     private int getExifOrientation(String filePath) {
@@ -544,7 +539,6 @@ public class MainActivity extends AppCompatActivity {
             }
             arousal_count++;
         }
-        Log.d("arousal"," "+arousal_int);
 
         Double temp1;
         Iterator iterator1 = valence.iterator();
@@ -559,7 +553,7 @@ public class MainActivity extends AppCompatActivity {
             valence_count++;
         }
         Log.d("valence"," "+valence_int);
-
+        Log.d("arousal"," "+arousal_int);
         Iterator arousal_iterator=arousal_int.iterator();
         int count=0;
         int num1=0,num2=0,num3=0,num4=0;
@@ -581,6 +575,36 @@ public class MainActivity extends AppCompatActivity {
         Log.d("num2"," "+num2);
         Log.d("num3"," "+num3);
         Log.d("num4"," "+num4);
+        //동점처리
+        if (num1==num2&&num2==num3&&num3==num4){
+
+        }
+        else if(num1==num2&&num2==num3){
+
+        }
+        else if(num1==num2&&num2==num4){
+
+        }
+        else if(num1==num3&&num3==num4) {
+
+        }
+        else if(num2==num3&&num3==num4){
+
+        }
+        else if(num1==num2){
+
+        }
+        else if(num1==num3){
+
+        }else if(num1==num4){
+
+        }else if(num2==num3){
+
+        }else if(num2==num4){
+
+        }else if(num3==num4){
+
+        }
         int[] num={num1,num2,num3,num4};
         int max=num[0];
         Log.d("num"," "+num);
