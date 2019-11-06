@@ -15,6 +15,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.regex.Pattern;
 
@@ -35,6 +36,7 @@ public class LoginActivity extends AppCompatActivity {
 
     TextView textViewFindPw;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +50,7 @@ public class LoginActivity extends AppCompatActivity {
 
         textViewFindPw = findViewById(R.id.textviewfindpw);
         textViewFindPw.setPaintFlags(textViewFindPw.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
 
     }
 
@@ -121,6 +124,22 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(LoginActivity.this, FindPwActivity.class);
         startActivity(intent);
     }
+
+    @Override
+    public void onBackPressed() {
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+
+        if(user == null) {
+           Intent intent = new Intent(LoginActivity.this, StartActivity.class);
+           startActivity(intent);
+           finish();
+
+        } else {
+            super.onBackPressed();
+        }
+
+    }
+
 
 
 }
