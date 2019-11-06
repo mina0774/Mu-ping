@@ -17,6 +17,7 @@
 package com.google.sample.cloudvision;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.database.Cursor;
@@ -134,6 +135,8 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "로그인 되어있지 않습니다.", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
+                StartActivity _StartActivity = (StartActivity) StartActivity._StartActivity;
+                _StartActivity.finish();
                 finish();
 
             } else {

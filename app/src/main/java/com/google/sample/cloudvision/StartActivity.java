@@ -1,5 +1,6 @@
 package com.google.sample.cloudvision;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -17,6 +18,8 @@ import java.io.InputStream;
 //시작 화면 선택
 public class StartActivity extends AppCompatActivity {
 
+    public static Activity _StartActivity;
+
     private Button gotoLogin;
     private Button gotoMain;
     SQLiteDatabase SampleDB;
@@ -33,6 +36,8 @@ public class StartActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
+
+        _StartActivity = StartActivity.this;
 
         gotoLogin = (Button) findViewById(R.id.gotoLogin);
         gotoMain = (Button) findViewById(R.id.gotoMain);
