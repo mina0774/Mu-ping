@@ -17,7 +17,6 @@
 package com.google.sample.cloudvision;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.database.Cursor;
@@ -95,6 +94,8 @@ public class MainActivity extends AppCompatActivity {
     List<Double> valence_L=new ArrayList<Double>();
     List<Double> arousal_H=new ArrayList<Double>();
     List<Double> arousal_L=new ArrayList<Double>();
+    Double valence_final_obj;
+    Double arousal_final_obj;
     static String[] colorResults = {};
 
     private FirebaseAuth firebaseAuth;
@@ -226,7 +227,6 @@ public class MainActivity extends AppCompatActivity {
                 // scale the image to save on bandwidth
                 Bitmap bitmap = scaleBitmapDown(MediaStore.Images.Media.getBitmap(getContentResolver(), uri), MAX_DIMENSION);
                 int degree = getExifOrientation(imagepath);
-                Log.d("degree","디그리: "+degree);
                 bitmap = getRotatedBitmap(bitmap, degree);
                 callCloudVision(bitmap);
                 mMainImage.setImageBitmap(bitmap);
@@ -234,7 +234,6 @@ public class MainActivity extends AppCompatActivity {
                 mMainImage.buildDrawingCache();
 
                 ColorData a = new ColorData();
-
                 int[] colorInts = a.getColorScale(bitmap);
                 colorResults = a.getSimilarScale(colorInts[0], colorInts[1], colorInts[2]);
             } catch (IOException e) {
@@ -247,7 +246,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //사진 회전 문제 - uri로부터 realpath 받아오기 - 오류 있음 고쳐야함
+    //사진 회전 문제
     private String getRealPathFromURI(Uri contentURI){
         String[] proj = { MediaStore.Images.Media.DATA };
 
@@ -405,7 +404,10 @@ public class MainActivity extends AppCompatActivity {
             if (activity != null && !activity.isFinishing()) {
                 TextView imageDetail = activity.findViewById(R.id.image_details);
                 String word=find_adj(Double.parseDouble(colorResults[1]),Double.parseDouble(colorResults[2]));
-                result = result + word + " " + colorResults[1] + " " + colorResults[2];
+                Double[] final_value=combine_Attribute(valence_final_obj,arousal_final_obj);
+                String final_word=find_adj(final_value[0],final_value[1]);
+                result = result + word + " " + colorResults[1] + " " + colorResults[2]+"\n\n"+final_value[0].toString()+","+final_value[1].toString()+" "+final_word;
+
                 imageDetail.setText(result);
             }
         }
@@ -455,9 +457,7 @@ public class MainActivity extends AppCompatActivity {
 
         helper = new SQLite(this);
         db = helper.getReadableDatabase();
-        Log.d("디비딥", "디비디비딥");
         while (iterator.hasNext()) {
-            // Log.d("디비딥",((String)iterator.next()).toLowerCase());
             cursor = db.rawQuery("SELECT * FROM valence_arousal where word='" + (String) ((String) iterator.next()).toLowerCase() + "';", null);
             while (cursor.moveToNext()) {
                 word.add(cursor.getString(0)); //word
@@ -482,9 +482,7 @@ public class MainActivity extends AppCompatActivity {
         String word="a";
         helper = new SQLite(this);
         db = helper.getReadableDatabase();
-        Log.d("디비","읽기");
         cursor = db.rawQuery("SELECT * FROM criteria_adj;", null);
-        Log.d("디비","커서");
         while (cursor.moveToNext()) {
             valence_pow = Math.pow((cursor.getDouble(1) - valence_obj), 2);
             arousal_pow = Math.pow((cursor.getDouble(2) - arousal_obj), 2);
@@ -493,13 +491,12 @@ public class MainActivity extends AppCompatActivity {
             if (sum_pow < temp) {
                 valence_real = cursor.getDouble(1);
                 arousal_real = cursor.getDouble(2);
-                Log.d("값", "나와랑" + valence_real + " , " + arousal_real);
                 temp=sum_pow;
                 word=cursor.getString(0);
             }
         }
         cursor.close();
-        return word; //오류 고치기
+        return word;
     }
 
     //Object Detection 결과값 받아오기
@@ -531,19 +528,16 @@ public class MainActivity extends AppCompatActivity {
             }
             count += 1;
         }
-        Log.d("aa","aaaaconfirm");
-        Double valence_final=range()[0];
-        Double arousal_final=range()[1];
-        message.append("/"+valence_final+ ","+arousal_final+"/");
-        String word=find_adj(valence_final,arousal_final);
+        valence_final_obj=range()[0];
+        arousal_final_obj=range()[1];
+        message.append("/"+valence_final_obj+ ","+arousal_final_obj+"/");
+        String word=find_adj(valence_final_obj,arousal_final_obj);
         message.append(word);
-        Log.d("valence", valence.toString());
-        Log.d("arousal", arousal.toString());
-        message.append("\n\nColor: \n");
+        message.append("\nColor:\n");
         return message.toString();
     }
 
-    //valence arousal 값 범위 안에 속하는지 확인하기 + 동점처리 필요
+    //valence arousal 값 범위 안에 속하는지 확인하기
     public Double[] range() {
         List<Integer> arousal_int=new ArrayList<Integer>();
         List<Integer> valence_int=new ArrayList<Integer>();
@@ -572,8 +566,6 @@ public class MainActivity extends AppCompatActivity {
             }
             valence_count++;
         }
-        Log.d("valence"," "+valence_int);
-        Log.d("arousal"," "+arousal_int);
         Iterator arousal_iterator=arousal_int.iterator();
         int count=0;
         int num1=0,num2=0,num3=0,num4=0;
@@ -591,43 +583,9 @@ public class MainActivity extends AppCompatActivity {
             }
             count++;
         }
-        Log.d("num1"," "+num1);
-        Log.d("num2"," "+num2);
-        Log.d("num3"," "+num3);
-        Log.d("num4"," "+num4);
-        //동점처리
-        if (num1==num2&&num2==num3&&num3==num4){
 
-        }
-        else if(num1==num2&&num2==num3){
-
-        }
-        else if(num1==num2&&num2==num4){
-
-        }
-        else if(num1==num3&&num3==num4) {
-
-        }
-        else if(num2==num3&&num3==num4){
-
-        }
-        else if(num1==num2){
-
-        }
-        else if(num1==num3){
-
-        }else if(num1==num4){
-
-        }else if(num2==num3){
-
-        }else if(num2==num4){
-
-        }else if(num3==num4){
-
-        }
         int[] num={num1,num2,num3,num4};
         int max=num[0];
-        Log.d("num"," "+num);
         for(int i=0;i<num.length;i++) {
             if (max < num[i]) {
                 max = num[i];
@@ -689,8 +647,53 @@ public class MainActivity extends AppCompatActivity {
             avg_v=sum4_v/num4;
             avg_a=sum4_a/num4;
         }
-        Log.d("avg"," "+avg_v+","+avg_a);
+
         Double[] avg={avg_v,avg_a};
         return avg;
+    }
+
+    //valence arousal 색깔, 오브젝트 평균 내기
+    public Double[] combine_Attribute(Double obj_v,Double obj_a){
+        Double color_v=Double.parseDouble(colorResults[1]);
+        Double color_a=Double.parseDouble(colorResults[2]);
+        Double color_weight=0.5; //가중치 임의로 설정
+        Double object_weight=0.5; //가중치 임의로 설정
+        Double final_v=0.0;
+        Double final_a=0.0;
+       //같은 사분면일때
+        //1사분면
+        if(obj_v>5&&obj_a>5&& color_v>5&& color_a>5) {
+            final_v=obj_v*object_weight+color_v*color_weight;
+            final_a=obj_a*object_weight+color_a*color_weight;
+        }
+        //2사분면
+        else if(obj_v>5&&obj_a<=5&& color_v>5&& color_a<=5) {
+            final_v=obj_v*object_weight+color_v*color_weight;
+            final_a=obj_a*object_weight+color_a*color_weight;
+        }
+        //3사분면
+        else if(obj_v<=5&&obj_a<=5&& color_v<=5&& color_a<=5) {
+            final_v=obj_v*object_weight+color_v*color_weight;
+            final_a=obj_a*object_weight+color_a*color_weight;
+        }
+        //4사분면
+        else if(obj_v<=5&&obj_a>5&& color_v<=5&& color_a>5) {
+            final_v=obj_v*object_weight+color_v*color_weight;
+            final_a=obj_a*object_weight+color_a*color_weight;
+        }
+        //다른 사분면일때
+        else{
+            if(color_weight>=object_weight){
+                final_v=color_v;
+                final_a=color_a;
+            }
+            else if(color_weight<=object_weight){
+                final_v=obj_v;
+                final_a=obj_a;
+            }
+        }
+        Log.d("평균",""+final_v+","+final_a);
+        Double[] final_va={final_v,final_a};
+        return final_va;
     }
 }
