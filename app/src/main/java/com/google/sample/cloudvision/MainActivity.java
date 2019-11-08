@@ -406,7 +406,7 @@ public class MainActivity extends AppCompatActivity {
                 String word=find_adj(Double.parseDouble(colorResults[1]),Double.parseDouble(colorResults[2]));
                 Double[] final_value=combine_Attribute(valence_final_obj,arousal_final_obj);
                 String final_word=find_adj(final_value[0],final_value[1]);
-                result = result + word + " " + colorResults[1] + " " + colorResults[2]+"\n\n"+final_value[0].toString()+","+final_value[1].toString()+" "+final_word;
+                result = result + word + " " + colorResults[1] + " , " + colorResults[2]+"\n\n"+final_value[0].toString()+","+final_value[1].toString()+" "+final_word;
 
                 imageDetail.setText(result);
             }
@@ -502,7 +502,6 @@ public class MainActivity extends AppCompatActivity {
     //Object Detection 결과값 받아오기
     private String convertResponseToString(BatchAnnotateImagesResponse response) {
         StringBuilder message = new StringBuilder("Keyword: \n");
-
         List<EntityAnnotation> labels = response.getResponses().get(0).getLabelAnnotations();
         if (labels != null) {
             for (EntityAnnotation label : labels) {
@@ -517,8 +516,6 @@ public class MainActivity extends AppCompatActivity {
         int i = 0;
         while (iterator.hasNext()) {
             String word = (String) (iterator.next());
-            message.append(word);
-            message.append(" ");
             // valence,arousal 배열에 값 넣기
             if ((count % 3) == 1) {
                 valence.add(Double.parseDouble(word));
@@ -530,9 +527,9 @@ public class MainActivity extends AppCompatActivity {
         }
         valence_final_obj=range()[0];
         arousal_final_obj=range()[1];
-        message.append("/"+valence_final_obj+ ","+arousal_final_obj+"/");
         String word=find_adj(valence_final_obj,arousal_final_obj);
-        message.append(word);
+        message.append(word+" ");
+        message.append(valence_final_obj+ " , "+arousal_final_obj);
         message.append("\nColor:\n");
         return message.toString();
     }
