@@ -23,7 +23,7 @@ public class SQLite extends SQLiteOpenHelper {
         Log.d("앗사","테이블1");
         SampleDB.execSQL("DROP TABLE IF EXISTS " + tableName2);
         SampleDB.execSQL("CREATE TABLE " + tableName2
-                + " (title VARCHAR(30),performer VARCHAR(30) ,word VARCHAR(30),valence REAL, arousal REAL);");
+                + " (title VARCHAR(30),performer VARCHAR(30) ,word VARCHAR(30),valence REAL, arousal REAL, genre VARCHAR(30));");
         Log.d("앗사","테이블2");
         SampleDB.execSQL("DROP TABLE IF EXISTS " + tableName3);
         SampleDB.execSQL("CREATE TABLE " + tableName3

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -30,7 +31,7 @@ public class SQLiteActivity extends Activity {
         String str2 = ");";
         String line = "";
         String columns1 = "word, valence, arousal";
-        String columns2= "title, performer, word, valence, arousal";
+        String columns2= "title, performer, word, valence, arousal,genre";
         String stra = "INSERT INTO " + tableName1 + " (" + columns1 + ") values(";
         String strb = "INSERT INTO " + tableName2 + " (" + columns2 + ") values(";
         String strc = "INSERT INTO " + tableName3 + " (" + columns1 + ") values(";
@@ -63,15 +64,24 @@ public class SQLiteActivity extends Activity {
                     line = br2.readLine();
 
                     while (line != null) {
+                        Log.d("SQL","DB시작");
                         StringBuilder sb = new StringBuilder(strb);
-                        String[] str = line.split(",");
+                        String[] str = line.split("@");
+                        Log.d("SQL","DB시작"+str[0]);
+                        Log.d("SQL","DB시작"+str[1]);
+                        Log.d("SQL","DB시작"+str[2]);
+                        Log.d("SQL","DB시작"+str[3]);
+                        Log.d("SQL","DB시작"+str[4]);
+                        Log.d("SQL","DB시작"+str[5]);
                         sb.append("'" + str[0] + "'" + ",");
                         sb.append("'"+str[1]+"'"+ ",");
                         sb.append("'"+str[2]+"'"+ ",");
                         sb.append(Double.parseDouble(str[3]) +",");
-                        sb.append(Double.parseDouble(str[4]));
+                        sb.append(Double.parseDouble(str[4])+",");
+                        sb.append("'"+str[5]+"'");
                         sb.append(str2);
                         SampleDB.execSQL(sb.toString());
+                        Log.d("SQL","DB실행");
                         line = br2.readLine();
 
                     }
