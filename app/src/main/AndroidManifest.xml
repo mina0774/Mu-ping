@@ -13,7 +13,8 @@
         android:label="@string/app_name"
         android:screenOrientation="portrait"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".LikeListActivity"></activity>
+        <activity android:name=".ListClickedActivity" />
+        <activity android:name=".LikeListActivity" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".FindPwActivity" />
         <activity android:name=".SQLiteActivity" />

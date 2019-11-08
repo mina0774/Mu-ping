@@ -71,6 +71,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="50dp"
+            android:onClick="logout"
             android:text="로그아웃" />
 
         <TextView
@@ -80,6 +81,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_margin="16dp"
             android:text="회원탈퇴"
+            android:onClick="delete"
             android:textColor="@color/colorAccent" />
     </LinearLayout>
 

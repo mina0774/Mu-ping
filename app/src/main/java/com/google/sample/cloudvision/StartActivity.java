@@ -62,7 +62,6 @@ public class StartActivity extends AppCompatActivity {
                     //안되어 있으면
                     Intent intent = new Intent(StartActivity.this, LoginActivity.class);
                     startActivity(intent);
-                    finish();
                 }
 
             }

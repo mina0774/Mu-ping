@@ -20,6 +20,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.util.regex.Pattern;
 
@@ -86,8 +88,6 @@ public class RegisterActivity extends AppCompatActivity {
         if(isValidEmail() && isValidPasswd()) {
             createUser(email, password);
         }
-
-
     }
 
 
@@ -132,27 +132,13 @@ public class RegisterActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // 회원가입 성공
 
-                            if(s1.isChecked()) result += s1.getText().toString() + ", ";
-                            if(s2.isChecked()) result += s2.getText().toString() + ", ";
-                            if(s3.isChecked()) result += s3.getText().toString() + ", ";
-                            if(s4.isChecked()) result += s4.getText().toString() + ", ";
-                            if(s5.isChecked()) result += s5.getText().toString() + ", ";
-                            if(s6.isChecked()) result += s6.getText().toString() + ", ";
-                            if(s7.isChecked()) result += s7.getText().toString() + ", ";
-                            if(s8.isChecked()) result += s8.getText().toString() + ", ";
-                            if(s9.isChecked()) result += s9.getText().toString() + ", ";
-                            if(s10.isChecked()) result += s10.getText().toString() + ", ";
-                            if(s11.isChecked()) result += s11.getText().toString() + ", ";
-                            if(s12.isChecked()) result += s12.getText().toString() + ", ";
-                            if(s13.isChecked()) result += s13.getText().toString() + ", ";
-                            if(s14.isChecked()) result += s14.getText().toString() + ", ";
-                            if(s15.isChecked()) result += s15.getText().toString() + ", ";
-                            if(s16.isChecked()) result += s16.getText().toString() + ", ";
-                            if(s17.isChecked()) result += s17.getText().toString() + ", ";
-                            if(s18.isChecked()) result += s18.getText().toString() + ", ";
-                            if(s19.isChecked()) result += s19.getText().toString() + ", ";
-                            if(s20.isChecked()) result += s20.getText().toString() + ", ";
-                            if(s21.isChecked()) result += s21.getText().toString() + ", ";
+                            CheckBox[] checkBox = new CheckBox[] {s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17, s18, s19, s20, s21};
+                            for (int i=0; i<21; i++) {
+                                if (checkBox[i].isChecked()) {
+                                    result += checkBox[i].getText().toString() + ", ";
+                                }
+                            }
+                            result = result.substring(0, result.length()-2);
 
                             Toast.makeText(RegisterActivity.this, R.string.success_signup, Toast.LENGTH_SHORT).show();
 

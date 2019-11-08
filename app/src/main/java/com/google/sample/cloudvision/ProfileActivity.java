@@ -25,7 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.StringTokenizer;
 
-public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
+public class ProfileActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
 
@@ -76,54 +76,41 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             });
 
         }
-
-
-
-
-        textViewUserEmail.setText("\n" + user.getEmail());
-
-        //logout button event
-        buttonLogout.setOnClickListener(this);
-        textivewDelete.setOnClickListener(this);
+       textViewUserEmail.setText("\n" + user.getEmail());
     }
 
+    public void logout(View view) {
+        firebaseAuth.signOut();
+        finish();
+        startActivity(new Intent(this, LoginActivity.class));
+    }
 
+    public void delete(View view) {
+        AlertDialog.Builder alert_confirm = new AlertDialog.Builder(ProfileActivity.this);
+        alert_confirm.setMessage("계정을 삭제하시겠습니까?").setCancelable(false).setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        FirebaseUser user = firebaseAuth.getCurrentUser();
+                        user.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                Toast.makeText(ProfileActivity.this, "계정이 삭제되었습니다.", Toast.LENGTH_LONG).show();
+                                finish();
+                                startActivity(new Intent(getApplicationContext(), StartActivity.class));
+                            }
+                        });
 
-    @Override
-    public void onClick(View view) {
-        if (view == buttonLogout) {
-            firebaseAuth.signOut();
-            finish();
-            startActivity(new Intent(this, LoginActivity.class));
-        }
-
-        //회원탈퇴, 회원정보를 삭제
-        if (view == textivewDelete) {
-            AlertDialog.Builder alert_confirm = new AlertDialog.Builder(ProfileActivity.this);
-            alert_confirm.setMessage("계정을 삭제하시겠습니까?").setCancelable(false).setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                            user.delete()
-                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            Toast.makeText(ProfileActivity.this, "계정이 삭제되었습니다.", Toast.LENGTH_LONG).show();
-                                            finish();
-                                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                                        }
-                                    });
-                        }
                     }
-            );
-            alert_confirm.setNegativeButton("취소", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    Toast.makeText(ProfileActivity.this, "취소", Toast.LENGTH_LONG).show();
                 }
-            });
-            alert_confirm.show();
-        }
+        );
+        alert_confirm.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Toast.makeText(ProfileActivity.this, "취소", Toast.LENGTH_LONG).show();
+            }
+        });
+        alert_confirm.show();
     }
+
 
 }
