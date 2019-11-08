@@ -89,7 +89,6 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-
     // 로그인
     private void loginUser(String email2, String password2)
     {
