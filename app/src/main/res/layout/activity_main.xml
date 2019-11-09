@@ -55,5 +55,12 @@
         android:backgroundTint="#2D504C4C"
         app:backgroundTint="#2D504C4C" />
 
+    <TextView
+        android:id="@+id/reco"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="추천 test"
+        android:textSize="15dp"
+        android:layout_gravity="right|center" />
 
 </android.support.design.widget.CoordinatorLayout>

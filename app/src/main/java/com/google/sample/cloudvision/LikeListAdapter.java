@@ -48,7 +48,7 @@ public class LikeListAdapter extends BaseAdapter {
         songinfo.setText(likeItem.getSonginfo());
 
         TextView info = (TextView) view.findViewById(R.id.info);
-        songinfo.setText(likeItem.getInfo());
+        info.setText(likeItem.getInfo());
 
         return view;
     }

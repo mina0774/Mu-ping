@@ -113,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
         FloatingActionButton fab = findViewById(R.id.fab);
         FloatingActionButton fab2 = findViewById(R.id.fab2);
         FloatingActionButton fab3 = findViewById(R.id.fab3);
+        TextView reco = findViewById(R.id.reco);
 
         fab.setOnClickListener(view -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -149,6 +150,11 @@ public class MainActivity extends AppCompatActivity {
         //좋아한 곡 리스트
         fab3.setOnClickListener(view -> {
             Intent intent = new Intent(MainActivity.this, LikeListActivity.class);
+            startActivity(intent);
+        });
+
+        reco.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, RecommendListActivity.class);
             startActivity(intent);
         });
 

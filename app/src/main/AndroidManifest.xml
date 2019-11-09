@@ -13,6 +13,8 @@
         android:label="@string/app_name"
         android:screenOrientation="portrait"
         android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".RecommendClickedActivity"></activity>
+        <activity android:name=".RecommendListActivity" />
         <activity android:name=".ListClickedActivity" />
         <activity android:name=".LikeListActivity" />
         <activity android:name=".ProfileActivity" />

@@ -1,15 +1,17 @@
 package com.google.sample.cloudvision;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class LikeListActivity extends AppCompatActivity implements View.OnClickListener {
+public class LikeListActivity extends AppCompatActivity {
 
     private ArrayList<LikeItem> data = null;
 
@@ -23,6 +25,8 @@ public class LikeListActivity extends AppCompatActivity implements View.OnClickL
         ///////////////////////////////////////////////////////////////////////////////////////////////////
         //연동 전 임시로
         data = new ArrayList<>();
+
+
         LikeItem item1 = new LikeItem("song1-singer1", "info~~");
         LikeItem item2 = new LikeItem("song2-singer2", "info~~~~~~~");
 
@@ -44,12 +48,7 @@ public class LikeListActivity extends AppCompatActivity implements View.OnClickL
                 startActivity(intent);
             }
         });
-
-
     }
 
-    @Override
-    public void onClick(View view) {
 
-    }
 }
