@@ -40,7 +40,7 @@ public class MusicListActivity extends AppCompatActivity {
     AsyncTask<?,?,?> searchTask;
     ArrayList<SearchData> sdata=new ArrayList<SearchData>();
 
-    final String serverKey="AIzaSyBsj2Rl6w070Hu06Y7A3ll8LEJCStZPqd8";
+    final String serverKey="AIzaSyA0B72xByDrqzb68bZ0fQylnasgHDdGbMw";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +51,6 @@ public class MusicListActivity extends AppCompatActivity {
         et_music=(EditText)findViewById(R.id.et_music);
         et_music.setText(str);
         search=(Button)findViewById(R.id.search);
-
 
         search.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,18 +85,26 @@ public class MusicListActivity extends AppCompatActivity {
     }
 
     public JSONObject getUtube() {
+       String music=et_music.getText().toString();
+        String ret="";
+        for(int i=0;i<music.length();i++){
+            if(music.charAt(i)==' '){
+                ret+="%20";
+                continue;
+            }
+            ret+=music.charAt(i);
+        }
 
         HttpGet httpGet = new HttpGet(
                 "https://www.googleapis.com/youtube/v3/search?"
-                        + "part=snippet&maxResults=20&q=" + et_music.getText().toString()
-                        + "&key="+ serverKey);
-        Log.d("youtube","https://www.googleapis.com/youtube/v3/search?"
-                + "part=snippet&maxResults=20&q=" + et_music.getText().toString()
+                        + "part=snippet&q=" + ret
+                        + "&maxResults=20&key="+ serverKey);
+        Log.d("http","https://www.googleapis.com/youtube/v3/search?"
+                + "part=snippet&maxResults=20&q=" + ret
                 + "&key="+ serverKey);
         HttpClient client = new DefaultHttpClient();
         HttpResponse response;
         StringBuilder stringBuilder = new StringBuilder();
-
         try {
             response = client.execute(httpGet);
             HttpEntity entity = response.getEntity();
@@ -193,6 +200,7 @@ public class MusicListActivity extends AppCompatActivity {
 
                     Intent intent = new Intent(MusicListActivity.this,
                             PlayMusicActivity.class);
+                    Log.d("아이템"," "+items.get(pos).getVideoId());
                     intent.putExtra("id", items.get(pos).getVideoId());
                     startActivity(intent);
                 }

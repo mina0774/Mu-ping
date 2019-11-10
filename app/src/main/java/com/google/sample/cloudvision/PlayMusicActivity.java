@@ -13,15 +13,14 @@ public class PlayMusicActivity extends YouTubeBaseActivity implements YouTubePla
 
         private YouTubePlayerView ytpv;
         private YouTubePlayer ytp;
-        final String serverKey = "AIzaSyBsj2Rl6w070Hu06Y7A3ll8LEJCStZPqd8";
+        final String serverKey = "AIzaSyA0B72xByDrqzb68bZ0fQylnasgHDdGbMw";
 
         @Override
         protected void onCreate (Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_play_music);
         ytpv = (YouTubePlayerView) findViewById(R.id.youtubeView);
         ytpv.initialize(serverKey, this);
-
     }
 
 
