@@ -38,6 +38,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -85,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
 
     private String imagepath;
     private TextView mImageDetails;
+    private TextView mMusicDetails;
     private ImageView mMainImage;
 
     List<Object> ObjectArray = new ArrayList<Object>();
@@ -106,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        mMusicDetails=(TextView)findViewById(R.id.music_details);
 
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser user = firebaseAuth.getCurrentUser();
@@ -417,11 +420,11 @@ public class MainActivity extends AppCompatActivity {
                 result = result + word + " " + colorResults[1] + " , " + colorResults[2]+"\n\n"
                         +final_value[0].toString()+","
                         +final_value[1].toString()+" "
-                        +final_word+"\n\n"
-                        +music[0]+" - "
-                        +music[1];
+                        +final_word;
 
                 imageDetail.setText(result);
+                mMusicDetails.setText(music[0]+" - "+music[1]);
+
             }
         }
     }
@@ -724,5 +727,10 @@ public class MainActivity extends AppCompatActivity {
         String[] music={title,performer};
 
         return music;
+    }
+
+    public void music_play(View view){
+        Intent intent = new Intent(MainActivity.this, PlayMusicActivity.class);
+        startActivity(intent);
     }
 }

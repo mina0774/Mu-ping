@@ -2,18 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.google.sample.cloudvision">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA" />
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:screenOrientation="portrait"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".RecommendClickedActivity"></activity>
+        <activity android:name=".PlayMusicActivity"></activity>
+        <activity android:name=".RecommendClickedActivity" />
         <activity android:name=".RecommendListActivity" />
         <activity android:name=".ListClickedActivity" />
         <activity android:name=".LikeListActivity" />
@@ -50,5 +46,10 @@
                 android:resource="@xml/provider_paths" />
         </provider>
     </application>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

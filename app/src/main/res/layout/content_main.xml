@@ -37,6 +37,17 @@
                 android:layout_marginBottom="10dp"
                 android:gravity="center_horizontal"
                 android:text="사진 버튼을 눌러 사진을 업로드해주세요." />
+
+            <TextView
+                android:id="@+id/music_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:gravity="center_horizontal"
+                android:background="@drawable/back"
+                android:onClick="music_play"
+                android:text="추천 노래"
+                android:layout_marginBottom="10dp" />
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>
