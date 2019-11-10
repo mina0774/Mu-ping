@@ -730,7 +730,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void music_play(View view){
-        Intent intent = new Intent(MainActivity.this, PlayMusicActivity.class);
+        Intent intent = new Intent(MainActivity.this, MusicListActivity.class);
+        intent.putExtra("music_info",  mMusicDetails.getText().toString());
         startActivity(intent);
     }
 }
