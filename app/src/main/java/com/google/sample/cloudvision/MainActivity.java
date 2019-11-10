@@ -164,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
 
         mImageDetails = findViewById(R.id.image_details);
         mMainImage = findViewById(R.id.main_image);
-
+        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
 
     }
 
@@ -201,6 +201,7 @@ public class MainActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == GALLERY_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
             imagepath =getRealPathFromURI(data.getData());
@@ -238,6 +239,7 @@ public class MainActivity extends AppCompatActivity {
                 int degree = getExifOrientation(imagepath);
                 bitmap = getRotatedBitmap(bitmap, degree);
                 callCloudVision(bitmap);
+
                 mMainImage.setImageBitmap(bitmap);
                 mMainImage.setDrawingCacheEnabled(true);
                 mMainImage.buildDrawingCache();
@@ -425,6 +427,7 @@ public class MainActivity extends AppCompatActivity {
                 imageDetail.setText(result);
                 mMusicDetails.setText(music[0]+" - "+music[1]);
 
+                findViewById(R.id.loadingPanel).setVisibility(View.GONE);
             }
         }
     }
