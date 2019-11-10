@@ -38,6 +38,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -85,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
 
     private String imagepath;
     private TextView mImageDetails;
+    private TextView mMusicDetails;
     private ImageView mMainImage;
 
     List<Object> ObjectArray = new ArrayList<Object>();
@@ -106,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        mMusicDetails=(TextView)findViewById(R.id.music_details);
 
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser user = firebaseAuth.getCurrentUser();
@@ -161,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
 
         mImageDetails = findViewById(R.id.image_details);
         mMainImage = findViewById(R.id.main_image);
-
+        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
 
     }
 
@@ -198,6 +201,7 @@ public class MainActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == GALLERY_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
             imagepath =getRealPathFromURI(data.getData());
@@ -235,6 +239,7 @@ public class MainActivity extends AppCompatActivity {
                 int degree = getExifOrientation(imagepath);
                 bitmap = getRotatedBitmap(bitmap, degree);
                 callCloudVision(bitmap);
+
                 mMainImage.setImageBitmap(bitmap);
                 mMainImage.setDrawingCacheEnabled(true);
                 mMainImage.buildDrawingCache();
@@ -412,9 +417,17 @@ public class MainActivity extends AppCompatActivity {
                 String word=find_adj(Double.parseDouble(colorResults[1]),Double.parseDouble(colorResults[2]));
                 Double[] final_value=combine_Attribute(valence_final_obj,arousal_final_obj);
                 String final_word=find_adj(final_value[0],final_value[1]);
-                result = result + word + " " + colorResults[1] + " , " + colorResults[2]+"\n\n"+final_value[0].toString()+","+final_value[1].toString()+" "+final_word;
+                String music[]=find_music(final_word);
+
+                result = result + word + " " + colorResults[1] + " , " + colorResults[2]+"\n\n"
+                        +final_value[0].toString()+","
+                        +final_value[1].toString()+" "
+                        +final_word;
 
                 imageDetail.setText(result);
+                mMusicDetails.setText(music[0]+" - "+music[1]);
+
+                findViewById(R.id.loadingPanel).setVisibility(View.GONE);
             }
         }
     }
@@ -493,7 +506,6 @@ public class MainActivity extends AppCompatActivity {
             valence_pow = Math.pow((cursor.getDouble(1) - valence_obj), 2);
             arousal_pow = Math.pow((cursor.getDouble(2) - arousal_obj), 2);
             sum_pow = valence_pow + arousal_pow;
-            Log.d("ㅠㅠ",temp+" / "+sum_pow);
             if (sum_pow < temp) {
                 valence_real = cursor.getDouble(1);
                 arousal_real = cursor.getDouble(2);
@@ -698,5 +710,31 @@ public class MainActivity extends AppCompatActivity {
         Log.d("평균",""+final_v+","+final_a);
         Double[] final_va={final_v,final_a};
         return final_va;
+    }
+
+    public String[] find_music(String adj_final){
+        SQLite helper;
+        SQLiteDatabase db;
+        Cursor cursor;
+        String title="";
+        String performer="";
+        helper = new SQLite(this);
+        db = helper.getReadableDatabase();
+
+        cursor = db.rawQuery("SELECT title,performer FROM music_to_value_final where word='"+adj_final+"' order by random();",null);
+    if(cursor.moveToNext()) {
+    title = cursor.getString(0);
+    performer = cursor.getString(1);
+    }
+
+        String[] music={title,performer};
+
+        return music;
+    }
+
+    public void music_play(View view){
+        Intent intent = new Intent(MainActivity.this, MusicListActivity.class);
+        intent.putExtra("music_info",  mMusicDetails.getText().toString());
+        startActivity(intent);
     }
 }
