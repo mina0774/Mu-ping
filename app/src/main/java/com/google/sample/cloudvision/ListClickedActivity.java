@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import java.util.StringTokenizer;
+
 public class ListClickedActivity extends AppCompatActivity {
 
     @Override
@@ -15,10 +17,15 @@ public class ListClickedActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         TextView songInfo = (TextView) findViewById(R.id.tv_songinfo);
-        TextView Info = (TextView) findViewById(R.id.tv_info);
+        TextView songInfo2 = (TextView) findViewById(R.id.tv_songinfo2);
 
-        songInfo.setText(intent.getStringExtra("songinfo"));
-        Info.setText(intent.getStringExtra("info"));
+        String result = intent.getStringExtra("songinfo");
+        StringTokenizer st = new StringTokenizer(result, "\n");
+        String a = st.nextToken();
+        String b = st.nextToken();
+
+        songInfo.setText(a);
+        songInfo2.setText(b);
 
     }
 }

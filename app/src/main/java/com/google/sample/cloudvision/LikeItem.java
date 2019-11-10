@@ -4,20 +4,34 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 public class LikeItem {
-    private String songinfo;
-    private String info;
+    private String title;
+    private String performer;
 
-    public String getSonginfo() {
-        return songinfo;
+    public LikeItem() {}
+
+    public LikeItem(String title, String performer) {
+        this.title = title;
+        this.performer = performer;
     }
 
-    public String getInfo() {
-        return info;
+    public String getTitle() {
+        return title;
     }
 
-    public LikeItem(String songinfo, String info) {
-        this.songinfo = songinfo;
-        this.info = info;
+    public void setTitle(String title) {
+        this.title = title;
     }
+
+    public String getPerformer() {
+        return performer;
+    }
+
+    public void setPerformer(String performer) {
+        this.performer = performer;
+    }
+
+
+
+
 
 }

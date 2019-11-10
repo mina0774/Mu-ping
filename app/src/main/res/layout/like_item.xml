@@ -37,15 +37,6 @@
                 android:text="노래와 가수"
                 android:textSize="15dp" />
 
-            <TextView
-                android:id="@+id/info"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|left"
-                android:text="정보"
-                android:textSize="15dp"
-                android:textColor="#4D4D4D"/>
-
 
         </LinearLayout>
 

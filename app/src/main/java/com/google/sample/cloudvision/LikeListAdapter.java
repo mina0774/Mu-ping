@@ -12,24 +12,24 @@ import java.util.ArrayList;
 public class LikeListAdapter extends BaseAdapter {
 
     private LayoutInflater inflater;
-    private ArrayList<LikeItem> data;
+    private ArrayList<String> list;
     private int layout;
 
-    public LikeListAdapter(Context context, int layout, ArrayList<LikeItem> data) {
+    public LikeListAdapter(Context context, int layout, ArrayList<String> list) {
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        this.data = data;
+        this.list = list;
         this.layout = layout;
     }
 
 
     @Override
     public int getCount() {
-        return data.size();
+        return list.size();
     }
 
     @Override
     public String getItem(int i) {
-        return data.get(i).getSonginfo();
+        return list.get(i).toString();
     }
 
     @Override
@@ -42,13 +42,10 @@ public class LikeListAdapter extends BaseAdapter {
         if (view == null) {
             view = inflater.inflate(layout, viewGroup, false);
         }
-        LikeItem likeItem = data.get(i);
+        String likeItem = list.get(i);
 
         TextView songinfo = (TextView) view.findViewById(R.id.songinfo);
-        songinfo.setText(likeItem.getSonginfo());
-
-        TextView info = (TextView) view.findViewById(R.id.info);
-        info.setText(likeItem.getInfo());
+        songinfo.setText(likeItem.toString());
 
         return view;
     }
