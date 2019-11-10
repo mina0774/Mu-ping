@@ -412,7 +412,14 @@ public class MainActivity extends AppCompatActivity {
                 String word=find_adj(Double.parseDouble(colorResults[1]),Double.parseDouble(colorResults[2]));
                 Double[] final_value=combine_Attribute(valence_final_obj,arousal_final_obj);
                 String final_word=find_adj(final_value[0],final_value[1]);
-                result = result + word + " " + colorResults[1] + " , " + colorResults[2]+"\n\n"+final_value[0].toString()+","+final_value[1].toString()+" "+final_word;
+                String music[]=find_music(final_word);
+
+                result = result + word + " " + colorResults[1] + " , " + colorResults[2]+"\n\n"
+                        +final_value[0].toString()+","
+                        +final_value[1].toString()+" "
+                        +final_word+"\n\n"
+                        +music[0]+" - "
+                        +music[1];
 
                 imageDetail.setText(result);
             }
@@ -493,7 +500,6 @@ public class MainActivity extends AppCompatActivity {
             valence_pow = Math.pow((cursor.getDouble(1) - valence_obj), 2);
             arousal_pow = Math.pow((cursor.getDouble(2) - arousal_obj), 2);
             sum_pow = valence_pow + arousal_pow;
-            Log.d("ㅠㅠ",temp+" / "+sum_pow);
             if (sum_pow < temp) {
                 valence_real = cursor.getDouble(1);
                 arousal_real = cursor.getDouble(2);
@@ -698,5 +704,25 @@ public class MainActivity extends AppCompatActivity {
         Log.d("평균",""+final_v+","+final_a);
         Double[] final_va={final_v,final_a};
         return final_va;
+    }
+
+    public String[] find_music(String adj_final){
+        SQLite helper;
+        SQLiteDatabase db;
+        Cursor cursor;
+        String title="";
+        String performer="";
+        helper = new SQLite(this);
+        db = helper.getReadableDatabase();
+
+        cursor = db.rawQuery("SELECT title,performer FROM music_to_value_final where word='"+adj_final+"' order by random();",null);
+    if(cursor.moveToNext()) {
+    title = cursor.getString(0);
+    performer = cursor.getString(1);
+    }
+
+        String[] music={title,performer};
+
+        return music;
     }
 }
