@@ -59,9 +59,11 @@
         android:id="@+id/reco"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="추천 test"
+        android:text="임시 추천 list!"
         android:textSize="15dp"
-        android:layout_gravity="right|center" />
+        android:layout_marginTop="550dp"
+        android:layout_gravity="right"
+        android:layout_marginEnd="15dp"/>
 
     <RelativeLayout
         android:id="@+id/loadingPanel"

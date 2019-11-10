@@ -35,7 +35,6 @@ public class RecommendListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_recommend_list);
         ListView listView = (ListView) findViewById(R.id.recommend_list_view);
 
-
         ///////////////////////////////////////////////////////////////////////////////////////////////////
         //연동 전 임시로
         items = new ArrayList<>();
