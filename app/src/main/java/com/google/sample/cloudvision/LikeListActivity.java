@@ -67,25 +67,11 @@ public class LikeListActivity extends AppCompatActivity {
             }
         });
 
-
         /*
-        ///////////////////////////////////////////////////////////////////////////////////////////////////
-        //연동 전 임시로
-        data = new ArrayList<>();
-
-
-        LikeItem item1 = new LikeItem("song1-singer1", "info~~");
-        LikeItem item2 = new LikeItem("song2-singer2", "info~~~~~~~");
-
-        data.add(item1);
-        data.add(item2);
-
-        /////////////////////////////////////////////////////////////////////////////////////////////////////
-
         LikeListAdapter adapter = new LikeListAdapter(this, R.layout.like_item, data);
         listView.setAdapter(adapter);
-
         */
+
         //아이템 클릭하면
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
