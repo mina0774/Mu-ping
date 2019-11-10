@@ -65,7 +65,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="80dp"
         android:layout_gravity="center"
-        app:liked="true"
+        app:liked="false"
         app:like_drawable="@drawable/heart_on"
         app:unlike_drawable="@drawable/heart_off"
         app:dots_primary_color="@color/colorAccent"
