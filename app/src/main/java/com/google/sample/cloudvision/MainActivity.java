@@ -462,7 +462,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void callCloudVision(final Bitmap bitmap) {
         // Switch text to loading
-        mImageDetails.setText("사진 업로드 중입니다. 잠시만 기다려주세요.");
+        mImageDetails.setText("노래 추천을 위한 사진 분석 중입니다. 잠시만 기다려주세요.");
 
         // Do the real work in an async task, because we need to use the network anyway
         try {
