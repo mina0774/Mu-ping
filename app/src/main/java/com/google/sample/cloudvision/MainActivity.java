@@ -98,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
     List<Double> arousal_L=new ArrayList<Double>();
     Double valence_final_obj;
     Double arousal_final_obj;
+    Bitmap bitmap_;
     static String[] colorResults = {};
 
     private FirebaseAuth firebaseAuth;
@@ -131,6 +132,7 @@ public class MainActivity extends AppCompatActivity {
             valence_L.clear();
             arousal_H.clear();
             arousal_L.clear();
+            mMusicDetails.setText("추천 노래");
             builder.create().show();
         });
 
@@ -205,11 +207,12 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == GALLERY_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
             imagepath =getRealPathFromURI(data.getData());
-            uploadImage(data.getData());
+            bitmap_=uploadImage(data.getData());
         } else if (requestCode == CAMERA_IMAGE_REQUEST && resultCode == RESULT_OK) {
             Uri photoUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", getCameraFile());
-            uploadImage(photoUri);
+            bitmap_=uploadImage(photoUri);
         }
+
     }
 
     @Override
@@ -231,11 +234,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public void uploadImage(Uri uri) {
+    public Bitmap uploadImage(Uri uri) {
+        Bitmap bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
         if (uri != null) {
             try {
                 // scale the image to save on bandwidth
-                Bitmap bitmap = scaleBitmapDown(MediaStore.Images.Media.getBitmap(getContentResolver(), uri), MAX_DIMENSION);
+                bitmap = scaleBitmapDown(MediaStore.Images.Media.getBitmap(getContentResolver(), uri), MAX_DIMENSION);
                 int degree = getExifOrientation(imagepath);
                 bitmap = getRotatedBitmap(bitmap, degree);
                 callCloudVision(bitmap);
@@ -244,9 +248,9 @@ public class MainActivity extends AppCompatActivity {
                 mMainImage.setDrawingCacheEnabled(true);
                 mMainImage.buildDrawingCache();
 
-                ColorData a = new ColorData();
+                /*ColorData a = new ColorData();
                 int[] colorInts = a.getColorScale(bitmap);
-                colorResults = a.getSimilarScale(colorInts[0], colorInts[1], colorInts[2]);
+                colorResults = a.getSimilarScale(colorInts[0], colorInts[1], colorInts[2]);*/
             } catch (IOException e) {
                 Log.d(TAG, "Image picking failed because " + e.getMessage());
                 Toast.makeText(this, R.string.image_picker_error, Toast.LENGTH_LONG).show();
@@ -255,6 +259,7 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG, "Image picker gave us a null image.");
             Toast.makeText(this, R.string.image_picker_error, Toast.LENGTH_LONG).show();
         }
+        return bitmap;
     }
 
     //사진 회전 문제
@@ -412,14 +417,37 @@ public class MainActivity extends AppCompatActivity {
 
         protected void onPostExecute(String result) {
             MainActivity activity = mActivityWeakReference.get();
+            ColorData a = new ColorData();
+            int[] colorInts = a.getColorScale(bitmap_);
+            colorResults = a.getSimilarScale(colorInts[0], colorInts[1], colorInts[2]);
             if (activity != null && !activity.isFinishing()) {
                 TextView imageDetail = activity.findViewById(R.id.image_details);
+                List<Object> result_word = objectToAV();
+                Iterator iterator = result_word.iterator();
+                int count = 0;
+                int i = 0;
+                while (iterator.hasNext()) {
+                    String word = (String) (iterator.next());
+                    // valence,arousal 배열에 값 넣기
+                    if ((count % 3) == 1) {
+                        valence.add(Double.parseDouble(word));
+                    }
+                    if ((count % 3) == 2) {
+                        arousal.add(Double.parseDouble(word));
+                    }
+                    count += 1;
+                }
+                valence_final_obj=range()[0];
+                arousal_final_obj=range()[1];
+                String word_obj=find_adj(valence_final_obj,arousal_final_obj); //여기까지
+
                 String word=find_adj(Double.parseDouble(colorResults[1]),Double.parseDouble(colorResults[2]));
                 Double[] final_value=combine_Attribute(valence_final_obj,arousal_final_obj);
                 String final_word=find_adj(final_value[0],final_value[1]);
                 String music[]=find_music(final_word);
 
-                result = result + word + " " + colorResults[1] + " , " + colorResults[2]+"\n\n"
+                result = result + word_obj+" "+valence_final_obj+" , "+arousal_final_obj+"\nColor:\n" //여기까지
+                        + word + " " + colorResults[1] + " , " + colorResults[2]+"\n\n"
                         +final_value[0].toString()+","
                         +final_value[1].toString()+" "
                         +final_word;
@@ -528,27 +556,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             message.append("nothing");
         }
-        List<Object> result_word = objectToAV();
-        Iterator iterator = result_word.iterator();
-        int count = 0;
-        int i = 0;
-        while (iterator.hasNext()) {
-            String word = (String) (iterator.next());
-            // valence,arousal 배열에 값 넣기
-            if ((count % 3) == 1) {
-                valence.add(Double.parseDouble(word));
-            }
-            if ((count % 3) == 2) {
-                arousal.add(Double.parseDouble(word));
-            }
-            count += 1;
-        }
-        valence_final_obj=range()[0];
-        arousal_final_obj=range()[1];
-        String word=find_adj(valence_final_obj,arousal_final_obj);
-        message.append(word+" ");
-        message.append(valence_final_obj+ " , "+arousal_final_obj);
-        message.append("\nColor:\n");
+
         return message.toString();
     }
 
