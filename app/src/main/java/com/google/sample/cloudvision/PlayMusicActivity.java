@@ -2,38 +2,39 @@ package com.google.sample.cloudvision;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
+import android.util.Log;
 
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
 
-public class PlayMusicActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener{
+public class PlayMusicActivity extends YouTubeBaseActivity{
 
-        private YouTubePlayerView ytpv;
-        private YouTubePlayer ytp;
+        private YouTubePlayerView youtubeView;
+        YouTubePlayer.OnInitializedListener listener;
         final String serverKey = "AIzaSyA0B72xByDrqzb68bZ0fQylnasgHDdGbMw";
 
         @Override
-        protected void onCreate (Bundle savedInstanceState){
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_play_music);
-        ytpv = (YouTubePlayerView) findViewById(R.id.youtubeView);
-        ytpv.initialize(serverKey, this);
-    }
+        protected void onCreate (Bundle savedInstanceState) {
+                super.onCreate(savedInstanceState);
+                setContentView(R.layout.activity_play_music);
+                youtubeView = (YouTubePlayerView) findViewById(R.id.youtubeView);
+                listener = new YouTubePlayer.OnInitializedListener() {
+                        @Override
+                        public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
+                                Intent ID = getIntent();
+                                Log.d("gt", ID.getStringExtra("id"));
+                                youTubePlayer.loadVideo(ID.getStringExtra("id"));
+                        }
 
+                        @Override
+                        public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
 
-        @Override
-        public void onInitializationFailure (YouTubePlayer.Provider arg0, YouTubeInitializationResult arg1){
-        Toast.makeText(this, "Initialization Fail", Toast.LENGTH_LONG).show();
-    }
+                                Log.d("result",""+youTubeInitializationResult);
+                        }
+                };
+                youtubeView.initialize(serverKey,listener);
 
-        @Override
-        public void onInitializationSuccess (YouTubePlayer.Provider provider, YouTubePlayer player, boolean wasrestored){
-        ytp = player;
-        Intent gt = getIntent();
-        ytp.loadVideo(gt.getStringExtra("id"));
-    }
-
+        }
 }

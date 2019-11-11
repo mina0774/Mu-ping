@@ -24,9 +24,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:backgroundTint="#2D504C4C"
+        android:backgroundTint="#ffffff"
         android:src="@drawable/camera"
-        app:backgroundTint="#2D504C4C" />
+        app:backgroundTint="#ffffff" />
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -41,9 +41,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|start"
         android:layout_margin="@dimen/fab_margin"
+        android:backgroundTint="#ffffff"
         android:src="@drawable/user"
-        android:backgroundTint="#2D504C4C"
-        app:backgroundTint="#2D504C4C" />
+        app:backgroundTint="#ffffff" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab3"
@@ -51,9 +51,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center"
         android:layout_margin="@dimen/fab_margin"
+        android:backgroundTint="#ffffff"
         android:src="@drawable/like"
-        android:backgroundTint="#2D504C4C"
-        app:backgroundTint="#2D504C4C" />
+        app:backgroundTint="#ffffff" />
 
     <TextView
         android:id="@+id/reco"
