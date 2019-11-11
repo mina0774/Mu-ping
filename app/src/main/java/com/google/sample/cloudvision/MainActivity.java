@@ -415,6 +415,7 @@ public class MainActivity extends AppCompatActivity {
             return "Cloud Vision API request failed. Check logs for details.";
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.O)
         protected void onPostExecute(String result) {
             MainActivity activity = mActivityWeakReference.get();
             ColorData a = new ColorData();
