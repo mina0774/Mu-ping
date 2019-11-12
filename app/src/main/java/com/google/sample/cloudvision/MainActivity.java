@@ -752,8 +752,8 @@ public class MainActivity extends AppCompatActivity {
     public Double[] combine_Attribute(Double obj_v,Double obj_a){
         Double color_v=Double.parseDouble(colorResults[1]);
         Double color_a=Double.parseDouble(colorResults[2]);
-        Double color_weight=0.53333; //1차 조사 가중치
-        Double object_weight=0.46667;
+        Double color_weight=0.46667; //1차 조사 가중치
+        Double object_weight=0.53333;
         Double final_v=0.0;
         Double final_a=0.0;
        //같은 사분면일때
