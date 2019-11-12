@@ -39,7 +39,9 @@
         android:id="@+id/boom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/fab_margin"
+        android:layout_marginStart="12dp"
+        android:layout_marginBottom="9dp"
+        app:bmb_normalColor="#FFFFFF"
         android:layout_gravity="bottom|left" />
 
     <RelativeLayout
