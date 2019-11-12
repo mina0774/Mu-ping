@@ -12,6 +12,7 @@
         android:id="@+id/header_logo2"
         android:layout_width="403dp"
         android:layout_height="250dp"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="50dp"
         app:srcCompat="@drawable/logo" />
 
@@ -74,7 +75,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
         android:onClick="signIn"
-        android:background="@drawable/round_rectangle"
+        android:background="@drawable/login_button"
         android:text="로그인" />
 
     <Button
@@ -84,7 +85,7 @@
         android:layout_below="@id/signIn"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
-        android:background="@drawable/round_rectangle"
+        android:background="@drawable/register_button"
         android:onClick="register"
         android:text="회원가입" />
 
