@@ -75,8 +75,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
         android:onClick="signIn"
-        android:background="@drawable/login_button"
-        android:text="로그인" />
+        android:background="@drawable/login_button" />
 
     <Button
         android:id="@+id/btn_regis"
@@ -86,8 +85,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
         android:background="@drawable/register_button"
-        android:onClick="register"
-        android:text="회원가입" />
+        android:onClick="register" />
 
     <TextView
         android:id="@+id/textviewfindpw"
