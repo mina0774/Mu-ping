@@ -67,20 +67,20 @@
 
         <Button
             android:id="@+id/buttonLogout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="300dp"
+            android:layout_height="37dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="50dp"
             android:onClick="logout"
-            android:text="로그아웃" />
+            android:background="@drawable/logout_button" />
 
         <TextView
             android:id="@+id/textviewDelete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="300dp"
+            android:layout_height="37dp"
             android:layout_gravity="center_horizontal"
             android:layout_margin="16dp"
-            android:text="회원탈퇴"
+            android:background="@drawable/delete_button"
             android:onClick="delete"
             android:textColor="@color/colorAccent" />
     </LinearLayout>
