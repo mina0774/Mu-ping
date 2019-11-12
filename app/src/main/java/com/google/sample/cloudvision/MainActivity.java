@@ -39,7 +39,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,6 +61,13 @@ import com.google.api.services.vision.v1.model.Feature;
 import com.google.api.services.vision.v1.model.Image;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.nightonke.boommenu.BoomButtons.ButtonPlaceEnum;
+import com.nightonke.boommenu.BoomButtons.HamButton;
+import com.nightonke.boommenu.BoomButtons.OnBMClickListener;
+import com.nightonke.boommenu.BoomButtons.SimpleCircleButton;
+import com.nightonke.boommenu.BoomMenuButton;
+import com.nightonke.boommenu.ButtonEnum;
+import com.nightonke.boommenu.Piece.PiecePlaceEnum;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -71,6 +80,11 @@ import java.util.Locale;
 
 
 public class MainActivity extends AppCompatActivity {
+
+    //list
+    private ArrayList<SongItem> items = null;
+    public String title;
+
     private static final String CLOUD_VISION_API_KEY = BuildConfig.API_KEY;
     public static final String FILE_NAME = "temp.jpg";
     private static final String ANDROID_CERT_HEADER = "X-Android-Cert";
@@ -88,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView mImageDetails;
     private TextView mMusicDetails;
     private ImageView mMainImage;
+    private BoomMenuButton bmb;
 
     List<Object> ObjectArray = new ArrayList<Object>();
     List<Double> valence = new ArrayList<Double>();
@@ -115,9 +130,6 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUser user = firebaseAuth.getCurrentUser();
 
         FloatingActionButton fab = findViewById(R.id.fab);
-        FloatingActionButton fab2 = findViewById(R.id.fab2);
-        FloatingActionButton fab3 = findViewById(R.id.fab3);
-        TextView reco = findViewById(R.id.reco);
 
         fab.setOnClickListener(view -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -136,33 +148,93 @@ public class MainActivity extends AppCompatActivity {
             builder.create().show();
         });
 
-        //유저 프로파일로
-        fab2.setOnClickListener(view -> {
-            if(user == null) {
-                Toast.makeText(MainActivity.this, "로그인 되어있지 않습니다.", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(intent);
-                StartActivity _StartActivity = (StartActivity) StartActivity._StartActivity;
-                _StartActivity.finish();
-                finish();
+        ListView listView = (ListView) findViewById(R.id.recommend_list_view);
 
-            } else {
-                Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+        ///////////////////////////////////////////////////////////////////////////////////////////////////
+        //연동 전 임시로
+        items = new ArrayList<>();
+        SongItem item1 = new SongItem("song name1", "performer1");
+        SongItem item2 = new SongItem("song name2", "performer2");
+        SongItem item3 = new SongItem("song3", "performer3");
+        SongItem item4 = new SongItem("song4", "performer4");
+        SongItem item5 = new SongItem("song5", "performer5");
+
+        items.add(item1);
+        items.add(item2);
+        items.add(item3);
+        items.add(item4);
+        items.add(item5);
+        /////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        RecommendListAdapter adapter = new RecommendListAdapter(this, R.layout.recommend_item, items);
+        listView.setAdapter(adapter);
+
+        //리스트 아이템 클릭하면
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(getApplicationContext(), RecommendClickedActivity.class);
+                intent.putExtra("title", items.get(i).getTitle());
+                intent.putExtra("performer", items.get(i).getPerformer());
                 startActivity(intent);
             }
         });
 
-        //좋아한 곡 리스트
-        fab3.setOnClickListener(view -> {
-            Intent intent = new Intent(MainActivity.this, LikeListActivity.class);
-            startActivity(intent);
-        });
+        //프로필 & 좋아한곡, 로그아웃 액티비티 버튼
+        bmb = findViewById(R.id.boom);
+        bmb.setButtonEnum(ButtonEnum.Ham);
+        bmb.setPiecePlaceEnum(PiecePlaceEnum.DOT_3_1);
+        bmb.setButtonPlaceEnum(ButtonPlaceEnum.HAM_3);
 
-        reco.setOnClickListener(view -> {
-            Intent intent = new Intent(MainActivity.this, RecommendListActivity.class);
-            startActivity(intent);
-        });
+        for (int i=0; i<bmb.getPiecePlaceEnum().pieceNumber(); i++) {
+            int position = i;
+            //유저 프로파일
+            if (i==0) {
+                HamButton.Builder builder2 = new HamButton.Builder()
+                        .normalText("User Profile").listener(new OnBMClickListener() {
+                            @Override
+                            public void onBoomButtonClick(int index) {
+                                if(user == null) {
+                                    Toast.makeText(MainActivity.this, "로그인 되어있지 않습니다.", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                                    startActivity(intent);
+                                    StartActivity _StartActivity = (StartActivity) StartActivity._StartActivity;
+                                    _StartActivity.finish();
+                                    finish();
+                                } else {
+                                    Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                                    startActivity(intent);
+                                }
+                            }
+                        });
+                bmb.addBuilder(builder2);
+            } else if (i==1) {
+                //like 곡
+                HamButton.Builder builder2 = new HamButton.Builder().normalText("Favorite Song")
+                        .listener(new OnBMClickListener() {
+                            @Override
+                            public void onBoomButtonClick(int index) {
+                                Intent intent = new Intent(MainActivity.this, LikeListActivity.class);
+                                startActivity(intent);
+                            }
+                        });
+                bmb.addBuilder(builder2);
+            } else if (i==2) {
+                //로그아웃
+                HamButton.Builder builder2 = new HamButton.Builder().normalText("Logout")
+                        .listener(new OnBMClickListener() {
+                            @Override
+                            public void onBoomButtonClick(int index) {
+                                firebaseAuth.signOut();
+                                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        });
+                bmb.addBuilder(builder2);
+            }
 
+        }
 
         mImageDetails = findViewById(R.id.image_details);
         mMainImage = findViewById(R.id.main_image);

@@ -35,35 +35,12 @@
         android:background="#ffffff"
         app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab2"
+    <com.nightonke.boommenu.BoomMenuButton
+        android:id="@+id/boom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|start"
         android:layout_margin="@dimen/fab_margin"
-        android:backgroundTint="#ffffff"
-        android:src="@drawable/user"
-        app:backgroundTint="#ffffff" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center"
-        android:layout_margin="@dimen/fab_margin"
-        android:backgroundTint="#ffffff"
-        android:src="@drawable/like"
-        app:backgroundTint="#ffffff" />
-
-    <TextView
-        android:id="@+id/reco"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="임시 추천 list!"
-        android:textSize="15dp"
-        android:layout_marginTop="550dp"
-        android:layout_gravity="right"
-        android:layout_marginEnd="15dp"/>
+        android:layout_gravity="bottom|left" />
 
     <RelativeLayout
         android:id="@+id/loadingPanel"
@@ -76,5 +53,23 @@
             android:layout_height="wrap_content"
             android:indeterminate="true" />
     </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="350dp"
+        android:layout_marginBottom="70dp">
+        <ListView
+            android:id="@+id/recommend_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:choiceMode="singleChoice"
+            android:dividerHeight="1.5dp">
+        </ListView>
+
+    </LinearLayout>
+
+
 
 </android.support.design.widget.CoordinatorLayout>
