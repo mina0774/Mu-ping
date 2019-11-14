@@ -144,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
             arousal_H.clear();
             arousal_L.clear();
             items.clear();
-            Log.d("item",""+items);
+            listView.setVisibility(View.GONE);
             builder.create().show();
         });
 
@@ -516,12 +516,14 @@ public class MainActivity extends AppCompatActivity {
                 String final_word=find_adj(final_value[0],final_value[1]);
                 find_music(final_word);
 
-                result = result + word_obj+" "+valence_final_obj+" , "+arousal_final_obj+"\nColor:\n" //여기까지
+                result="";
+
+                /*result = result + word_obj+" "+valence_final_obj+" , "+arousal_final_obj+"\nColor:\n" //여기까지
                         + word + " " + colorResults[1] + " , " + colorResults[2]+"\n\n"
                         +final_value[0].toString()+","
                         +final_value[1].toString()+" "
                         +final_word;
-
+*/
                 imageDetail.setText(result);
 
                 findViewById(R.id.loadingPanel).setVisibility(View.GONE);
@@ -791,12 +793,14 @@ public class MainActivity extends AppCompatActivity {
     public void find_music(String adj_final){
         SQLite helper;
         SQLiteDatabase db;
+        helper = new SQLite(this);
         Cursor cursor;
         List<String> title=new ArrayList<String>();
         List<String> performer=new ArrayList<String>();
-        helper = new SQLite(this);
         int count=0;
         db = helper.getReadableDatabase();
+
+        listView.setVisibility(View.VISIBLE);
 
         cursor = db.rawQuery("SELECT title,performer FROM music_to_value_final where word='"+adj_final+"' order by random();",null);
         while(cursor.moveToNext()&&count<5) {
@@ -824,9 +828,4 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void music_play(View view){
-        Intent intent = new Intent(MainActivity.this, MusicListActivity.class);
-        intent.putExtra("music_info","");
-        startActivity(intent);
-    }
 }

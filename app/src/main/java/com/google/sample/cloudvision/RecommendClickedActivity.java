@@ -1,10 +1,10 @@
 package com.google.sample.cloudvision;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.widget.Button;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +26,8 @@ public class RecommendClickedActivity extends AppCompatActivity {
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference myRef = database.getReference("User");
     LikeButton likeCheck;
+    private TextView title;
+    private TextView performer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +38,8 @@ public class RecommendClickedActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        TextView title = (TextView) findViewById(R.id.tv_title);
-        TextView performer = (TextView) findViewById(R.id.tv_performer);
+        title = (TextView) findViewById(R.id.tv_title);
+        performer = (TextView) findViewById(R.id.tv_performer);
 
         title.setText(intent.getStringExtra("title"));
         performer.setText(intent.getStringExtra("performer"));
@@ -120,5 +122,9 @@ public class RecommendClickedActivity extends AppCompatActivity {
 
          */
     }
-
+    public void music_play(View view){
+        Intent intent = new Intent(RecommendClickedActivity.this, MusicListActivity.class);
+        intent.putExtra("music_info",title.getText().toString()+"-"+performer.getText().toString());
+        startActivity(intent);
+    }
 }
