@@ -275,7 +275,6 @@ public class MainActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == GALLERY_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
             imagepath =getRealPathFromURI(data.getData());
@@ -533,8 +532,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void callCloudVision(final Bitmap bitmap) {
         // Switch text to loading
-        mImageDetails.setText("노래 추천을 위한 사진 분석 중입니다. 잠시만 기다려주세요.");
-
+        mImageDetails.setText("노래 추천을 위한 사진 분석 중입니다.");
+        findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
         // Do the real work in an async task, because we need to use the network anyway
         try {
             AsyncTask<Object, Void, String> labelDetectionTask = new LableDetectionTask(this, prepareAnnotationRequest(bitmap));

@@ -3,6 +3,7 @@ package com.google.sample.cloudvision;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.TextView;
 
 import java.util.StringTokenizer;
@@ -28,5 +29,9 @@ public class ListClickedActivity extends AppCompatActivity {
         songInfo.setText(a);
         songInfo2.setText(b);
     }
-
+    public void music_play(View view){
+        Intent intent = new Intent(ListClickedActivity.this, MusicListActivity.class);
+        intent.putExtra("music_info",a+"-"+b);
+        startActivity(intent);
+    }
 }

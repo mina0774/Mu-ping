@@ -15,15 +15,6 @@
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
         android:src="@drawable/recommend_list" />
-    <ImageButton
-        android:id="@+id/playmusic"
-        android:layout_width="60dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_gravity="center"
-        android:onClick="music_play"
-        android:background="@drawable/round_rectangle"
-        app:srcCompat="@android:drawable/ic_media_play" />
 
 
     <LinearLayout
@@ -67,7 +58,16 @@
             android:text=" " />
 
     </LinearLayout>
-
+    <ImageButton
+        android:id="@+id/playmusic"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="right"
+        android:layout_marginRight="10dp"
+        android:onClick="music_play"
+        android:background="@drawable/round_rectangle"
+        app:srcCompat="@android:drawable/ic_media_play" />
     <com.like.LikeButton
         android:id="@+id/like_check"
         app:icon_type="heart"
