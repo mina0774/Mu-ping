@@ -1,20 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".MusicListActivity">
+    <RelativeLayout
+        android:id="@+id/loadingPanel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center" >
 
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true" />
+    </RelativeLayout>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/et_music"
-            android:layout_width="260dp"
+        <TextView
+            android:id="@+id/tv_music"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
@@ -23,20 +38,10 @@
             android:hint="노래 제목 - 가수"
             android:imeOptions="actionGo"
             android:singleLine="true"
-            android:textAlignment="center"></EditText>
-        <Button
-            android:id="@+id/search"
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:textAlignment="center"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:background="#808080"
-            android:gravity="center"
-            android:text="Search"
-            android:textColor="#ffffff" />
+            android:textAlignment="center"></TextView>
 
     </LinearLayout>
+
 
     <ListView
         android:id="@+id/searchlist"
@@ -44,3 +49,5 @@
         android:layout_height="500dp"/>
 
 </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

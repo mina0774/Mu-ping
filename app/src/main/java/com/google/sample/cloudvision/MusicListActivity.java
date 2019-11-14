@@ -10,8 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -35,8 +33,7 @@ import java.util.ArrayList;
 public class MusicListActivity extends AppCompatActivity {
 
     static DrawableManager DM=new DrawableManager();
-    private EditText et_music;
-    private Button search;
+    private TextView tv_music;
     AsyncTask<?,?,?> searchTask;
     ArrayList<SearchData> sdata=new ArrayList<SearchData>();
 
@@ -46,18 +43,13 @@ public class MusicListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_music_list);
-
+        findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
         String str=getIntent().getStringExtra("music_info");
-        et_music=(EditText)findViewById(R.id.et_music);
-        et_music.setText(str);
-        search=(Button)findViewById(R.id.search);
+        tv_music=(TextView) findViewById(R.id.tv_music);
+        tv_music.setText(str);
+        searchTask=new searchTask().execute();
 
-        search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                searchTask=new searchTask().execute();
-            }
-        });
+
     }
 
     private class searchTask extends  AsyncTask<Void,Void,Void>{
@@ -85,7 +77,7 @@ public class MusicListActivity extends AppCompatActivity {
     }
 
     public JSONObject getUtube() {
-       String music=et_music.getText().toString();
+       String music=tv_music.getText().toString();
         String ret="";
         for(int i=0;i<music.length();i++){
             if(music.charAt(i)==' '){
@@ -191,7 +183,7 @@ public class MusicListActivity extends AppCompatActivity {
             String new_url = sUrl + eUrl;
 
             DM.fetchDrawableOnThread(new_url, img);
-
+            findViewById(R.id.loadingPanel).setVisibility(View.GONE);
             v.setTag(position);
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
