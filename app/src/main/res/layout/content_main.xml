@@ -32,21 +32,22 @@
             <TextView
                 android:id="@+id/image_details"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_marginTop="@dimen/activity_horizontal_margin"
                 android:layout_marginBottom="10dp"
                 android:gravity="center_horizontal"
                 android:text="사진 버튼을 눌러 사진을 업로드해주세요." />
 
-            <TextView
-                android:id="@+id/music_details"
+            <ListView
+                android:id="@+id/recommend_list_view"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/activity_horizontal_margin"
-                android:gravity="center_horizontal"
-                android:background="@drawable/back"
-                android:text="추천 노래"
-                android:layout_marginBottom="10dp" />
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:choiceMode="singleChoice"
+                android:dividerHeight="1.5dp">
+            </ListView>
+
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -64,7 +64,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.nightonke.boommenu.BoomButtons.ButtonPlaceEnum;
 import com.nightonke.boommenu.BoomButtons.HamButton;
 import com.nightonke.boommenu.BoomButtons.OnBMClickListener;
-import com.nightonke.boommenu.BoomButtons.SimpleCircleButton;
 import com.nightonke.boommenu.BoomMenuButton;
 import com.nightonke.boommenu.ButtonEnum;
 import com.nightonke.boommenu.Piece.PiecePlaceEnum;
@@ -100,9 +99,10 @@ public class MainActivity extends AppCompatActivity {
 
     private String imagepath;
     private TextView mImageDetails;
-    private TextView mMusicDetails;
     private ImageView mMainImage;
     private BoomMenuButton bmb;
+    private ListView listView;
+    private RecommendListAdapter adapter;
 
     List<Object> ObjectArray = new ArrayList<Object>();
     List<Double> valence = new ArrayList<Double>();
@@ -124,7 +124,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        mMusicDetails=(TextView)findViewById(R.id.music_details);
 
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser user = firebaseAuth.getCurrentUser();
@@ -144,20 +143,21 @@ public class MainActivity extends AppCompatActivity {
             valence_L.clear();
             arousal_H.clear();
             arousal_L.clear();
-            mMusicDetails.setText("추천 노래");
+            items.clear();
+            Log.d("item",""+items);
             builder.create().show();
         });
 
-        ListView listView = (ListView) findViewById(R.id.recommend_list_view);
+        listView = (ListView) findViewById(R.id.recommend_list_view);
 
-        ///////////////////////////////////////////////////////////////////////////////////////////////////
-        //연동 전 임시로
+
+       ///////////////////////////////////////////////////////////////////////////////////////////////////
         items = new ArrayList<>();
-        SongItem item1 = new SongItem("song name1", "performer1");
-        SongItem item2 = new SongItem("song name2", "performer2");
-        SongItem item3 = new SongItem("song3", "performer3");
-        SongItem item4 = new SongItem("song4", "performer4");
-        SongItem item5 = new SongItem("song5", "performer5");
+      /*  SongItem item1 = new SongItem(" ", " ");
+        SongItem item2 = new SongItem(" ", " ");
+        SongItem item3 = new SongItem(" ", " ");
+        SongItem item4 = new SongItem(" ", " ");
+        SongItem item5 = new SongItem(" ", " ");
 
         items.add(item1);
         items.add(item2);
@@ -166,9 +166,9 @@ public class MainActivity extends AppCompatActivity {
         items.add(item5);
         /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        RecommendListAdapter adapter = new RecommendListAdapter(this, R.layout.recommend_item, items);
+        adapter = new RecommendListAdapter(this, R.layout.recommend_item, items);
         listView.setAdapter(adapter);
-
+*/
         //리스트 아이템 클릭하면
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -320,9 +320,6 @@ public class MainActivity extends AppCompatActivity {
                 mMainImage.setDrawingCacheEnabled(true);
                 mMainImage.buildDrawingCache();
 
-                /*ColorData a = new ColorData();
-                int[] colorInts = a.getColorScale(bitmap);
-                colorResults = a.getSimilarScale(colorInts[0], colorInts[1], colorInts[2]);*/
             } catch (IOException e) {
                 Log.d(TAG, "Image picking failed because " + e.getMessage());
                 Toast.makeText(this, R.string.image_picker_error, Toast.LENGTH_LONG).show();
@@ -517,7 +514,7 @@ public class MainActivity extends AppCompatActivity {
                 String word=find_adj(Double.parseDouble(colorResults[1]),Double.parseDouble(colorResults[2]));
                 Double[] final_value=combine_Attribute(valence_final_obj,arousal_final_obj);
                 String final_word=find_adj(final_value[0],final_value[1]);
-                String music[]=find_music(final_word);
+                find_music(final_word);
 
                 result = result + word_obj+" "+valence_final_obj+" , "+arousal_final_obj+"\nColor:\n" //여기까지
                         + word + " " + colorResults[1] + " , " + colorResults[2]+"\n\n"
@@ -526,7 +523,6 @@ public class MainActivity extends AppCompatActivity {
                         +final_word;
 
                 imageDetail.setText(result);
-                mMusicDetails.setText(music[0]+" - "+music[1]);
 
                 findViewById(R.id.loadingPanel).setVisibility(View.GONE);
             }
@@ -788,34 +784,49 @@ public class MainActivity extends AppCompatActivity {
                 final_a=obj_a;
             }
         }
-        Log.d("평균",""+final_v+","+final_a);
         Double[] final_va={final_v,final_a};
         return final_va;
     }
 
-    public String[] find_music(String adj_final){
+    public void find_music(String adj_final){
         SQLite helper;
         SQLiteDatabase db;
         Cursor cursor;
-        String title="";
-        String performer="";
+        List<String> title=new ArrayList<String>();
+        List<String> performer=new ArrayList<String>();
         helper = new SQLite(this);
+        int count=0;
         db = helper.getReadableDatabase();
 
         cursor = db.rawQuery("SELECT title,performer FROM music_to_value_final where word='"+adj_final+"' order by random();",null);
-    if(cursor.moveToNext()) {
-    title = cursor.getString(0);
-    performer = cursor.getString(1);
-    }
+        while(cursor.moveToNext()&&count<5) {
+            title.add(cursor.getString(0));
+            performer.add(cursor.getString(1));
+            count++;
+         }
 
-        String[] music={title,performer};
+        Log.d("title",""+title);
+        Log.d("perfo",""+performer);
+        SongItem item1 = new SongItem(title.get(0), performer.get(0));
+        SongItem item2 = new SongItem(title.get(1), performer.get(1));
+        SongItem item3 = new SongItem(title.get(2), performer.get(2));
 
-        return music;
+        items.add(item1);
+        items.add(item2);
+        items.add(item3);
+        Log.d("item,find",""+items);
+
+
+
+        adapter = new RecommendListAdapter(this, R.layout.recommend_item, items);
+        adapter.notifyDataSetChanged();
+        listView.setAdapter(adapter);
+
     }
 
     public void music_play(View view){
         Intent intent = new Intent(MainActivity.this, MusicListActivity.class);
-        intent.putExtra("music_info",  mMusicDetails.getText().toString());
+        intent.putExtra("music_info","");
         startActivity(intent);
     }
 }
