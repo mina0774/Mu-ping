@@ -31,7 +31,6 @@ public class StartActivity extends AppCompatActivity {
     //백버튼 두번 종료
     private BackPressCloseHandler backPressCloseHandler;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +44,10 @@ public class StartActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser user = firebaseAuth.getCurrentUser();
+
+        if (user != null) {
+            gotoLogin.setVisibility(View.INVISIBLE);
+        }
 
         backPressCloseHandler = new BackPressCloseHandler(this);
 
