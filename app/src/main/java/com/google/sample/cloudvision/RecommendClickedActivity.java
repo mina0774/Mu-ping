@@ -1,6 +1,7 @@
 package com.google.sample.cloudvision;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -35,6 +36,9 @@ public class RecommendClickedActivity extends AppCompatActivity {
         setContentView(R.layout.activity_recommend_clicked);
 
         likeCheck = findViewById(R.id.like_check);
+        likeCheck.setCircleStartColorRes(R.color.colorAnimation1);
+        likeCheck.setExplodingDotColorsRes(R.color.colorAnimation1, R.color.colorAnimation2);
+        likeCheck.setCircleEndColorRes(R.color.colorAnimation1);
 
         Intent intent = getIntent();
 
