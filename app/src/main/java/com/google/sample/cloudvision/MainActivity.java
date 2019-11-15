@@ -821,7 +821,27 @@ public class MainActivity extends AppCompatActivity {
         return final_va;
     }
 
-    public void find_music(String adj_final){
+    public String findCategory(Double v, Double a) {
+        String adj[] = {"aroused", "excited", "delighted", "happy", "pleased", "serene", "relaxed", "sleepy", "droopy", "bored", "depressed", "miserable", "frustrated", "distressed", "afraid", "tense"};
+        Double valence[] = {5.95, 8.11, 7.74, 8.47, 7.82, 6.9, 7.25, 4.36, 4.0, 2.95, 2.27, 2.6, 2.55, 3.38, 2.25, 2.75};
+        Double arousal[] = {7.3, 6.43, 5.0, 6.05, 4.25, 4.67, 2.49, 3.04, 3.18, 3.65, 4.25, 5.06, 5.4, 6.28, 5.12, 5.32};
+        Double min_dis = (v - valence[0]) * (v - valence[0]) + (a - arousal[0]) * (a - arousal[0]);
+        int categoryNumber = 0;
+
+        for (int i = 1; i < 16; i++) {
+            Double v_dis = (v - valence[i]) * (v - valence[i]);
+            Double a_dis = (a - arousal[i]) * (a - arousal[i]);
+            Double dis = v_dis + a_dis;
+            if(dis < min_dis) {
+                min_dis = dis;
+                categoryNumber = i;
+            }
+        }
+
+        return adj[categoryNumber];
+    }
+
+   public void find_music(String adj_final){
         SQLite helper;
         SQLiteDatabase db;
         helper = new SQLite(this);
