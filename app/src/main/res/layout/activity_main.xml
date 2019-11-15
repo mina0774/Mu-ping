@@ -65,6 +65,13 @@
 
     </LinearLayout>
 
+    <Switch
+        android:id="@+id/genre_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginTop="320dp"
+        android:layout_marginEnd="10dp" />
 
 
 </android.support.design.widget.CoordinatorLayout>

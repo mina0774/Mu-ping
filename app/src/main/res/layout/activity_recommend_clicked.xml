@@ -74,7 +74,7 @@
         app:icon_size="30dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="20dp"
         android:layout_gravity="center"
         app:liked="false"
         app:like_drawable="@drawable/heart_on"
@@ -84,5 +84,12 @@
         app:circle_end_color="@color/colorAccent"
         app:circle_start_color="@color/colorPrimary"
         app:anim_scale_factor="2" />
+
+    <ImageView
+        android:id="@+id/song_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_gravity="center_horizontal"/>
 
 </LinearLayout>

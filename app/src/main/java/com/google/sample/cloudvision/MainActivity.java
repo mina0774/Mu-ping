@@ -23,6 +23,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -40,8 +41,11 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RadioGroup;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -176,6 +180,13 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), RecommendClickedActivity.class);
                 intent.putExtra("title", items.get(i).getTitle());
                 intent.putExtra("performer", items.get(i).getPerformer());
+
+                //이미지 인텐트(Intent) 이동
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                Bitmap sendBitmap = ((BitmapDrawable)mMainImage.getDrawable()).getBitmap();
+                sendBitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
+                byte[] byteArray = stream.toByteArray();
+                intent.putExtra("image",byteArray);
                 startActivity(intent);
             }
         });
@@ -235,6 +246,18 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }
+        Switch sw = (Switch) findViewById(R.id.genre_switch);
+        sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                //check on
+                if (b) {
+
+
+                } else {
+                }
+            }
+        });
 
         mImageDetails = findViewById(R.id.image_details);
         mMainImage = findViewById(R.id.main_image);
