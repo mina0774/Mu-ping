@@ -582,6 +582,7 @@ public class MainActivity extends AppCompatActivity {
                 word.add(cursor.getString(2)); //arousal
             }
         }
+        Log.d("word",word+"");
         return word;
     }
 
@@ -794,8 +795,9 @@ public class MainActivity extends AppCompatActivity {
         SQLiteDatabase db;
         helper = new SQLite(this);
         Cursor cursor;
-        List<String> title=new ArrayList<String>();
-        List<String> performer=new ArrayList<String>();
+
+        String title;
+        String performer;
         int count=0;
         db = helper.getReadableDatabase();
 
@@ -803,23 +805,14 @@ public class MainActivity extends AppCompatActivity {
 
         cursor = db.rawQuery("SELECT title,performer FROM music_to_value_final where word='"+adj_final+"' order by random();",null);
         while(cursor.moveToNext()&&count<5) {
-            title.add(cursor.getString(0));
-            performer.add(cursor.getString(1));
+            title=cursor.getString(0);
+            performer=cursor.getString(1);
+            SongItem item = new SongItem(title, performer);
+            items.add(item);
             count++;
          }
 
-        Log.d("title",""+title);
-        Log.d("perfo",""+performer);
-        SongItem item1 = new SongItem(title.get(0), performer.get(0));
-        SongItem item2 = new SongItem(title.get(1), performer.get(1));
-        SongItem item3 = new SongItem(title.get(2), performer.get(2));
-
-        items.add(item1);
-        items.add(item2);
-        items.add(item3);
         Log.d("item,find",""+items);
-
-
 
         adapter = new RecommendListAdapter(this, R.layout.recommend_item, items);
         adapter.notifyDataSetChanged();
