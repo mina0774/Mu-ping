@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:backgroundTint="#ffffff"
+        android:backgroundTint="#000000"
         android:src="@drawable/camera"
         app:backgroundTint="#ffffff" />
 
@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_marginBottom="9dp"
-        app:bmb_normalColor="#FFFFFF"
+        app:bmb_normalColor="#000000"
         app:bmb_buttonRadius="25dp"
         android:layout_gravity="bottom|left" />
 
@@ -54,7 +54,8 @@
         <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:indeterminate="true" />
+            android:indeterminate="true"
+            android:indeterminateTint="#000000"/>
     </RelativeLayout>
 
     <LinearLayout

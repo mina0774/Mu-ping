@@ -22,6 +22,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.ExifInterface;
@@ -196,12 +197,15 @@ public class MainActivity extends AppCompatActivity {
         bmb.setButtonEnum(ButtonEnum.Ham);
         bmb.setPiecePlaceEnum(PiecePlaceEnum.DOT_3_1);
         bmb.setButtonPlaceEnum(ButtonPlaceEnum.HAM_3);
+        bmb.setDelay(0);
 
         for (int i=0; i<bmb.getPiecePlaceEnum().pieceNumber(); i++) {
             int position = i;
             //유저 프로파일
             if (i==0) {
                 HamButton.Builder builder2 = new HamButton.Builder()
+                        .normalColor(Color.WHITE)
+                        .normalTextColor(Color.BLACK)
                         .normalText("User Profile").listener(new OnBMClickListener() {
                             @Override
                             public void onBoomButtonClick(int index) {
@@ -222,6 +226,8 @@ public class MainActivity extends AppCompatActivity {
             } else if (i==1) {
                 //like 곡
                 HamButton.Builder builder2 = new HamButton.Builder().normalText("Favorite Song")
+                        .normalColor(Color.WHITE)
+                        .normalTextColor(Color.BLACK)
                         .listener(new OnBMClickListener() {
                             @Override
                             public void onBoomButtonClick(int index) {
@@ -233,6 +239,8 @@ public class MainActivity extends AppCompatActivity {
             } else if (i==2) {
                 //로그아웃
                 HamButton.Builder builder2 = new HamButton.Builder().normalText("Logout")
+                        .normalColor(Color.WHITE)
+                        .normalTextColor(Color.BLACK)
                         .listener(new OnBMClickListener() {
                             @Override
                             public void onBoomButtonClick(int index) {
