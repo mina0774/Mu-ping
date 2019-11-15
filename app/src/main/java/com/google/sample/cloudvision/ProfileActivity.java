@@ -51,6 +51,8 @@ public class ProfileActivity extends AppCompatActivity {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = firebaseDatabase.getReference("User");
 
+        findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
+
         if (user == null) {
             startActivity(new Intent(ProfileActivity.this, LoginActivity.class));
             finish();
@@ -65,6 +67,7 @@ public class ProfileActivity extends AppCompatActivity {
 
                         textViewUserName.setText(name);
                         textViewUserGenre.setText("선호 장르 : "+genre);
+                        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
                     }
 
                 }
