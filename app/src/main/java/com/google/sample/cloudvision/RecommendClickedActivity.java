@@ -75,7 +75,11 @@ public class RecommendClickedActivity extends AppCompatActivity {
         String Title = title.getText().toString();
         String Performer = performer.getText().toString();
 
-        StorageReference songRef = storageReference.child(Title+"_image");
+        firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        String uE = user.getEmail();
+
+        StorageReference songRef = storageReference.child(Title+"_image_"+uE);
 
         likeCheck.setOnLikeListener(new OnLikeListener() {
             @Override
