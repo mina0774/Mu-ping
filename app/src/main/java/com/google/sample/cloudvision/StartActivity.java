@@ -45,10 +45,6 @@ public class StartActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser user = firebaseAuth.getCurrentUser();
 
-        if (user != null) {
-            gotoLogin.setVisibility(View.INVISIBLE);
-        }
-
         backPressCloseHandler = new BackPressCloseHandler(this);
 
         gotoLogin.setOnClickListener(new View.OnClickListener() {
@@ -77,6 +73,17 @@ public class StartActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if(FirebaseAuth.getInstance().getCurrentUser() != null) {
+            gotoLogin.setVisibility(View.INVISIBLE);
+        } else {
+            gotoLogin.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
