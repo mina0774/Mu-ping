@@ -182,6 +182,7 @@ public class MainActivity extends AppCompatActivity {
             arousal_L.clear();
             items.clear();
             listView.setVisibility(View.GONE);
+            switch_g.setVisibility(View.GONE);
             builder.create().show();
         });
 
