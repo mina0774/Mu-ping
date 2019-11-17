@@ -66,18 +66,6 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/text_genre"
-        android:layout_gravity="right|center"
-        android:layout_marginBottom="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="genre_click"
-        android:textSize="13dp"
-        android:background="?attr/selectableItemBackground"
-        android:text="장르 반영"
-        android:layout_marginTop="80dp"/>
 
     <TextView
         android:id="@+id/final_w"
@@ -92,6 +80,18 @@
         android:layout_height="wrap_content"
         android:text=""
         android:layout_gravity="center|bottom"/>
+
+    <Switch
+        android:id="@+id/switch_genre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|center"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="75dp"
+        android:text="장르 반영"
+        android:textColor="#757575"
+        android:textSize="13dp" />
 
 
 </android.support.design.widget.CoordinatorLayout>

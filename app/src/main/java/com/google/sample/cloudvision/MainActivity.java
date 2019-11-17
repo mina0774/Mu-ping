@@ -96,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<SongItem> items = null;
     private TextView final_w;
     private TextView u_genre;
+    private Switch switch_g;
 
     private static final String CLOUD_VISION_API_KEY = BuildConfig.API_KEY;
     public static final String FILE_NAME = "temp.jpg";
@@ -110,7 +111,6 @@ public class MainActivity extends AppCompatActivity {
     public static final int CAMERA_PERMISSIONS_REQUEST = 2;
     public static final int CAMERA_IMAGE_REQUEST = 3;
 
-    private TextView genreTv;
     private String imagepath;
     private TextView mImageDetails;
     private ImageView mMainImage;
@@ -187,22 +187,8 @@ public class MainActivity extends AppCompatActivity {
 
         listView = (ListView) findViewById(R.id.recommend_list_view);
 
-       ///////////////////////////////////////////////////////////////////////////////////////////////////
         items = new ArrayList<>();
-      /*  SongItem item1 = new SongItem(" ", " ");
-        SongItem item2 = new SongItem(" ", " ");
-        SongItem item3 = new SongItem(" ", " ");
-        SongItem item4 = new SongItem(" ", " ");
-        SongItem item5 = new SongItem(" ", " ");
-        items.add(item1);
-        items.add(item2);
-        items.add(item3);
-        items.add(item4);
-        items.add(item5);
-        /////////////////////////////////////////////////////////////////////////////////////////////////////
-        adapter = new RecommendListAdapter(this, R.layout.recommend_item, items);
-        listView.setAdapter(adapter);
-*/
+
         //리스트 아이템 클릭하면
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -283,45 +269,60 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }
-        genreTv = findViewById(R.id.text_genre);
-        genreTv.setVisibility(View.GONE);
         mImageDetails = findViewById(R.id.image_details);
         mMainImage = findViewById(R.id.main_image);
         findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+
+        switch_g = findViewById(R.id.switch_genre);
+        switch_g.setVisibility(View.GONE);
+        //CheckState();
+        switch_g.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CheckState();
+            }
+        });
     }
 
-    public void genre_click(View view) {
-        items.clear();
+    private void CheckState(){
+        if(switch_g.isChecked()) {
+            items.clear();
 
-        String u_g = u_genre.getText().toString();
-        StringTokenizer sT = new StringTokenizer(u_g, ", ");
-        String g1 = sT.nextToken();
-        String g2 = sT.nextToken();
-        String g3 = sT.nextToken();
+            String u_g = u_genre.getText().toString();
+            StringTokenizer sT = new StringTokenizer(u_g, ", ");
+            String g1 = sT.nextToken();
+            String g2 = sT.nextToken();
+            String g3 = sT.nextToken();
 
-        SQLite helper;
-        SQLiteDatabase db;
-        helper = new SQLite(this);
-        Cursor cursor;
+            SQLite helper;
+            SQLiteDatabase db;
+            helper = new SQLite(this);
+            Cursor cursor;
 
-        String final_wo = final_w.getText().toString();
+            String final_wo = final_w.getText().toString();
 
-        String title;
-        String performer;
-        int count=0;
-        db = helper.getReadableDatabase();
-        //cursor = db.rawQuery("SELECT title,performer FROM music_to_value_final where ((word='"+final_wo+"') AND ((genre LIKE '%'"+g1+"'%') OR (genre LIKE '%POP%') OR (genre LIKE '%Country%'))) order by random();",null);
-        //cursor = db.rawQuery("SELECT title,performer FROM music_to_value_final where (word='"+final_wo+"') AND (genre LIKE '%"+g1+"%') order by random();",null);
-        cursor = db.rawQuery("SELECT title,performer FROM music_to_value_final where ((word='"+final_wo+"') AND ((genre LIKE '%"+g1+"%') OR (genre LIKE '%"+g2+"%') OR (genre LIKE '%"+g3+"%'))) order by random();",null);
-        while(cursor.moveToNext()&&count<5) {
-            title=cursor.getString(0);
-            performer=cursor.getString(1);
-            SongItem item = new SongItem(title, performer);
-            items.add(item);
-            count++;
+            String title;
+            String performer;
+            int count=0;
+            db = helper.getReadableDatabase();
+            //cursor = db.rawQuery("SELECT title,performer FROM music_to_value_final where ((word='"+final_wo+"') AND ((genre LIKE '%'"+g1+"'%') OR (genre LIKE '%POP%') OR (genre LIKE '%Country%'))) order by random();",null);
+            //cursor = db.rawQuery("SELECT title,performer FROM music_to_value_final where (word='"+final_wo+"') AND (genre LIKE '%"+g1+"%') order by random();",null);
+            cursor = db.rawQuery("SELECT title,performer FROM music_to_value_final where ((word='"+final_wo+"') AND ((genre LIKE '%"+g1+"%') OR (genre LIKE '%"+g2+"%') OR (genre LIKE '%"+g3+"%'))) order by random();",null);
+            while(cursor.moveToNext()&&count<5) {
+                title=cursor.getString(0);
+                performer=cursor.getString(1);
+                SongItem item = new SongItem(title, performer);
+                items.add(item);
+                count++;
+            }
+            adapter = new RecommendListAdapter(MainActivity.this, R.layout.recommend_item, items);
+            listView.setAdapter(adapter);
         }
-        adapter = new RecommendListAdapter(MainActivity.this, R.layout.recommend_item, items);
-        listView.setAdapter(adapter);
+        else{
+            items.clear();
+            String final_wo = final_w.getText().toString();
+            find_music(final_wo);
+        }
     }
 
     public void startGalleryChooser() {
@@ -609,7 +610,7 @@ public class MainActivity extends AppCompatActivity {
                 final_w = (TextView) findViewById(R.id.final_w);
                 final_w.setText(final_word);
                 final_w.setVisibility(View.GONE);
-                genreTv.setVisibility(View.VISIBLE);
+                switch_g.setVisibility(View.VISIBLE);
 
                 findViewById(R.id.loadingPanel).setVisibility(View.GONE);
             }
