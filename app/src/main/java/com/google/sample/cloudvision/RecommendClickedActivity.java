@@ -77,7 +77,10 @@ public class RecommendClickedActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser user = firebaseAuth.getCurrentUser();
-        String uE = user.getEmail();
+        String uE = "";
+        if(user != null) {
+            uE = user.getEmail();
+        }
 
         StorageReference songRef = storageReference.child(Title+"_image_"+uE);
 
