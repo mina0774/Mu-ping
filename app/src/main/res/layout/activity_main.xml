@@ -76,7 +76,8 @@
         android:onClick="genre_click"
         android:textSize="13dp"
         android:background="?attr/selectableItemBackground"
-        android:text="선호장르 보기" />
+        android:text="장르 반영"
+        android:layout_marginTop="80dp"/>
 
     <TextView
         android:id="@+id/final_w"
