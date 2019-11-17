@@ -1,5 +1,6 @@
 package com.google.sample.cloudvision;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -69,12 +70,10 @@ public class ProfileActivity extends AppCompatActivity {
                         textViewUserGenre.setText("선호 장르 : "+genre);
                         findViewById(R.id.loadingPanel).setVisibility(View.GONE);
                     }
-
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-
                 }
             });
 

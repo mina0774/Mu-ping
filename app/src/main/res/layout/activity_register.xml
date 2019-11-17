@@ -109,6 +109,14 @@
         android:textColor="#363636"
         android:textColorHint="#525252"/>
 
+    <LinearLayout
+        android:layout_below="@id/et_name"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#613F51B5"
+        android:layout_marginTop="6dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"/>
 
     <TextView
         android:id="@+id/text_genre"
@@ -118,7 +126,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginStart="25dp"
         android:layout_marginBottom="5dp"
-        android:text="선호하는 장르를 선택해주세요"
+        android:text="선호하는 장르를 선택해주세요 (최대 3개)"
         android:textColor="#B23F51B5"
         android:textSize="15dp"/>
 

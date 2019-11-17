@@ -66,6 +66,12 @@ import com.google.api.services.vision.v1.model.Feature;
 import com.google.api.services.vision.v1.model.Image;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.nightonke.boommenu.BoomButtons.ButtonPlaceEnum;
 import com.nightonke.boommenu.BoomButtons.HamButton;
 import com.nightonke.boommenu.BoomButtons.OnBMClickListener;
@@ -81,13 +87,15 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.StringTokenizer;
 
 
 public class MainActivity extends AppCompatActivity {
 
     //list
     private ArrayList<SongItem> items = null;
-    public String title;
+    private TextView final_w;
+    private TextView u_genre;
 
     private static final String CLOUD_VISION_API_KEY = BuildConfig.API_KEY;
     public static final String FILE_NAME = "temp.jpg";
@@ -102,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
     public static final int CAMERA_PERMISSIONS_REQUEST = 2;
     public static final int CAMERA_IMAGE_REQUEST = 3;
 
+    private TextView genreTv;
     private String imagepath;
     private TextView mImageDetails;
     private ImageView mMainImage;
@@ -132,6 +141,29 @@ public class MainActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser user = firebaseAuth.getCurrentUser();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = firebaseDatabase.getReference("User");
+
+        u_genre = (TextView) findViewById(R.id.tv_genre);
+
+        if (user == null) {
+            u_genre.setText("");
+        } else {
+            Query query = databaseReference.orderByChild("email").equalTo(user.getEmail());
+            query.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        String genre = "" + ds.child("genre").getValue();
+                        u_genre.setText(genre);
+                        u_genre.setVisibility(View.GONE);
+                    }
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                }
+            });
+        }
 
         FloatingActionButton fab = findViewById(R.id.fab);
 
@@ -155,7 +187,6 @@ public class MainActivity extends AppCompatActivity {
 
         listView = (ListView) findViewById(R.id.recommend_list_view);
 
-
        ///////////////////////////////////////////////////////////////////////////////////////////////////
         items = new ArrayList<>();
       /*  SongItem item1 = new SongItem(" ", " ");
@@ -163,14 +194,12 @@ public class MainActivity extends AppCompatActivity {
         SongItem item3 = new SongItem(" ", " ");
         SongItem item4 = new SongItem(" ", " ");
         SongItem item5 = new SongItem(" ", " ");
-
         items.add(item1);
         items.add(item2);
         items.add(item3);
         items.add(item4);
         items.add(item5);
         /////////////////////////////////////////////////////////////////////////////////////////////////////
-
         adapter = new RecommendListAdapter(this, R.layout.recommend_item, items);
         listView.setAdapter(adapter);
 */
@@ -254,23 +283,45 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }
-        Switch sw = (Switch) findViewById(R.id.genre_switch);
-        sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                //check on
-                if (b) {
-
-
-                } else {
-                }
-            }
-        });
-
+        genreTv = findViewById(R.id.text_genre);
+        genreTv.setVisibility(View.GONE);
         mImageDetails = findViewById(R.id.image_details);
         mMainImage = findViewById(R.id.main_image);
         findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+    }
 
+    public void genre_click(View view) {
+        items.clear();
+
+        String u_g = u_genre.getText().toString();
+        StringTokenizer sT = new StringTokenizer(u_g, ", ");
+        String g1 = sT.nextToken();
+        String g2 = sT.nextToken();
+        String g3 = sT.nextToken();
+
+        SQLite helper;
+        SQLiteDatabase db;
+        helper = new SQLite(this);
+        Cursor cursor;
+
+        String final_wo = final_w.getText().toString();
+
+        String title;
+        String performer;
+        int count=0;
+        db = helper.getReadableDatabase();
+        //cursor = db.rawQuery("SELECT title,performer FROM music_to_value_final where ((word='"+final_wo+"') AND ((genre LIKE '%'"+g1+"'%') OR (genre LIKE '%POP%') OR (genre LIKE '%Country%'))) order by random();",null);
+        //cursor = db.rawQuery("SELECT title,performer FROM music_to_value_final where (word='"+final_wo+"') AND (genre LIKE '%"+g1+"%') order by random();",null);
+        cursor = db.rawQuery("SELECT title,performer FROM music_to_value_final where ((word='"+final_wo+"') AND ((genre LIKE '%"+g1+"%') OR (genre LIKE '%"+g2+"%') OR (genre LIKE '%"+g3+"%'))) order by random();",null);
+        while(cursor.moveToNext()&&count<5) {
+            title=cursor.getString(0);
+            performer=cursor.getString(1);
+            SongItem item = new SongItem(title, performer);
+            items.add(item);
+            count++;
+        }
+        adapter = new RecommendListAdapter(MainActivity.this, R.layout.recommend_item, items);
+        listView.setAdapter(adapter);
     }
 
     public void startGalleryChooser() {
@@ -555,6 +606,10 @@ public class MainActivity extends AppCompatActivity {
                         +final_word;
 */
                 imageDetail.setText(result);
+                final_w = (TextView) findViewById(R.id.final_w);
+                final_w.setText(final_word);
+                final_w.setVisibility(View.GONE);
+                genreTv.setVisibility(View.VISIBLE);
 
                 findViewById(R.id.loadingPanel).setVisibility(View.GONE);
             }
@@ -842,6 +897,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
    public void find_music(String adj_final){
+
+       listView.setVisibility(View.VISIBLE);
         SQLite helper;
         SQLiteDatabase db;
         helper = new SQLite(this);
@@ -851,8 +908,6 @@ public class MainActivity extends AppCompatActivity {
         String performer;
         int count=0;
         db = helper.getReadableDatabase();
-
-        listView.setVisibility(View.VISIBLE);
 
         cursor = db.rawQuery("SELECT title,performer FROM music_to_value_final where word='"+adj_final+"' order by random();",null);
         while(cursor.moveToNext()&&count<5) {
