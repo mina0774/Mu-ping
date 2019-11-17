@@ -42,10 +42,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -291,10 +289,20 @@ public class MainActivity extends AppCompatActivity {
 
             String u_g = u_genre.getText().toString();
             StringTokenizer sT = new StringTokenizer(u_g, ", ");
+            int token_num=sT.countTokens();
+            String[] arr = new String[token_num];
+            Log.d("toke",""+sT.countTokens());
+            for(int i = 0; i < arr.length; i++)
+            {
+                arr[i] = sT.nextToken();
+                Log.d("toke11",""+arr[i]);
+            }
+
+            /*
             String g1 = sT.nextToken();
             String g2 = sT.nextToken();
             String g3 = sT.nextToken();
-
+*/
             SQLite helper;
             SQLiteDatabase db;
             helper = new SQLite(this);
@@ -306,9 +314,21 @@ public class MainActivity extends AppCompatActivity {
             String performer;
             int count=0;
             db = helper.getReadableDatabase();
-            //cursor = db.rawQuery("SELECT title,performer FROM music_to_value_final where ((word='"+final_wo+"') AND ((genre LIKE '%'"+g1+"'%') OR (genre LIKE '%POP%') OR (genre LIKE '%Country%'))) order by random();",null);
-            //cursor = db.rawQuery("SELECT title,performer FROM music_to_value_final where (word='"+final_wo+"') AND (genre LIKE '%"+g1+"%') order by random();",null);
-            cursor = db.rawQuery("SELECT title,performer FROM music_to_value_final where ((word='"+final_wo+"') AND ((genre LIKE '%"+g1+"%') OR (genre LIKE '%"+g2+"%') OR (genre LIKE '%"+g3+"%'))) order by random();",null);
+            if(token_num==1) {
+                cursor = db.rawQuery("SELECT title,performer FROM music_to_value_final where (word='" + final_wo + "') AND (genre LIKE '%" + arr[0] + "%')  order by random();", null);
+            }else if( token_num==2){
+                cursor = db.rawQuery("SELECT title,performer FROM music_to_value_final where ((word='" + final_wo + "') AND ((genre LIKE '%" + arr[0] + "%') OR (genre LIKE '%" + arr[1] + "%'))) order by random();", null);
+            }else {
+                cursor = db.rawQuery("SELECT title,performer FROM music_to_value_final where ((word='" + final_wo + "') AND ((genre LIKE '%" + arr[0] + "%') OR (genre LIKE '%" + arr[1] + "%') OR (genre LIKE '%" + arr[2] + "%'))) order by random();", null);
+            }
+
+            if(!cursor.moveToNext()){
+                performer="장르 반영 검색 결과가 없습니다.";
+                title="";
+                SongItem item=new SongItem(title,performer);
+                items.add(item);
+            }
+
             while(cursor.moveToNext()&&count<5) {
                 title=cursor.getString(0);
                 performer=cursor.getString(1);
