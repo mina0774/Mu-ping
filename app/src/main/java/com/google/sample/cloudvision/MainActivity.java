@@ -225,6 +225,11 @@ public class MainActivity extends AppCompatActivity {
         bmb.setPiecePlaceEnum(PiecePlaceEnum.DOT_3_1);
         bmb.setButtonPlaceEnum(ButtonPlaceEnum.HAM_3);
         bmb.setDelay(0);
+        if (user == null) {
+            bmb.setVisibility(View.INVISIBLE);
+        } else {
+            bmb.setVisibility(View.VISIBLE);
+        }
 
         for (int i=0; i<bmb.getPiecePlaceEnum().pieceNumber(); i++) {
             int position = i;
@@ -670,7 +675,7 @@ public class MainActivity extends AppCompatActivity {
                 final_w = (TextView) findViewById(R.id.final_w);
                 final_w.setText(final_word);
                 final_w.setVisibility(View.GONE);
-                switch_g.setVisibility(View.VISIBLE);
+                if (FirebaseAuth.getInstance().getCurrentUser() != null) switch_g.setVisibility(View.VISIBLE);
 
                 findViewById(R.id.loadingPanel).setVisibility(View.GONE);
             }
