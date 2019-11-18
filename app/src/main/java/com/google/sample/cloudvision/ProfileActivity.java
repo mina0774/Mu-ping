@@ -83,8 +83,11 @@ public class ProfileActivity extends AppCompatActivity {
 
     public void logout(View view) {
         firebaseAuth.signOut();
+        Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
+        startActivity(intent);
+        MainActivity _MainActivity = (MainActivity) MainActivity._MainActivity;
+        _MainActivity.finish();
         finish();
-        startActivity(new Intent(this, LoginActivity.class));
     }
 
     public void delete(View view) {

@@ -17,6 +17,7 @@
 package com.google.sample.cloudvision;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -90,7 +91,7 @@ import java.util.StringTokenizer;
 
 
 public class MainActivity extends AppCompatActivity {
-
+    public static Activity _MainActivity;
     //list
     private ArrayList<SongItem> items = null;
     private TextView final_w;
@@ -137,6 +138,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        _MainActivity = MainActivity.this;
 
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser user = firebaseAuth.getCurrentUser();
