@@ -80,9 +80,7 @@ public class RecommendClickedActivity extends AppCompatActivity {
         FirebaseUser user = firebaseAuth.getCurrentUser();
         if(user != null) {
             uE = user.getEmail();
-        } else {
-            likeCheck.setVisibility(View.GONE);
-        }
+
         StorageReference songRef = storageReference.child(Title+"_image_"+uE);
 
         likeCheck.setOnLikeListener(new OnLikeListener() {
@@ -168,7 +166,9 @@ public class RecommendClickedActivity extends AppCompatActivity {
 
             }
         });
-
+        } else {
+            likeCheck.setVisibility(View.GONE);
+        }
     }
     public void music_play(View view){
         Intent intent = new Intent(RecommendClickedActivity.this, MusicListActivity.class);
