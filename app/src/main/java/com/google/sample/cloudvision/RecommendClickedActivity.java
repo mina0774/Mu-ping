@@ -47,6 +47,7 @@ public class RecommendClickedActivity extends AppCompatActivity {
     private TextView title;
     private TextView performer;
     private ImageView song_image;
+    private String uE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,13 +78,11 @@ public class RecommendClickedActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser user = firebaseAuth.getCurrentUser();
-        String uE = user.getEmail();;
         if(user != null) {
-
+            uE = user.getEmail();
         } else {
             likeCheck.setVisibility(View.GONE);
         }
-
         StorageReference songRef = storageReference.child(Title+"_image_"+uE);
 
         likeCheck.setOnLikeListener(new OnLikeListener() {
@@ -164,7 +163,6 @@ public class RecommendClickedActivity extends AppCompatActivity {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-
                     }
                 });
 
