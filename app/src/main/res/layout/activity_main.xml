@@ -40,9 +40,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-        android:layout_marginBottom="9dp"
+        android:layout_marginBottom="7dp"
         app:bmb_normalColor="#000000"
-        app:bmb_buttonRadius="25dp"
+        app:bmb_buttonRadius="27dp"
         android:layout_gravity="bottom|left" />
 
     <RelativeLayout

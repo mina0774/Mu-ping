@@ -77,9 +77,11 @@ public class RecommendClickedActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser user = firebaseAuth.getCurrentUser();
-        String uE = "";
+        String uE = user.getEmail();;
         if(user != null) {
-            uE = user.getEmail();
+
+        } else {
+            likeCheck.setVisibility(View.GONE);
         }
 
         StorageReference songRef = storageReference.child(Title+"_image_"+uE);

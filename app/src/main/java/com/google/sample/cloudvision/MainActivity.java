@@ -18,6 +18,7 @@ package com.google.sample.cloudvision;
 
 import android.Manifest;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -139,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser user = firebaseAuth.getCurrentUser();
+
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = firebaseDatabase.getReference("User");
 
@@ -171,6 +173,15 @@ public class MainActivity extends AppCompatActivity {
                     .setMessage("사진을 선택해주세요")
                     .setPositiveButton("갤러리", (dialog, which) -> startGalleryChooser())
                     .setNegativeButton("카메라", (dialog, which) -> startCamera());
+            builder.setNeutralButton("취소", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    listView.setVisibility(View.VISIBLE);
+                    if (final_w!=null) {
+                        switch_g.setVisibility(View.VISIBLE);
+                    }
+                }
+            });
             ObjectArray.clear();
             valence.clear();
             arousal.clear();
@@ -178,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
             valence_L.clear();
             arousal_H.clear();
             arousal_L.clear();
-            items.clear();
+            //items.clear();
             listView.setVisibility(View.GONE);
             switch_g.setVisibility(View.GONE);
             builder.create().show();
@@ -227,9 +238,9 @@ public class MainActivity extends AppCompatActivity {
                                     Toast.makeText(MainActivity.this, "로그인 되어있지 않습니다.", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                                     startActivity(intent);
-                                    StartActivity _StartActivity = (StartActivity) StartActivity._StartActivity;
-                                    _StartActivity.finish();
-                                    finish();
+                                    //StartActivity _StartActivity = (StartActivity) StartActivity._StartActivity;
+                                    //_StartActivity.finish();
+                                    //finish();
                                 } else {
                                     Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
                                     startActivity(intent);
@@ -245,26 +256,50 @@ public class MainActivity extends AppCompatActivity {
                         .listener(new OnBMClickListener() {
                             @Override
                             public void onBoomButtonClick(int index) {
-                                Intent intent = new Intent(MainActivity.this, LikeListActivity.class);
-                                startActivity(intent);
+                                if(user == null) {
+                                    Toast.makeText(MainActivity.this, "로그인 되어있지 않습니다.", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                                    startActivity(intent);
+                                    // StartActivity _StartActivity = (StartActivity) StartActivity._StartActivity;
+                                    //_StartActivity.finish();
+                                    //finish();
+                                } else {
+                                    Intent intent = new Intent(MainActivity.this, LikeListActivity.class);
+                                    startActivity(intent);
+                                }
                             }
                         });
                 bmb.addBuilder(builder2);
             } else if (i==2) {
                 //로그아웃
-                HamButton.Builder builder2 = new HamButton.Builder().normalText("Logout")
-                        .normalColor(Color.WHITE)
-                        .normalTextColor(Color.BLACK)
-                        .listener(new OnBMClickListener() {
-                            @Override
-                            public void onBoomButtonClick(int index) {
-                                firebaseAuth.signOut();
-                                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                                startActivity(intent);
-                                finish();
-                            }
-                        });
-                bmb.addBuilder(builder2);
+                if (user==null) {
+                    HamButton.Builder builder2 = new HamButton.Builder().normalText("Login")
+                            .normalColor(Color.WHITE)
+                            .normalTextColor(Color.BLACK)
+                            .listener(new OnBMClickListener() {
+                                @Override
+                                public void onBoomButtonClick(int index) {
+                                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                                    startActivity(intent);
+                                    //finish();
+                                }
+                            });
+                    bmb.addBuilder(builder2);
+                } else {
+                    HamButton.Builder builder2 = new HamButton.Builder().normalText("Logout")
+                            .normalColor(Color.WHITE)
+                            .normalTextColor(Color.BLACK)
+                            .listener(new OnBMClickListener() {
+                                @Override
+                                public void onBoomButtonClick(int index) {
+                                    firebaseAuth.signOut();
+                                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            });
+                    bmb.addBuilder(builder2);
+                }
             }
 
         }
@@ -283,66 +318,68 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    //장르 스위치 상태체크
     private void CheckState(){
-        if(switch_g.isChecked()) {
-            items.clear();
+        String u_g = u_genre.getText().toString();
 
-            String u_g = u_genre.getText().toString();
-            StringTokenizer sT = new StringTokenizer(u_g, ", ");
-            int token_num=sT.countTokens();
-            String[] arr = new String[token_num];
-            Log.d("toke",""+sT.countTokens());
-            for(int i = 0; i < arr.length; i++)
-            {
-                arr[i] = sT.nextToken();
-                Log.d("toke11",""+arr[i]);
+        if (u_g=="") {
+            if (switch_g.isChecked()) {
+                Toast.makeText(this, "장르 반영을 할 수 없습니다.", Toast.LENGTH_SHORT).show();
             }
+        } else {
+            if(switch_g.isChecked()) {
+                items.clear();
 
-            /*
-            String g1 = sT.nextToken();
-            String g2 = sT.nextToken();
-            String g3 = sT.nextToken();
-*/
-            SQLite helper;
-            SQLiteDatabase db;
-            helper = new SQLite(this);
-            Cursor cursor;
+                StringTokenizer sT = new StringTokenizer(u_g, ", ");
+                int token_num=sT.countTokens();
+                String[] arr = new String[token_num];
+                Log.d("toke",""+sT.countTokens());
+                for(int i = 0; i < arr.length; i++)
+                {
+                    arr[i] = sT.nextToken();
+                    Log.d("toke11",""+arr[i]);
+                }
+                SQLite helper;
+                SQLiteDatabase db;
+                helper = new SQLite(this);
+                Cursor cursor;
 
-            String final_wo = final_w.getText().toString();
+                String final_wo = final_w.getText().toString();
 
-            String title;
-            String performer;
-            int count=0;
-            db = helper.getReadableDatabase();
-            if(token_num==1) {
-                cursor = db.rawQuery("SELECT title,performer FROM music_to_value_final where (word='" + final_wo + "') AND (genre LIKE '%" + arr[0] + "%')  order by random();", null);
-            }else if( token_num==2){
-                cursor = db.rawQuery("SELECT title,performer FROM music_to_value_final where ((word='" + final_wo + "') AND ((genre LIKE '%" + arr[0] + "%') OR (genre LIKE '%" + arr[1] + "%'))) order by random();", null);
-            }else {
-                cursor = db.rawQuery("SELECT title,performer FROM music_to_value_final where ((word='" + final_wo + "') AND ((genre LIKE '%" + arr[0] + "%') OR (genre LIKE '%" + arr[1] + "%') OR (genre LIKE '%" + arr[2] + "%'))) order by random();", null);
+                String title;
+                String performer;
+                int count=0;
+                db = helper.getReadableDatabase();
+                if(token_num==1) {
+                    cursor = db.rawQuery("SELECT title,performer FROM music_to_value_final where (word='" + final_wo + "') AND (genre LIKE '%" + arr[0] + "%')  order by random();", null);
+                }else if( token_num==2){
+                    cursor = db.rawQuery("SELECT title,performer FROM music_to_value_final where ((word='" + final_wo + "') AND ((genre LIKE '%" + arr[0] + "%') OR (genre LIKE '%" + arr[1] + "%'))) order by random();", null);
+                }else {
+                    cursor = db.rawQuery("SELECT title,performer FROM music_to_value_final where ((word='" + final_wo + "') AND ((genre LIKE '%" + arr[0] + "%') OR (genre LIKE '%" + arr[1] + "%') OR (genre LIKE '%" + arr[2] + "%'))) order by random();", null);
+                }
+
+                if(!cursor.moveToNext()){
+                    performer="장르 반영 검색 결과가 없습니다.";
+                    title="";
+                    SongItem item=new SongItem(title,performer);
+                    items.add(item);
+                }
+
+                while(cursor.moveToNext()&&count<5) {
+                    title=cursor.getString(0);
+                    performer=cursor.getString(1);
+                    SongItem item = new SongItem(title, performer);
+                    items.add(item);
+                    count++;
+                }
+                adapter = new RecommendListAdapter(MainActivity.this, R.layout.recommend_item, items);
+                listView.setAdapter(adapter);
             }
-
-            if(!cursor.moveToNext()){
-                performer="장르 반영 검색 결과가 없습니다.";
-                title="";
-                SongItem item=new SongItem(title,performer);
-                items.add(item);
+            else{
+                items.clear();
+                String final_wo = final_w.getText().toString();
+                find_music(final_wo);
             }
-
-            while(cursor.moveToNext()&&count<5) {
-                title=cursor.getString(0);
-                performer=cursor.getString(1);
-                SongItem item = new SongItem(title, performer);
-                items.add(item);
-                count++;
-            }
-            adapter = new RecommendListAdapter(MainActivity.this, R.layout.recommend_item, items);
-            listView.setAdapter(adapter);
-        }
-        else{
-            items.clear();
-            String final_wo = final_w.getText().toString();
-            find_music(final_wo);
         }
     }
 
@@ -919,8 +956,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
    public void find_music(String adj_final){
-
-       listView.setVisibility(View.VISIBLE);
+        items.clear();
+        listView.setVisibility(View.VISIBLE);
         SQLite helper;
         SQLiteDatabase db;
         helper = new SQLite(this);
