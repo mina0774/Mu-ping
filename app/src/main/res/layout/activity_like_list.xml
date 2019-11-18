@@ -13,12 +13,11 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="내가 좋아한 곡"
+        <ImageView
+            android:layout_width="300dp"
+            android:layout_height="37dp"
             android:layout_marginTop="20dp"
-            android:textSize="20dp"
+            android:background="@drawable/like_text"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="20dp"/>
 

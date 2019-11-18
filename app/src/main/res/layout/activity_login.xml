@@ -18,13 +18,13 @@
 
     <ImageView
         android:id="@+id/p_id2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/user"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_below="@+id/header_logo2"
+        android:layout_marginStart="40dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginStart="40dp" />
+        android:background="@drawable/user" />
 
     <EditText
         android:id="@+id/et_eamil2"
@@ -43,11 +43,11 @@
 
     <ImageView
         android:id="@+id/p_pw2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_below="@+id/p_id2"
         android:layout_marginStart="40dp"
-        android:layout_marginTop="19dp"
+        android:layout_marginTop="15dp"
         android:layout_marginEnd="10dp"
         android:background="@drawable/lock" />
 
