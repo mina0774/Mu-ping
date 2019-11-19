@@ -675,8 +675,11 @@ public class MainActivity extends AppCompatActivity {
                 final_w = (TextView) findViewById(R.id.final_w);
                 final_w.setText(final_word);
                 final_w.setVisibility(View.GONE);
-                switch_g.setVisibility(View.VISIBLE);
-
+                if (u_genre.getText().toString()=="") {
+                    switch_g.setVisibility(View.GONE);
+                } else {
+                    switch_g.setVisibility(View.VISIBLE);
+                }
                 findViewById(R.id.loadingPanel).setVisibility(View.GONE);
             }
         }
