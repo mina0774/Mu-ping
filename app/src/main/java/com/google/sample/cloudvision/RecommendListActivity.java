@@ -19,7 +19,7 @@ public class RecommendListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recommend_list);
-        ListView listView = (ListView) findViewById(R.id.recommend_list_view);
+        //ListView listView = (ListView) findViewById(R.id.recommend_list_view);
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////
         //연동 전 임시로
@@ -31,9 +31,7 @@ public class RecommendListActivity extends AppCompatActivity {
         items.add(item2);
         /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        RecommendListAdapter adapter = new RecommendListAdapter(this, R.layout.recommend_item, items);
-        listView.setAdapter(adapter);
-
+/*
         //아이템 클릭하면
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -45,5 +43,7 @@ public class RecommendListActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        Z
+ */
     }
 }
