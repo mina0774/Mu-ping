@@ -7,14 +7,22 @@
     android:orientation="vertical"
     android:background="#ffffff"
     tools:context=".RecommendClickedActivity">
-
-    <ImageView
-        android:layout_width="72dp"
-        android:layout_height="72dp"
-        android:layout_gravity="center"
+    <com.like.LikeButton
+        android:id="@+id/like_check"
+        app:icon_type="heart"
+        app:icon_size="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
-        android:src="@drawable/recommend_list" />
+        android:layout_gravity="center"
+        app:liked="false"
+        app:like_drawable="@drawable/heart_on"
+        app:unlike_drawable="@drawable/heart_off"
+        app:dots_primary_color="@color/colorAccent"
+        app:dots_secondary_color="@color/colorPrimary"
+        app:circle_end_color="@color/colorAccent"
+        app:circle_start_color="@color/colorPrimary"
+        app:anim_scale_factor="2" />
 
 
     <LinearLayout
@@ -68,22 +76,7 @@
         android:onClick="music_play"
         android:background="@drawable/round_rectangle"
         app:srcCompat="@android:drawable/ic_media_play" />
-    <com.like.LikeButton
-        android:id="@+id/like_check"
-        app:icon_type="heart"
-        app:icon_size="30dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_gravity="center"
-        app:liked="false"
-        app:like_drawable="@drawable/heart_on"
-        app:unlike_drawable="@drawable/heart_off"
-        app:dots_primary_color="@color/colorAccent"
-        app:dots_secondary_color="@color/colorPrimary"
-        app:circle_end_color="@color/colorAccent"
-        app:circle_start_color="@color/colorPrimary"
-        app:anim_scale_factor="2" />
+
 
     <ImageView
         android:id="@+id/song_image"

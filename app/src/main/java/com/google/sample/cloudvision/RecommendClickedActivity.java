@@ -3,7 +3,6 @@ package com.google.sample.cloudvision;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -46,6 +45,7 @@ public class RecommendClickedActivity extends AppCompatActivity {
     LikeButton likeCheck;
     private TextView title;
     private TextView performer;
+    private TextView genre;
     private ImageView song_image;
     private String uE;
 
@@ -63,10 +63,12 @@ public class RecommendClickedActivity extends AppCompatActivity {
 
         title = (TextView) findViewById(R.id.tv_title);
         performer = (TextView) findViewById(R.id.tv_performer);
+        genre=(TextView)findViewById(R.id.tv_genre);
         song_image = (ImageView) findViewById(R.id.song_image);
 
         title.setText(intent.getStringExtra("title"));
         performer.setText(intent.getStringExtra("performer"));
+        genre.setText(intent.getStringExtra("genre"));
 
         byte[] arr = getIntent().getByteArrayExtra("image");
         Bitmap image = BitmapFactory.decodeByteArray(arr, 0, arr.length);
@@ -75,6 +77,7 @@ public class RecommendClickedActivity extends AppCompatActivity {
 
         String Title = title.getText().toString();
         String Performer = performer.getText().toString();
+        String Genre=genre.getText().toString();
 
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser user = firebaseAuth.getCurrentUser();
@@ -128,7 +131,7 @@ public class RecommendClickedActivity extends AppCompatActivity {
                 myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        SongItem songItem = new SongItem(Title, Performer);
+                        SongItem songItem = new SongItem(Title, Performer,Genre);
                         StringTokenizer st = new StringTokenizer(userEmail, "@");
                         myRef.child(st.nextToken()).child("song").child(Title).setValue(songItem);
 

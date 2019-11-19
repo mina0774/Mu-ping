@@ -207,9 +207,10 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(getApplicationContext(), RecommendClickedActivity.class);
+                Intent intent = new Intent(getApplicationContext(),MusicListActivity.class);
                 intent.putExtra("title", items.get(i).getTitle());
                 intent.putExtra("performer", items.get(i).getPerformer());
+                intent.putExtra("genre",items.get(i).getGenre());
 
                 //이미지 인텐트(Intent) 이동
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -357,27 +358,30 @@ public class MainActivity extends AppCompatActivity {
 
                 String title;
                 String performer;
+                String genre;
                 int count=0;
                 db = helper.getReadableDatabase();
                 if(token_num==1) {
-                    cursor = db.rawQuery("SELECT title,performer FROM music_to_value_final where (word='" + final_wo + "') AND (genre LIKE '%" + arr[0] + "%')  order by random();", null);
+                    cursor = db.rawQuery("SELECT title,performer,genre FROM music_to_value_final where (word='" + final_wo + "') AND (genre LIKE '%" + arr[0] + "%')  order by random();", null);
                 }else if( token_num==2){
-                    cursor = db.rawQuery("SELECT title,performer FROM music_to_value_final where ((word='" + final_wo + "') AND ((genre LIKE '%" + arr[0] + "%') OR (genre LIKE '%" + arr[1] + "%'))) order by random();", null);
+                    cursor = db.rawQuery("SELECT title,performer,genre FROM music_to_value_final where ((word='" + final_wo + "') AND ((genre LIKE '%" + arr[0] + "%') OR (genre LIKE '%" + arr[1] + "%'))) order by random();", null);
                 }else {
-                    cursor = db.rawQuery("SELECT title,performer FROM music_to_value_final where ((word='" + final_wo + "') AND ((genre LIKE '%" + arr[0] + "%') OR (genre LIKE '%" + arr[1] + "%') OR (genre LIKE '%" + arr[2] + "%'))) order by random();", null);
+                    cursor = db.rawQuery("SELECT title,performer,genre FROM music_to_value_final where ((word='" + final_wo + "') AND ((genre LIKE '%" + arr[0] + "%') OR (genre LIKE '%" + arr[1] + "%') OR (genre LIKE '%" + arr[2] + "%'))) order by random();", null);
                 }
 
                 if(!cursor.moveToNext()){
                     performer="장르 반영 검색 결과가 없습니다.";
                     title="";
-                    SongItem item=new SongItem(title,performer);
+                    genre="";
+                    SongItem item=new SongItem(title,performer,genre);
                     items.add(item);
                 }
 
                 while(cursor.moveToNext()&&count<5) {
                     title=cursor.getString(0);
                     performer=cursor.getString(1);
-                    SongItem item = new SongItem(title, performer);
+                    genre=cursor.getString(2);
+                    SongItem item = new SongItem(title, performer,genre);
                     items.add(item);
                     count++;
                 }
@@ -977,14 +981,17 @@ public class MainActivity extends AppCompatActivity {
 
         String title;
         String performer;
+        String genre;
         int count=0;
         db = helper.getReadableDatabase();
 
-        cursor = db.rawQuery("SELECT title,performer FROM music_to_value_final where word='"+adj_final+"' order by random();",null);
+        cursor = db.rawQuery("SELECT title,performer,genre FROM music_to_value_final where word='"+adj_final+"' order by random();",null);
         while(cursor.moveToNext()&&count<5) {
             title=cursor.getString(0);
             performer=cursor.getString(1);
-            SongItem item = new SongItem(title, performer);
+            genre=cursor.getString(2);
+            Log.d("노래노래",title+" "+performer+" "+genre);
+            SongItem item = new SongItem(title, performer,genre);
             items.add(item);
             count++;
          }

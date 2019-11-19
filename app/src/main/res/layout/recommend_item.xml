@@ -40,6 +40,13 @@
                 android:text="가수"
                 android:textSize="15dp"
                 android:textColor="#4D4D4D" />
+
+            <TextView
+                android:id="@+id/song_genre"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_gravity="center|left"
+                android:textColor="#4D4D4D" />
         </LinearLayout>
 
 
