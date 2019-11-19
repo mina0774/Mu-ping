@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
                     for (DataSnapshot ds : dataSnapshot.getChildren()) {
                         String genre = "" + ds.child("genre").getValue();
                         u_genre.setText(genre);
-                        u_genre.setVisibility(View.GONE);
+                        u_genre.setVisibility(View.INVISIBLE);
                     }
                 }
                 @Override
@@ -180,7 +180,9 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(DialogInterface dialogInterface, int i) {
                     listView.setVisibility(View.VISIBLE);
                     if (final_w!=null) {
-                        switch_g.setVisibility(View.VISIBLE);
+                        if (u_genre.getText().toString()!="") {
+                            switch_g.setVisibility(View.VISIBLE);
+                        }
                     }
                 }
             });
@@ -192,8 +194,8 @@ public class MainActivity extends AppCompatActivity {
             arousal_H.clear();
             arousal_L.clear();
             //items.clear();
-            listView.setVisibility(View.GONE);
-            switch_g.setVisibility(View.GONE);
+            listView.setVisibility(View.INVISIBLE);
+            switch_g.setVisibility(View.INVISIBLE);
             builder.create().show();
         });
 
@@ -674,7 +676,7 @@ public class MainActivity extends AppCompatActivity {
                 imageDetail.setText(result);
                 final_w = (TextView) findViewById(R.id.final_w);
                 final_w.setText(final_word);
-                final_w.setVisibility(View.GONE);
+                final_w.setVisibility(View.INVISIBLE);
                 if (u_genre.getText().toString()=="") {
                     switch_g.setVisibility(View.GONE);
                 } else {
