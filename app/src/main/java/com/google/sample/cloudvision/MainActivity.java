@@ -675,7 +675,7 @@ public class MainActivity extends AppCompatActivity {
                 final_w = (TextView) findViewById(R.id.final_w);
                 final_w.setText(final_word);
                 final_w.setVisibility(View.GONE);
-                if (FirebaseAuth.getInstance().getCurrentUser() != null) switch_g.setVisibility(View.VISIBLE);
+                switch_g.setVisibility(View.VISIBLE);
 
                 findViewById(R.id.loadingPanel).setVisibility(View.GONE);
             }
