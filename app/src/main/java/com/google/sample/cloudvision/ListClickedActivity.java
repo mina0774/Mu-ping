@@ -9,16 +9,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
@@ -85,7 +82,7 @@ public class ListClickedActivity extends AppCompatActivity {
     }
 
     public void music_play(View view){
-        Intent intent = new Intent(ListClickedActivity.this, MusicListActivity.class);
+        Intent intent = new Intent(ListClickedActivity.this,LikeMusicPlayActivity.class);
         intent.putExtra("music_info",a+"-"+b);
         startActivity(intent);
     }
