@@ -40,6 +40,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -93,7 +95,9 @@ import java.util.StringTokenizer;
 public class MainActivity extends AppCompatActivity {
     public static Activity _MainActivity;
     //list
-    private ArrayList<SongItem> items = null;
+    private List<SongItem> items = new ArrayList<>();
+    private RecommendListAdapter adapter =
+            new RecommendListAdapter(MainActivity.this, items, R.layout.activity_main);
     private TextView final_w;
     private TextView u_genre;
     private Switch switch_g;
@@ -115,8 +119,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView mImageDetails;
     private ImageView mMainImage;
     private BoomMenuButton bmb;
-    private ListView listView;
-    private RecommendListAdapter adapter;
+    public RecyclerView recyclerView;
 
     List<Object> ObjectArray = new ArrayList<Object>();
     List<Double> valence = new ArrayList<Double>();
@@ -148,6 +151,15 @@ public class MainActivity extends AppCompatActivity {
 
         u_genre = (TextView) findViewById(R.id.tv_genre);
 
+
+        recyclerView =  findViewById(R.id.recommend_recyclerView);
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(MainActivity.this);
+        layoutManager.setOrientation(RecyclerView.VERTICAL);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
+
+
         if (user == null) {
             u_genre.setText("");
         } else {
@@ -178,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
             builder.setNeutralButton("취소", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    listView.setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(View.VISIBLE);
                     if (final_w!=null) {
                         if (u_genre.getText().toString()!="") {
                             switch_g.setVisibility(View.VISIBLE);
@@ -194,23 +206,20 @@ public class MainActivity extends AppCompatActivity {
             arousal_H.clear();
             arousal_L.clear();
             //items.clear();
-            listView.setVisibility(View.INVISIBLE);
+            recyclerView.setVisibility(View.INVISIBLE);
             switch_g.setVisibility(View.INVISIBLE);
             builder.create().show();
         });
 
-        listView = (ListView) findViewById(R.id.recommend_list_view);
-
-        items = new ArrayList<>();
 
         //리스트 아이템 클릭하면
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        adapter.setOnItemClickListener(new RecommendListAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemClick(View v, int position) {
                 Intent intent = new Intent(getApplicationContext(),MusicListActivity.class);
-                intent.putExtra("title", items.get(i).getTitle());
-                intent.putExtra("performer", items.get(i).getPerformer());
-                intent.putExtra("genre",items.get(i).getGenre());
+                intent.putExtra("title", items.get(position).getTitle());
+                intent.putExtra("performer", items.get(position).getPerformer());
+                intent.putExtra("genre",items.get(position).getGenre());
 
                 //이미지 인텐트(Intent) 이동
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -385,8 +394,7 @@ public class MainActivity extends AppCompatActivity {
                     items.add(item);
                     count++;
                 }
-                adapter = new RecommendListAdapter(MainActivity.this, R.layout.recommend_item, items);
-                listView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
             }
             else{
                 items.clear();
@@ -973,7 +981,7 @@ public class MainActivity extends AppCompatActivity {
 
    public void find_music(String adj_final){
         items.clear();
-        listView.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.VISIBLE);
         SQLite helper;
         SQLiteDatabase db;
         helper = new SQLite(this);
@@ -993,14 +1001,12 @@ public class MainActivity extends AppCompatActivity {
             Log.d("노래노래",title+" "+performer+" "+genre);
             SongItem item = new SongItem(title, performer,genre);
             items.add(item);
+            adapter.notifyDataSetChanged();
             count++;
          }
 
-        Log.d("item,find",""+items);
+        Log.d("item,find",""+items.size());
 
-        adapter = new RecommendListAdapter(this, R.layout.recommend_item, items);
-        adapter.notifyDataSetChanged();
-        listView.setAdapter(adapter);
 
     }
 
