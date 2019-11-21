@@ -26,6 +26,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.ExifInterface;
 import android.net.Uri;
@@ -117,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
 
     private String imagepath;
     private TextView mImageDetails;
+    private TextView survey;
     private ImageView mMainImage;
     private BoomMenuButton bmb;
     public RecyclerView recyclerView;
@@ -323,6 +325,8 @@ public class MainActivity extends AppCompatActivity {
 
         }
         mImageDetails = findViewById(R.id.image_details);
+        survey = findViewById(R.id.survey);
+        survey.setVisibility(View.INVISIBLE);
         mMainImage = findViewById(R.id.main_image);
         findViewById(R.id.loadingPanel).setVisibility(View.GONE);
 
@@ -946,6 +950,18 @@ public class MainActivity extends AppCompatActivity {
         }
         //다른 사분면일때
         else{
+            survey.setVisibility(View.VISIBLE);
+            survey.setPaintFlags(survey.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+            String object_adj=find_adj(valence_final_obj,arousal_final_obj);
+            String color_adj =find_adj(color_v, color_a);
+            survey.setOnClickListener(view -> {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder
+                        .setMessage("사진에 더 어울리는 형용사를 골라주세요")
+                        .setPositiveButton(object_adj, (dialog, which) -> object_count())
+                        .setNegativeButton(color_adj, (dialog, which) -> color_count());
+                builder.setNeutralButton("취소", null);
+            });
             if(color_weight>=object_weight){
                 final_v=color_v;
                 final_a=color_a;
@@ -957,6 +973,14 @@ public class MainActivity extends AppCompatActivity {
         }
         Double[] final_va={final_v,final_a};
         return final_va;
+    }
+
+    public void object_count() {
+
+    }
+
+    public void color_count() {
+
     }
 
     public String findCategory(Double v, Double a) {
