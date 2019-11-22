@@ -67,10 +67,9 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recommend_recyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_height="330dp"
                 android:choiceMode="singleChoice"
-                android:dividerHeight="1.5dp"/>
+                android:dividerHeight="1.5dp" />
 
 
 

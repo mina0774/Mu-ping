@@ -45,12 +45,11 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Button;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
@@ -330,7 +329,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
         mImageDetails = findViewById(R.id.image_details);
-        survey = findViewById(R.id.survey);
+        survey = (Button)findViewById(R.id.survey);
         survey.setVisibility(View.INVISIBLE);
         mMainImage = findViewById(R.id.main_image);
         findViewById(R.id.loadingPanel).setVisibility(View.GONE);
@@ -988,21 +987,6 @@ public class MainActivity extends AppCompatActivity {
         }
         //다른 사분면일때
         else{
-            survey.setVisibility(View.VISIBLE);
-            String object_adj=find_adj(valence_final_obj,arousal_final_obj);
-            String color_adj =find_adj(color_v, color_a);
-            String[] adj_ary = {object_adj, color_adj};
-            survey.setOnClickListener(view -> {
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder
-                        .setTitle("더 어울리는 형용사를 골라주세요")
-                        .setItems(adj_ary, (dialogInterface, i) -> {
-                            if(i == 0) object_count();
-                            if(i == 1) color_count();
-                            survey.setVisibility(View.INVISIBLE);
-                        });
-                builder.create().show();
-            });
 
             if(color_weight>=object_weight){
                 final_v=color_v;
@@ -1013,6 +997,21 @@ public class MainActivity extends AppCompatActivity {
                 final_a=obj_a;
             }
         }
+        survey.setVisibility(View.VISIBLE);
+        String object_adj=find_adj(valence_final_obj,arousal_final_obj);
+        String color_adj =find_adj(color_v, color_a);
+        String[] adj_ary = {object_adj, color_adj};
+        survey.setOnClickListener(view -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            builder
+                    .setTitle("더 어울리는 형용사를 골라주세요")
+                    .setItems(adj_ary, (dialogInterface, i) -> {
+                        if(i == 0) object_count();
+                        if(i == 1) color_count();
+                        survey.setVisibility(View.INVISIBLE);
+                    });
+            builder.create().show();
+        });
         Double[] final_va={final_v,final_a};
         return final_va;
     }
