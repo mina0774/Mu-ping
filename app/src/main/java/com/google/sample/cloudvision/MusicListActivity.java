@@ -31,6 +31,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -64,6 +66,7 @@ public class MusicListActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference myRef = database.getReference("User");
+    private DatabaseReference myRefS = database.getReference("Song");
     private FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
     StorageReference storageReference = firebaseStorage.getReference();
     LikeButton likeCheck;
@@ -167,6 +170,23 @@ public class MusicListActivity extends AppCompatActivity {
                         public void onCancelled(@NonNull DatabaseError databaseError) {
                         }
                     });
+
+                    //노래 like count
+                    DatabaseReference upRef = myRefS.child(Title).child("like count");
+                    upRef.runTransaction(new Transaction.Handler() {
+                        @Override
+                        public Transaction.Result doTransaction(MutableData currentData) {
+                            if (currentData.getValue() == null) {
+                                currentData.setValue(1);
+                            } else {
+                                currentData.setValue((Long) currentData.getValue() + 1);
+                            }
+                            return Transaction.success(currentData);
+                        }
+                        @Override
+                        public void onComplete(DatabaseError databaseError, boolean committed, DataSnapshot currentData) {
+                        }
+                    });
                 }
 
                 @Override
@@ -188,6 +208,24 @@ public class MusicListActivity extends AppCompatActivity {
                         public void onCancelled(@NonNull DatabaseError databaseError) {
                         }
                     });
+
+                    //노래 like count sub
+                    DatabaseReference upRef = myRefS.child(Title).child("like count");
+                    upRef.runTransaction(new Transaction.Handler() {
+                        @Override
+                        public Transaction.Result doTransaction(MutableData currentData) {
+                            if (currentData.getValue() == null) {
+                                currentData.setValue(null);
+                            } else {
+                                currentData.setValue((Long) currentData.getValue() - 1);
+                            }
+                            return Transaction.success(currentData);
+                        }
+                        @Override
+                        public void onComplete(DatabaseError databaseError, boolean committed, DataSnapshot currentData) {
+                        }
+                    });
+
                 }
             });
         } else {
