@@ -1,5 +1,6 @@
 package com.google.sample.cloudvision;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -26,6 +27,7 @@ import java.util.StringTokenizer;
 
 public class LikeListActivity extends AppCompatActivity {
 
+    public static Activity _LikeListActivity;
     //private ArrayList<LikeItem> data = null;
     ListView listView;
     FirebaseDatabase database;
@@ -40,6 +42,8 @@ public class LikeListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_like_list);
         getWindow().setStatusBarColor(Color.BLACK);
+
+        _LikeListActivity = LikeListActivity.this;
 
         likeItem = new LikeItem();
         listView = (ListView) findViewById(R.id.like_list_view);
