@@ -36,7 +36,7 @@ public class StartActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
-
+        getWindow().setStatusBarColor(Color.WHITE);
 
         _StartActivity = StartActivity.this;
 

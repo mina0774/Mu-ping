@@ -141,6 +141,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().hide();
         _MainActivity = MainActivity.this;
 
         firebaseAuth = FirebaseAuth.getInstance();
