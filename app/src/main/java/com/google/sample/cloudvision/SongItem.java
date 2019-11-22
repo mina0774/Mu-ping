@@ -6,6 +6,8 @@ public class SongItem {
     private String genre;
     private String adj;
 
+    public SongItem(){}
+
     public SongItem(String title, String performer, String genre, String adj) {
         this.title = title;
         this.performer = performer;

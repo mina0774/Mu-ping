@@ -46,6 +46,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -97,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
     public static Activity _MainActivity;
     //list
     private List<SongItem> items = new ArrayList<>();
+    ArrayList<SongItem> itemArrayList = new ArrayList<>();
     private RecommendListAdapter adapter =
             new RecommendListAdapter(MainActivity.this, items, R.layout.activity_main);
     private TextView final_w;
@@ -434,8 +436,12 @@ public class MainActivity extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
             } else {
                 items.clear();
-                String final_wo = final_w.getText().toString();
-                find_music(final_wo);
+                //String final_wo = final_w.getText().toString();
+                //find_music(final_wo);
+                for (int i=0; i<5; i++) {
+                    items.add(itemArrayList.get(i));
+                }
+                adapter.notifyDataSetChanged();
             }
         }
     }
@@ -1060,6 +1066,7 @@ public class MainActivity extends AppCompatActivity {
             genre=cursor.getString(2);
             Log.d("노래노래",title+" "+performer+" "+genre);
             SongItem item = new SongItem(title, performer,genre);
+            itemArrayList.add(item);
             items.add(item);
             adapter.notifyDataSetChanged();
             count++;
