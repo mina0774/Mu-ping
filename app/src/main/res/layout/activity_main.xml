@@ -62,18 +62,6 @@
                     android:textSize="13dp"
                     android:textColor="#000000"/>
 
-                <TextView
-                    android:id="@+id/survey"
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="25dp"
-                    android:gravity="center_horizontal"
-                    android:layout_gravity="left"
-                    android:text="설문조사"
-                    android:textSize="13dp"
-                    android:textColor="#000000"/>
-
             </FrameLayout>
 
             <android.support.v7.widget.RecyclerView
@@ -103,6 +91,15 @@
         android:backgroundTint="#000000"
         android:src="@drawable/camera"
         app:backgroundTint="#ffffff" />
+
+    <Button
+        android:id="@+id/survey"
+        android:layout_width="200dp"
+        android:layout_height="24.6dp"
+        android:layout_marginBottom="30dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:background="@drawable/survey_button"
+        android:textColor="#000000" />
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"

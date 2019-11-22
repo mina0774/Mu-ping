@@ -26,7 +26,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Matrix;
-import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.ExifInterface;
 import android.net.Uri;
@@ -46,12 +45,11 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Button;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
@@ -118,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
 
     private String imagepath;
     private TextView mImageDetails;
-    private TextView survey;
+    private Button survey;
     private ImageView mMainImage;
     private BoomMenuButton bmb;
     public RecyclerView recyclerView;
@@ -126,10 +124,10 @@ public class MainActivity extends AppCompatActivity {
     List<Object> ObjectArray = new ArrayList<Object>();
     List<Double> valence = new ArrayList<Double>();
     List<Double> arousal = new ArrayList<Double>();
-    List<Double> valence_H=new ArrayList<Double>();
-    List<Double> valence_L=new ArrayList<Double>();
-    List<Double> arousal_H=new ArrayList<Double>();
-    List<Double> arousal_L=new ArrayList<Double>();
+    List<Double> valence_H = new ArrayList<Double>();
+    List<Double> valence_L = new ArrayList<Double>();
+    List<Double> arousal_H = new ArrayList<Double>();
+    List<Double> arousal_L = new ArrayList<Double>();
     Double valence_final_obj;
     Double arousal_final_obj;
     Bitmap bitmap_;
@@ -154,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
         u_genre = (TextView) findViewById(R.id.tv_genre);
 
 
-        recyclerView =  findViewById(R.id.recommend_recyclerView);
+        recyclerView = findViewById(R.id.recommend_recyclerView);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(MainActivity.this);
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setHasFixedSize(true);
@@ -175,6 +173,7 @@ public class MainActivity extends AppCompatActivity {
                         u_genre.setVisibility(View.INVISIBLE);
                     }
                 }
+
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
                 }
@@ -193,8 +192,8 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     recyclerView.setVisibility(View.VISIBLE);
-                    if (final_w!=null) {
-                        if (u_genre.getText().toString()!="") {
+                    if (final_w != null) {
+                        if (u_genre.getText().toString() != "") {
                             switch_g.setVisibility(View.VISIBLE);
                         }
                     }
@@ -207,6 +206,7 @@ public class MainActivity extends AppCompatActivity {
             valence_L.clear();
             arousal_H.clear();
             arousal_L.clear();
+            survey.setVisibility(View.INVISIBLE);
             //items.clear();
             recyclerView.setVisibility(View.INVISIBLE);
             switch_g.setVisibility(View.INVISIBLE);
@@ -218,17 +218,17 @@ public class MainActivity extends AppCompatActivity {
         adapter.setOnItemClickListener(new RecommendListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
-                Intent intent = new Intent(getApplicationContext(),MusicListActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MusicListActivity.class);
                 intent.putExtra("title", items.get(position).getTitle());
                 intent.putExtra("performer", items.get(position).getPerformer());
-                intent.putExtra("genre",items.get(position).getGenre());
+                intent.putExtra("genre", items.get(position).getGenre());
 
                 //이미지 인텐트(Intent) 이동
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                Bitmap sendBitmap = ((BitmapDrawable)mMainImage.getDrawable()).getBitmap();
+                Bitmap sendBitmap = ((BitmapDrawable) mMainImage.getDrawable()).getBitmap();
                 sendBitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
                 byte[] byteArray = stream.toByteArray();
-                intent.putExtra("image",byteArray);
+                intent.putExtra("image", byteArray);
                 startActivity(intent);
             }
         });
@@ -245,17 +245,17 @@ public class MainActivity extends AppCompatActivity {
             bmb.setVisibility(View.VISIBLE);
         }
 
-        for (int i=0; i<bmb.getPiecePlaceEnum().pieceNumber(); i++) {
+        for (int i = 0; i < bmb.getPiecePlaceEnum().pieceNumber(); i++) {
             int position = i;
             //유저 프로파일
-            if (i==0) {
+            if (i == 0) {
                 HamButton.Builder builder2 = new HamButton.Builder()
                         .normalColor(Color.WHITE)
                         .normalTextColor(Color.BLACK)
                         .normalText("User Profile").listener(new OnBMClickListener() {
                             @Override
                             public void onBoomButtonClick(int index) {
-                                if(user == null) {
+                                if (user == null) {
                                     Toast.makeText(MainActivity.this, "로그인 되어있지 않습니다.", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                                     startActivity(intent);
@@ -269,7 +269,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                         });
                 bmb.addBuilder(builder2);
-            } else if (i==1) {
+            } else if (i == 1) {
                 //like 곡
                 HamButton.Builder builder2 = new HamButton.Builder().normalText("Favorite Song")
                         .normalColor(Color.WHITE)
@@ -277,7 +277,7 @@ public class MainActivity extends AppCompatActivity {
                         .listener(new OnBMClickListener() {
                             @Override
                             public void onBoomButtonClick(int index) {
-                                if(user == null) {
+                                if (user == null) {
                                     Toast.makeText(MainActivity.this, "로그인 되어있지 않습니다.", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                                     startActivity(intent);
@@ -291,9 +291,9 @@ public class MainActivity extends AppCompatActivity {
                             }
                         });
                 bmb.addBuilder(builder2);
-            } else if (i==2) {
+            } else if (i == 2) {
                 //로그아웃
-                if (user==null) {
+                if (user == null) {
                     HamButton.Builder builder2 = new HamButton.Builder().normalText("Login")
                             .normalColor(Color.WHITE)
                             .normalTextColor(Color.BLACK)
@@ -342,25 +342,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //장르 스위치 상태체크
-    private void CheckState(){
+    private void CheckState() {
         String u_g = u_genre.getText().toString();
 
-        if (u_g=="") {
+        if (u_g == "") {
             if (switch_g.isChecked()) {
                 Toast.makeText(this, "장르 반영을 할 수 없습니다.", Toast.LENGTH_SHORT).show();
             }
         } else {
-            if(switch_g.isChecked()) {
+            if (switch_g.isChecked()) {
                 items.clear();
 
                 StringTokenizer sT = new StringTokenizer(u_g, ", ");
-                int token_num=sT.countTokens();
+                int token_num = sT.countTokens();
                 String[] arr = new String[token_num];
-                Log.d("toke",""+sT.countTokens());
-                for(int i = 0; i < arr.length; i++)
-                {
+                Log.d("toke", "" + sT.countTokens());
+                for (int i = 0; i < arr.length; i++) {
                     arr[i] = sT.nextToken();
-                    Log.d("toke11",""+arr[i]);
+                    Log.d("toke11", "" + arr[i]);
                 }
                 SQLite helper;
                 SQLiteDatabase db;
@@ -372,35 +371,34 @@ public class MainActivity extends AppCompatActivity {
                 String title;
                 String performer;
                 String genre;
-                int count=0;
+                int count = 0;
                 db = helper.getReadableDatabase();
-                if(token_num==1) {
+                if (token_num == 1) {
                     cursor = db.rawQuery("SELECT title,performer,genre FROM music_to_value_final where (word='" + final_wo + "') AND (genre LIKE '%" + arr[0] + "%')  order by random();", null);
-                }else if( token_num==2){
+                } else if (token_num == 2) {
                     cursor = db.rawQuery("SELECT title,performer,genre FROM music_to_value_final where ((word='" + final_wo + "') AND ((genre LIKE '%" + arr[0] + "%') OR (genre LIKE '%" + arr[1] + "%'))) order by random();", null);
-                }else {
+                } else {
                     cursor = db.rawQuery("SELECT title,performer,genre FROM music_to_value_final where ((word='" + final_wo + "') AND ((genre LIKE '%" + arr[0] + "%') OR (genre LIKE '%" + arr[1] + "%') OR (genre LIKE '%" + arr[2] + "%'))) order by random();", null);
                 }
 
-                if(!cursor.moveToNext()){
-                    performer="장르 반영 검색 결과가 없습니다.";
-                    title="";
-                    genre="";
-                    SongItem item=new SongItem(title,performer,genre);
+                if (!cursor.moveToNext()) {
+                    performer = "장르 반영 검색 결과가 없습니다.";
+                    title = "";
+                    genre = "";
+                    SongItem item = new SongItem(title, performer, genre);
                     items.add(item);
                 }
 
-                while(cursor.moveToNext()&&count<5) {
-                    title=cursor.getString(0);
-                    performer=cursor.getString(1);
-                    genre=cursor.getString(2);
-                    SongItem item = new SongItem(title, performer,genre);
+                while (cursor.moveToNext() && count < 5) {
+                    title = cursor.getString(0);
+                    performer = cursor.getString(1);
+                    genre = cursor.getString(2);
+                    SongItem item = new SongItem(title, performer, genre);
                     items.add(item);
                     count++;
                 }
                 adapter.notifyDataSetChanged();
-            }
-            else{
+            } else {
                 items.clear();
                 String final_wo = final_w.getText().toString();
                 find_music(final_wo);
@@ -434,7 +432,7 @@ public class MainActivity extends AppCompatActivity {
 
     public File getCameraFile() {
         File dir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        imagepath=dir.getAbsolutePath()+"/"+FILE_NAME;
+        imagepath = dir.getAbsolutePath() + "/" + FILE_NAME;
         return new File(dir, FILE_NAME);
     }
 
@@ -443,11 +441,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == GALLERY_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
-            imagepath =getRealPathFromURI(data.getData());
-            bitmap_=uploadImage(data.getData());
+            imagepath = getRealPathFromURI(data.getData());
+            bitmap_ = uploadImage(data.getData());
         } else if (requestCode == CAMERA_IMAGE_REQUEST && resultCode == RESULT_OK) {
             Uri photoUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", getCameraFile());
-            bitmap_=uploadImage(photoUri);
+            bitmap_ = uploadImage(photoUri);
         }
 
     }
@@ -951,17 +949,21 @@ public class MainActivity extends AppCompatActivity {
         //다른 사분면일때
         else{
             survey.setVisibility(View.VISIBLE);
-            survey.setPaintFlags(survey.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
             String object_adj=find_adj(valence_final_obj,arousal_final_obj);
             String color_adj =find_adj(color_v, color_a);
+            String[] adj_ary = {object_adj, color_adj};
             survey.setOnClickListener(view -> {
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder
-                        .setMessage("사진에 더 어울리는 형용사를 골라주세요")
-                        .setPositiveButton(object_adj, (dialog, which) -> object_count())
-                        .setNegativeButton(color_adj, (dialog, which) -> color_count());
-                builder.setNeutralButton("취소", null);
+                        .setTitle("더 어울리는 형용사를 골라주세요")
+                        .setItems(adj_ary, (dialogInterface, i) -> {
+                            if(i == 0) object_count();
+                            if(i == 1) color_count();
+                            survey.setVisibility(View.INVISIBLE);
+                        });
+                builder.create().show();
             });
+
             if(color_weight>=object_weight){
                 final_v=color_v;
                 final_a=color_a;
