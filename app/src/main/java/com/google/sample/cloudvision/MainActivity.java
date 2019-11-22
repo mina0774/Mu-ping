@@ -711,9 +711,9 @@ public class MainActivity extends AppCompatActivity {
                 }
                 valence_final_obj=range()[0];
                 arousal_final_obj=range()[1];
-                String word_obj=find_adj(valence_final_obj,arousal_final_obj); //여기까지
+             /*   String word_obj=find_adj(valence_final_obj,arousal_final_obj); //여기까지
 
-                String word=find_adj(Double.parseDouble(colorResults[1]),Double.parseDouble(colorResults[2]));
+                String word=find_adj(Double.parseDouble(colorResults[1]),Double.parseDouble(colorResults[2]));*/
                 Double[] final_value=combine_Attribute(valence_final_obj,arousal_final_obj);
                 String final_word=find_adj(final_value[0],final_value[1]);
                 find_music(final_word);
@@ -998,8 +998,10 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         survey.setVisibility(View.VISIBLE);
-        String object_adj=find_adj(valence_final_obj,arousal_final_obj);
+        String object_adj=find_adj(obj_v,obj_a);
+        Log.d("object22",obj_v+" "+obj_a);
         String color_adj =find_adj(color_v, color_a);
+        Log.d("color22",color_v+" "+color_a);
         String[] adj_ary = {object_adj, color_adj};
         survey.setOnClickListener(view -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
