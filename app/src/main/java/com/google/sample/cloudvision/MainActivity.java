@@ -71,7 +71,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.nightonke.boommenu.BoomButtons.ButtonPlaceEnum;
 import com.nightonke.boommenu.BoomButtons.HamButton;
@@ -133,7 +135,9 @@ public class MainActivity extends AppCompatActivity {
     Bitmap bitmap_;
     static String[] colorResults = {};
 
-    private FirebaseAuth firebaseAuth;
+    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private DatabaseReference myRef = database.getReference("Song");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,7 +155,6 @@ public class MainActivity extends AppCompatActivity {
         DatabaseReference databaseReference = firebaseDatabase.getReference("User");
 
         u_genre = (TextView) findViewById(R.id.tv_genre);
-
 
         recyclerView = findViewById(R.id.recommend_recyclerView);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(MainActivity.this);
@@ -174,7 +177,6 @@ public class MainActivity extends AppCompatActivity {
                         u_genre.setVisibility(View.INVISIBLE);
                     }
                 }
-
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
                 }
@@ -182,7 +184,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         FloatingActionButton fab = findViewById(R.id.fab);
-
         fab.setOnClickListener(view -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             builder
@@ -223,6 +224,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("title", items.get(position).getTitle());
                 intent.putExtra("performer", items.get(position).getPerformer());
                 intent.putExtra("genre", items.get(position).getGenre());
+                intent.putExtra("adj",final_w.getText().toString());
 
                 //이미지 인텐트(Intent) 이동
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -397,6 +399,37 @@ public class MainActivity extends AppCompatActivity {
                     SongItem item = new SongItem(title, performer, genre);
                     items.add(item);
                     count++;
+
+                    //recommend song 저장
+                    myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            String Title = item.getTitle();
+                            String Performer = item.getPerformer();
+                            myRef.child(Title).child("performer").setValue(Performer);
+
+                            //노래 추천된 count
+                            DatabaseReference upRef = myRef.child(Title).child("count");
+                            upRef.runTransaction(new Transaction.Handler() {
+                                @Override
+                                public Transaction.Result doTransaction(MutableData currentData) {
+                                    if (currentData.getValue() == null) {
+                                        currentData.setValue(1);
+                                    } else {
+                                        currentData.setValue((Long) currentData.getValue() + 1);
+                                    }
+                                    return Transaction.success(currentData);
+                                }
+                                @Override
+                                public void onComplete(DatabaseError databaseError, boolean committed, DataSnapshot currentData) {
+                                }
+                            });
+
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                        }
+                    });
                 }
                 adapter.notifyDataSetChanged();
             } else {
@@ -1030,6 +1063,37 @@ public class MainActivity extends AppCompatActivity {
             items.add(item);
             adapter.notifyDataSetChanged();
             count++;
+
+            //recommend song 저장
+            myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    String Title = item.getTitle();
+                    String Performer = item.getPerformer();
+                    myRef.child(Title).child("performer").setValue(Performer);
+
+                    //노래 추천된 count
+                    DatabaseReference upRef = myRef.child(Title).child("count");
+                    upRef.runTransaction(new Transaction.Handler() {
+                        @Override
+                        public Transaction.Result doTransaction(MutableData currentData) {
+                            if (currentData.getValue() == null) {
+                                currentData.setValue(1);
+                            } else {
+                                currentData.setValue((Long) currentData.getValue() + 1);
+                            }
+                            return Transaction.success(currentData);
+                        }
+                        @Override
+                        public void onComplete(DatabaseError databaseError, boolean committed, DataSnapshot currentData) {
+                        }
+                    });
+
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                }
+            });
          }
 
         Log.d("item,find",""+items.size());

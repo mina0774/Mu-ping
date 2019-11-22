@@ -4,13 +4,20 @@ public class SongItem {
     private String title;
     private String performer;
     private String genre;
+    private String adj;
 
-    public SongItem(String title, String performer,String genre) {
+    public SongItem(String title, String performer, String genre, String adj) {
         this.title = title;
         this.performer = performer;
-        this.genre=genre;
+        this.genre = genre;
+        this.adj = adj;
     }
 
+    public SongItem(String title, String performer, String genre) {
+        this.title = title;
+        this.performer = performer;
+        this.genre = genre;
+    }
 
     public SongItem(String title, String performer) {
         this.title = title;
@@ -29,6 +36,10 @@ public class SongItem {
         return genre;
     }
 
+    public String getAdj() {
+        return adj;
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }
@@ -39,5 +50,9 @@ public class SongItem {
 
     public void setGenre(String genre) {
         this.performer =genre;
+    }
+
+    public void setAdj(String adj) {
+        this.adj = adj;
     }
 }

@@ -94,6 +94,8 @@ public class MusicListActivity extends AppCompatActivity {
         title.setText(intent.getStringExtra("title"));
         performer.setText(intent.getStringExtra("performer"));
         genre.setText(intent.getStringExtra("genre"));
+        String adj;
+        adj = intent.getStringExtra("adj");
 
         byte[] arr = getIntent().getByteArrayExtra("image");
         Bitmap image = BitmapFactory.decodeByteArray(arr, 0, arr.length);
@@ -102,6 +104,7 @@ public class MusicListActivity extends AppCompatActivity {
 
         String Title = title.getText().toString();
         String Performer = performer.getText().toString();
+        String Genre = genre.getText().toString();
 
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser user = firebaseAuth.getCurrentUser();
@@ -151,22 +154,17 @@ public class MusicListActivity extends AppCompatActivity {
                         }
                     });
 
-
                     myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            SongItem songItem = new SongItem(Title, Performer);
+                            SongItem songItem = new SongItem(Title, Performer, Genre, adj);
                             StringTokenizer st = new StringTokenizer(userEmail, "@");
                             myRef.child(st.nextToken()).child("song").child(Title).setValue(songItem);
 
-
                             Toast.makeText(MusicListActivity.this, "내가 좋아한곡 리스트에 추가되었습니다.", Toast.LENGTH_SHORT).show();
-
                         }
-
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
-
                         }
                     });
                 }
@@ -190,7 +188,6 @@ public class MusicListActivity extends AppCompatActivity {
                         public void onCancelled(@NonNull DatabaseError databaseError) {
                         }
                     });
-
                 }
             });
         } else {
