@@ -1,6 +1,7 @@
 package com.google.sample.cloudvision;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -38,6 +39,7 @@ public class LikeListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_like_list);
+        getWindow().setStatusBarColor(Color.BLACK);
 
         likeItem = new LikeItem();
         listView = (ListView) findViewById(R.id.like_list_view);

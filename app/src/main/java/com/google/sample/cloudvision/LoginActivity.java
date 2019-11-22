@@ -1,6 +1,7 @@
 package com.google.sample.cloudvision;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -50,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
 
         textViewFindPw = findViewById(R.id.textviewfindpw);
         textViewFindPw.setPaintFlags(textViewFindPw.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-
+        getWindow().setStatusBarColor(Color.BLACK);
 
     }
 
