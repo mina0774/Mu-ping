@@ -1804,6 +1804,17 @@ If I Had You@Frank Sinatra@lively@7.12@6.1@Jazz
 Runaway Love@Justin Bieber@lonely@2.67@4.37@Pop/Rock
 Who I Am@Nick Jonas@lonely@2.67@4.37@Pop/Rock
 Today Was a Fairytale@Taylor Swift@lyrical@6.84@3.81@Country
+Fireflies@Owl City@lyrical@6.84@3.81@Pop/Rock
+Close To You@Rihanna@lyrical@6.84@3.81@Pop/Rock
+Falling Fast@Avril Lavigne@lyrical@6.84@3.81@Pop/Rock
+I''m With You@Avril Lavigne@lyrical@6.84@3.81@Pop/Rock
+1901@Birdy@lyrical@6.84@3.81@Pop/Rock
+Time To Say Goodbye@Lauren Aquilina@lyrical@6.84@3.81@Pop/Rock
+Carry You@Novo Amor@lyrical@6.84@3.81@Pop/Rock
+Never Enough@Loren Allred@lyrical@6.84@3.81@Pop/Rock
+Only Hope@Mandy Moore@lyrical@6.84@3.81@Pop/Rock
+The Way I Feel Inside@Taron Egerton@lyrical@6.84@3.81@Pop/Rock
+When You Tell Me That You Love Me@Ashthon Jones@lyrical@6.84@3.81@Pop/Rock
 Sing Me Back Home@Merle Haggard@melancholy@3.74@4.13@Country
 I Fall to Pieces@Patsy Cline@melancholy@3.74@4.13@Country
 ''Til I Get It Right@Tammy Wynette@melancholy@3.74@4.13@Country
@@ -2498,6 +2509,21 @@ Fools Rush In@Frank Sinatra@refined@6.11@3.95@Vocal&Jazz
 Stella by Starlight@Frank Sinatra@refined@6.11@3.95@Vocal&Stage & Screen
 I Fall in Love Too Easily@Frank Sinatra@refined@6.11@3.95@Vocal&Stage & Screen
 That''s When Your Heartaches Begin@Elvis Presley@refined@6.11@3.95@Pop/Rock
+South@Galimatias@refined@6.11@3.95@Electronic
+Smile More@Syd@refined@6.11@3.95@R&B
+Favorite@Avalon Young@refined@6.11@3.95@R&B
+Thinking Bout You@Emily Afton@refined@6.11@3.95@Pop/Rock
+Blue Light@Emily King@refined@6.11@3.95@Pop/Rock
+Sundays (feat.Lonny)@Jon Vinyl@refined@6.11@3.95@Pop/Rock
+Frozen Chocolate Cake@Renee Book@refined@6.11@3.95@Pop/Rock
+Ocean@Native@reflective@5.57@3.38@Pop/Rock
+Over and Over Again@Ariana Grande@reflective@5.57@3.38@Pop/Rock
+As Long As You Love Me@Erato@reflective@5.57@3.38@&Pop/Rock
+I''m Not The Only One@Sam Smith@reflective@5.57@3.38@Pop/Rock
+come out and play@Billie Eilish@reflective@5.57@3.38@Pop/Rock
+listen before i go@Billie Eilish@reflective@5.57@3.38@Country&Pop/Rock
+One More Light@Linkin Park@reflective@5.57@3.38@Country&Pop/Rock
+Sorry@Halsey@reflective@5.57@3.38@Country&Pop/Rock
 He Stopped Loving Her Today@George Jones@reflective@5.57@3.38@Country
 A Good Year for the Roses@George Jones@reflective@5.57@3.38@Country
 She''s Got You@Patsy Cline@reflective@5.57@3.38@Country
@@ -2532,7 +2558,6 @@ I Threw It All Away@Bob Dylan@reflective@5.57@3.38@Pop/Rock
 Sorry Seems to Be the Hardest Word@Elton John@reflective@5.57@3.38@Pop/Rock
 I''ll Come Running@Brian Eno@reflective@5.57@3.38@Pop/Rock
 Pretty Ballerina@The Left Banke@reflective@5.57@3.38@Pop/Rock
-Flowers of Guatemala@R.E.M.@reflective@5.57@3.38@Pop/Rock
 Get Gone@Fiona Apple@reflective@5.57@3.38@Pop/Rock
 If You See Her, Say Hello@Bob Dylan@reflective@5.57@3.38@Pop/Rock
 Throwing It All Away@Genesis@reflective@5.57@3.38@Pop/Rock
@@ -2544,7 +2569,6 @@ People Get Ready@The Impressions@reflective@5.57@3.38@R&B
 Reflections@Diana Ross & the Supremes@reflective@5.57@3.38@R&B
 For Your Precious Love@The Impressions@reflective@5.57@3.38@R&B
 Never Dreamed You''d Leave in Summer@Stevie Wonder@reflective@5.57@3.38@R&B
-Set Adrift on Memory Bliss@P.M. Dawn@reflective@5.57@3.38@R&B&Rap
 In the Wee Small Hours of the Morning@Frank Sinatra@reflective@5.57@3.38@Vocal&Jazz
 Only the Lonely@Nelson Riddle@reflective@5.57@3.38@Vocal&Jazz
 Taillights Blue@Alan Jackson@regretful@3.1@4.56@Country
@@ -2633,7 +2657,6 @@ Day Dreaming@Aretha Franklin@relaxed@7.25@2.49@R&B
 Share Your Love with Me@Aretha Franklin@relaxed@7.25@2.49@R&B
 Every Beat of My Heart@Gladys Knight & the Pips@relaxed@7.25@2.49@R&B&Jazz
 Every Beat of My Heart@Gladys Knight & the Pips@relaxed@7.25@2.49@R&B&Jazz
-Set Adrift on Memory Bliss@P.M. Dawn@relaxed@7.25@2.49@R&B&Rap
 Gin and Juice@Dat Nigga Daz@relaxed@7.25@2.49@Rap
 The Things We Did Last Summer@Frank Sinatra@relaxed@7.25@2.49@Vocal
 The Things We Did Last Summer@Frank Sinatra@relaxed@7.25@2.49@Vocal
@@ -2674,7 +2697,6 @@ Just a Closer Walk with Thee@Patsy Cline@reverent@5.44@3.88@Country&Religious
 The Troublemaker@Willie Nelson@reverent@5.44@3.88@Country&Religious
 Silent Night@Elvis Presley@reverent@5.44@3.88@Holiday
 Frosty the Snowman@Thomas Kinkade@reverent@5.44@3.88@Holiday&Country
-Frosty the Snowman@Willie Nelson@reverent@5.44@3.88@Holiday&Country
 Blue Christmas@Willie Nelson@reverent@5.44@3.88@Holiday&Country
 Winter Wonderland@Willie Nelson@reverent@5.44@3.88@Holiday&Country
 White Christmas@Willie Nelson@reverent@5.44@3.88@Holiday&Country
@@ -2691,6 +2713,14 @@ I Believe in You@Bob Dylan@reverent@5.44@3.88@Pop/Rock
 Gotta Serve Somebody@Bob Dylan@reverent@5.44@3.88@Pop/Rock
 Every Grain of Sand@Bob Dylan@reverent@5.44@3.88@Pop/Rock
 Bird Song@Grateful Dead@reverent@5.44@3.88@Pop/Rock
+Worried Shoes@Karen O@reverent@5.44@3.88@Pop/Rock
+Across The Ocean@Azure Ray@reverent@5.44@3.88@Pop/Rock
+Little Green@Joni Mitchell@reverent@5.44@3.88@Pop/Rock
+Bad Guy Now@Erlen Oye@reverent@5.44@3.88@Pop/Rock
+Hello Stranger@Barbara Lewis@reverent@5.44@3.88@Pop/Rock
+City of Stars@Ryan Gosling@reverent@5.44@3.88@Pop/Rock
+A Lovely Night@Ryan Gosling@reverent@5.44@3.88@Pop/Rock
+Start A Fire@John Legend@reverent@5.44@3.88@Pop/Rock
 It Ain''t Over ''Til It''s Over@Lenny Kravitz@reverent@5.44@3.88@Pop/Rock
 Angel@Aretha Franklin@reverent@5.44@3.88@Pop/Rock&R&B
 Slow Train@Bob Dylan@reverent@5.44@3.88@Pop/Rock&Religious
@@ -4142,10 +4172,17 @@ On Impulse@Sonny Rollins@thoughtful@7.26@2.55@Jazz&Stage & Screen
 He''s Younger Than You Are@Sonny Rollins@thoughtful@7.26@2.55@Jazz&Stage & Screen
 Alfie''s Theme@Sonny Rollins@thoughtful@7.26@2.55@Jazz&Stage & Screen
 Poor Butterfly@Sonny Rollins@thoughtful@7.26@2.55@Jazz&Vocal
-Misterioso@Sonny Rollins@thoughtful@7.26@2.55@Jazz&Vocal
 Night and Day@Joe Pass@thoughtful@7.26@2.55@Jazz&Vocal
 How Are Things in Glocca Morra?@Sonny Rollins@thoughtful@7.26@2.55@Jazz&Vocal
 Peace Dream@Ringo Starr@thoughtful@7.26@2.55@Pop/Rock
+Ocean@Native@thoughtful@7.26@2.55@Pop/Rock
+Over and Over Again@Ariana Grande@thoughtful@7.26@2.55@Pop/Rock
+As Long As You Love Me@Erato@thoughtful@7.26@2.55@Pop/Rock
+I''m Not The Only One@Sam Smith@thoughtful@7.26@2.55@Pop/Rock
+come out and play@Billie Eilish@thoughtful@7.26@2.55@Pop/Rock
+listen before i go@Billie Eilish@thoughtful@7.26@2.55@Pop/Rock
+One More Light@Linkin Park@thoughtful@7.26@2.55@Pop/Rock
+Sorry@Halsey@thoughtful@7.26@2.55@Pop/Rock
 Love Is the End@Keane@thoughtful@7.26@2.55@Pop/Rock
 You Haven''t Told Me Anything@Keane@thoughtful@7.26@2.55@Pop/Rock
 The Lovers Are Losing@Keane@thoughtful@7.26@2.55@Pop/Rock
