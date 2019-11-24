@@ -123,6 +123,8 @@ public class MainActivity extends AppCompatActivity {
     private ImageView mMainImage;
     private BoomMenuButton bmb;
     public RecyclerView recyclerView;
+    private Integer color_num;
+    private Integer obj_num;
 
     List<Object> ObjectArray = new ArrayList<Object>();
     List<Double> valence = new ArrayList<Double>();
@@ -133,6 +135,8 @@ public class MainActivity extends AppCompatActivity {
     List<Double> arousal_L = new ArrayList<Double>();
     Double valence_final_obj;
     Double arousal_final_obj;
+    Double color_weight;
+    Double object_weight;
     Bitmap bitmap_;
     static String[] colorResults = {};
 
@@ -342,6 +346,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 CheckState();
+            }
+        });
+
+        surveyRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    color_num =dataSnapshot.child("color_count").getValue(Integer.class);
+                    obj_num = dataSnapshot.child("object_count").getValue(Integer.class);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
     }
@@ -712,9 +727,6 @@ public class MainActivity extends AppCompatActivity {
                 }
                 valence_final_obj=range()[0];
                 arousal_final_obj=range()[1];
-             /*   String word_obj=find_adj(valence_final_obj,arousal_final_obj); //여기까지
-
-                String word=find_adj(Double.parseDouble(colorResults[1]),Double.parseDouble(colorResults[2]));*/
                 Double[] final_value=combine_Attribute(valence_final_obj,arousal_final_obj);
                 String final_word=find_adj(final_value[0],final_value[1]);
                 find_music(final_word);
@@ -961,8 +973,10 @@ public class MainActivity extends AppCompatActivity {
     public Double[] combine_Attribute(Double obj_v,Double obj_a){
         Double color_v=Double.parseDouble(colorResults[1]);
         Double color_a=Double.parseDouble(colorResults[2]);
-        Double color_weight=0.474306; //2차 조사 가중치
-        Double object_weight=0.525694;
+        Log.d("colornum",""+color_num);
+        Log.d("objnum",""+obj_num);
+        color_weight=(double)(1366+color_num)/(2880+color_num+obj_num);
+        object_weight=(double)(1514+obj_num)/(2880+color_num+obj_num);
         Double final_v=0.0;
         Double final_a=0.0;
        //같은 사분면일때
