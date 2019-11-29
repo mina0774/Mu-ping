@@ -76,7 +76,6 @@ public class RegisterActivity extends AppCompatActivity {
         s13 = findViewById(R.id.s_13);        s14 = findViewById(R.id.s_14);        s15 = findViewById(R.id.s_15);
         s16 = findViewById(R.id.s_16);        s17 = findViewById(R.id.s_17);        s18 = findViewById(R.id.s_18);
         s19 = findViewById(R.id.s_19);        s20 = findViewById(R.id.s_20);        s21 = findViewById(R.id.s_21);
-
     }
 
     public void singUp(View view) {
@@ -85,7 +84,7 @@ public class RegisterActivity extends AppCompatActivity {
         pwcheck = editTextPwcheck.getText().toString();
         uname = editName.getText().toString();
 
-        if(isValidEmail() && isValidPasswd()) {
+        if(isValidEmail() && isValidPasswd() && ischN()) {
             createUser(email, password);
         }
     }
@@ -98,6 +97,33 @@ public class RegisterActivity extends AppCompatActivity {
             return false;
         } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             // 이메일 형식 불일치
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    // 장르 체크 갯수
+    private int chN() {
+        CheckBox[] checkBoxes = {s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17, s18, s19, s20, s21};
+        int c=0;
+        for (int i=0; i<21; i++) {
+            if (checkBoxes[i].isChecked()) {
+                c++;
+            }
+        }
+        return c;
+    }
+
+    private boolean ischN() {
+        CheckBox[] checkBoxes = {s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17, s18, s19, s20, s21};
+        if (chN()>=4) {
+            Toast.makeText(RegisterActivity.this, "장르는 최대 3개만 입력 가능합니다.", Toast.LENGTH_SHORT).show();
+            for (int i=0; i<21; i++) {
+                if (checkBoxes[i].isChecked()) {
+                    checkBoxes[i].setChecked(false);
+                }
+            }
             return false;
         } else {
             return true;
