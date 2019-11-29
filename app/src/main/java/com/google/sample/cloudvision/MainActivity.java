@@ -1014,9 +1014,7 @@ public class MainActivity extends AppCompatActivity {
         }
         survey.setVisibility(View.VISIBLE);
         String object_adj=find_adj(obj_v,obj_a);
-        Log.d("object22",obj_v+" "+obj_a);
         String color_adj =find_adj(color_v, color_a);
-        Log.d("color22",color_v+" "+color_a);
         String[] adj_ary = {object_adj, color_adj};
         survey.setOnClickListener(view -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
