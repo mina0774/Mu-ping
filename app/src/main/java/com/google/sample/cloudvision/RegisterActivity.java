@@ -84,7 +84,7 @@ public class RegisterActivity extends AppCompatActivity {
         pwcheck = editTextPwcheck.getText().toString();
         uname = editName.getText().toString();
 
-        if(isValidEmail() && isValidPasswd() && ischN()) {
+        if(isValidEmail() && isValidPasswd() && ischN() && isName()) {
             createUser(email, password);
         }
     }
@@ -103,6 +103,12 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
+    private boolean isName() {
+        if (uname=="") {
+            return false;
+        }else return true;
+    }
+
     // 장르 체크 갯수
     private int chN() {
         CheckBox[] checkBoxes = {s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17, s18, s19, s20, s21};
@@ -117,7 +123,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private boolean ischN() {
         CheckBox[] checkBoxes = {s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17, s18, s19, s20, s21};
-        if (chN()>=4) {
+        if (chN()>3) {
             Toast.makeText(RegisterActivity.this, "장르는 최대 3개만 입력 가능합니다.", Toast.LENGTH_SHORT).show();
             for (int i=0; i<21; i++) {
                 if (checkBoxes[i].isChecked()) {
@@ -125,9 +131,11 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             }
             return false;
-        } else {
+        } else if (chN()==0) {
+            Toast.makeText(RegisterActivity.this, "장르를 체크해주세요.(1~3개)", Toast.LENGTH_SHORT).show();
+            return false;
+        } else
             return true;
-        }
     }
 
     // 비밀번호 유효성 검사
