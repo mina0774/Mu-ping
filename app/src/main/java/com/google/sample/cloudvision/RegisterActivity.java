@@ -18,6 +18,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.lang.reflect.Array;
@@ -43,6 +44,7 @@ public class RegisterActivity extends AppCompatActivity {
     private String password = "";
     private String pwcheck = "";
     private String uname = "";
+    private boolean idEx;
 
     // 장르 체크박스
     private CheckBox s1;    private CheckBox s2;    private CheckBox s3;    private CheckBox s4;
@@ -84,11 +86,27 @@ public class RegisterActivity extends AppCompatActivity {
         pwcheck = editTextPwcheck.getText().toString();
         uname = editName.getText().toString();
 
-        if(isValidEmail() && isValidPasswd() && ischN() && isName()) {
-            createUser(email, password);
-        }
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = firebaseDatabase.getReference("User");
+        StringTokenizer st = new StringTokenizer(email, "@");
+        databaseReference = databaseReference.child(st.nextToken());
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                if (user!=null) {
+                    Toast.makeText(RegisterActivity.this, "이미 존재하는 아이디입니다", Toast.LENGTH_SHORT).show();
+                } else {
+                    if(isValidEmail() && isValidPasswd() && ischN() && isName()) {
+                        createUser(email, password);
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
     }
-
 
     // 이메일 유효성 검사
     private boolean isValidEmail() {
@@ -101,6 +119,29 @@ public class RegisterActivity extends AppCompatActivity {
         } else {
             return true;
         }
+    }
+
+    //이메일 아이디 중복검사
+    private void isID() {
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = firebaseDatabase.getReference("User");
+
+        StringTokenizer stringTokenizer = new StringTokenizer(email, "@");
+        String _email = stringTokenizer.nextToken();
+
+        Query query = databaseReference.equalTo(_email);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                boolean eamilIsExist = dataSnapshot.exists();
+                if (eamilIsExist) {
+                    Toast.makeText(RegisterActivity.this, "이미 존재하는 아이디입니다", Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
     }
 
     private boolean isName() {
